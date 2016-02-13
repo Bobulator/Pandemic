@@ -1,4 +1,4 @@
-package com.cs428.pandemic.frontEnd;
+package com.cs428.pandemic.frontEnd.startSequence;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;

@@ -1,4 +1,4 @@
-package com.cs428.pandemic.frontEnd;
+package com.cs428.pandemic.frontEnd.startSequence;
 
 import com.cs428.pandemic.R;
 

@@ -1,4 +1,4 @@
-package com.cs428.pandemic.frontEnd;
+package com.cs428.pandemic.frontEnd.startSequence;
 
 import android.app.Fragment;
 import android.os.Bundle;
