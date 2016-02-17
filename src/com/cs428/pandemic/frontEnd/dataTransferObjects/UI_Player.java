@@ -9,12 +9,7 @@ import com.cs428.pandemic.frontEnd.enums.Role;
 public class UI_Player {
     private int playerID;
     private String playerName;
-    private Role playerRole = null;
-
-    public UI_Player(int playerID, String playerName) {
-        this.playerID = playerID;
-        this.playerName = playerName;
-    }
+    private Role playerRole;
 
     public UI_Player(int playerID, String playerName, Role playerRole) {
         this.playerID = playerID;
@@ -30,11 +25,5 @@ public class UI_Player {
         return playerName;
     }
 
-    public Role getPlayerRole() {
-        return playerRole;
-    }
-
-    public void setPlayerRole(Role role) {
-        this.playerRole = role;
-    }
+    public Role getPlayerRole() { return playerRole; }
 }
