@@ -1,8 +1,10 @@
+package com.cs428.pandemic.backEnd.test;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cs428.pandemic.backEnd.turntracker.tester;
+
 
 import static org.junit.Assert.assertEquals;
 
@@ -143,7 +145,7 @@ public class TurnTrackerTests
     {
             String[] testClasses = new String[] 
             {
-                    "com.cs428.pandemic.backEnd.turntracker.tester.TurnTrackerTests"
+                    "com.cs428.pandemic.backEnd.test.TurnTrackerTests"
             };
 
             org.junit.runner.JUnitCore.main(testClasses);
