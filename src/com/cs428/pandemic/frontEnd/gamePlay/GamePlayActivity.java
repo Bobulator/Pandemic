@@ -1,4 +1,4 @@
-package com.cs428.pandemic.frontEnd.startSequence;
+package com.cs428.pandemic.frontEnd.gamePlay;
 
 import com.cs428.pandemic.R;
 
