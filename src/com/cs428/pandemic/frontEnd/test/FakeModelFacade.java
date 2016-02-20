@@ -187,6 +187,12 @@ public class FakeModelFacade implements IModelInterface{
     }
 
     @Override
+    public int getPlayerCardCount() {
+        // Arbitrary value
+        return 23;
+    }
+
+    @Override
     public int getRemainingActions() {
         return currentActions;
     }

@@ -161,6 +161,12 @@ public interface IModelInterface {
     List<UI_Card> getPlayerDiscardedCards();
 
     /**
+     * Queries the model for the remaining number of player cards.
+     * @return The number of remaining player cards.
+     */
+    int getPlayerCardCount();
+
+    /**
      * Queries the model for the current player's remaining actions.
      * @return The number of the current player's remaning actions (0-4).
      */
