@@ -9,6 +9,7 @@ import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_DrawnCards;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Player;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_SharedKnowledge;
 import com.cs428.pandemic.frontEnd.enums.Difficulty;
+import com.cs428.pandemic.frontEnd.enums.DiseaseColor;
 import com.cs428.pandemic.frontEnd.enums.Role;
 
 import java.util.ArrayList;
@@ -19,51 +20,56 @@ import java.util.Map;
  * Created by Chad Bacon on 2/18/2016.
  *
  * This class is used for testing various UI components. Methods in this class will return
- * hard-coded results while keeping track of some rudimentary data (like the current player) to
- * simulate game flow.
+ * hard-coded results while keeping track of some rudimentary data (like the players) to
+ * simulate game flow. The only things this keeps track of is the players, the current player,
+ * and how many actions the current player has. Note that when a player takes an action all it does
+ * is decrement the current actions count.
  */
 public class FakeModelFacade implements IModelInterface{
-    private int[] playerActions = {4, 4, 4, 4};
+    private Role[] roles = {Role.MEDIC, Role.SCIENTIST, Role.DISPATCHER, Role.RESEARCHER};
     private int currentPlayer = 0;
+    private int currentActions = 4;
+    private boolean hasActions = true;
+    private ArrayList<UI_Player> uiPlayers = new ArrayList<>();
 
     @Override
     public boolean canMove() {
-        return true;
+        return hasActions;
     }
 
     @Override
     public boolean canFlyCharter() {
-        return true;
+        return hasActions;
     }
 
     @Override
     public boolean canFlyDirect() {
-        return true;
+        return hasActions;
     }
 
     @Override
     public boolean canShareKnowledge() {
-        return true;
+        return hasActions;
     }
 
     @Override
     public boolean canTreatDisease() {
-        return true;
+        return hasActions;
     }
 
     @Override
     public boolean canCureDisease() {
-        return true;
+        return hasActions;
     }
 
     @Override
     public boolean canBuildResearchStation() {
-        return true;
+        return hasActions;
     }
 
     @Override
     public boolean canPass() {
-        return true;
+        return hasActions;
     }
 
     @Override
@@ -83,13 +89,12 @@ public class FakeModelFacade implements IModelInterface{
 
         // Give each player an id 0-3
         int id = 0;
-        // Assign each player an arbitrary role, based on their id
-        Role[] roles = {Role.MEDIC, Role.SCIENTIST, Role.DISPATCHER, Role.RESEARCHER};
 
-        ArrayList<UI_Player> uiPlayers = new ArrayList<>();
         for(String player : players) {
             // Validate each player's name
             assert(player != null && !player.isEmpty());
+
+            // Assign each player an arbitrary role, based on their id
             UI_Player uip = new UI_Player(id, player, roles[id]);
             uiPlayers.add(uip);
             id++;
@@ -115,72 +120,131 @@ public class FakeModelFacade implements IModelInterface{
 
     @Override
     public int getRemainingResearchStations() {
-        return 0;
+        // Arbitrary value
+        return 5;
     }
 
     @Override
     public List<UI_Disease> getRemainingDiseaseCubes() {
-        return null;
+        ArrayList<UI_Disease> ar = new ArrayList<>();
+        ar.add(new UI_Disease(DiseaseColor.BLACK, true, 4));
+        ar.add(new UI_Disease(DiseaseColor.BLUE));
+        ar.add(new UI_Disease(DiseaseColor.RED, false, 10));
+        ar.add(new UI_Disease(DiseaseColor.YELLOW, false, 20));
+        return ar;
     }
 
     @Override
     public int getOutbreakCounter() {
-        return 0;
+        // Arbitrary value
+        return 4;
     }
 
     @Override
     public int getInfectionRate() {
-        return 0;
+        // Arbitrary value
+        return 3;
     }
 
     @Override
     public UI_Player getCurrentPlayer() {
-        return null;
+        return uiPlayers.get(currentPlayer);
     }
 
     @Override
     public List<UI_Card> getPlayerHand(int playerID) {
-        return null;
+        // Arbitrary hand with at least one of each color
+        ArrayList<UI_Card> uiCards = new ArrayList<>();
+        uiCards.add(new UI_Card("atlanta"));
+        uiCards.add(new UI_Card("hong kong"));
+        uiCards.add(new UI_Card("bangkok"));
+        uiCards.add(new UI_Card("chennai"));
+        uiCards.add(new UI_Card("paris"));
+        uiCards.add(new UI_Card("mexico city"));
+        return uiCards;
     }
 
     @Override
     public List<UI_Card> getInfectionDiscardedCards() {
-        return null;
+        // Arbitrary cards of each color
+        ArrayList<UI_Card> uiCards = new ArrayList<>();
+        uiCards.add(new UI_Card("san francisco"));
+        uiCards.add(new UI_Card("seoul"));
+        uiCards.add(new UI_Card("delhi"));
+        uiCards.add(new UI_Card("bogota"));
+        return uiCards;
     }
 
     @Override
     public List<UI_Card> getPlayerDiscardedCards() {
-        return null;
+        // Arbitrary cards of each color
+        ArrayList<UI_Card> uiCards = new ArrayList<>();
+        uiCards.add(new UI_Card("osaka"));
+        uiCards.add(new UI_Card("washington"));
+        uiCards.add(new UI_Card("sao paulo"));
+        uiCards.add(new UI_Card("tokyo"));
+        return uiCards;
     }
 
     @Override
     public int getRemainingActions() {
-        return playerActions[currentPlayer];
+        return currentActions;
     }
 
     @Override
     public List<String> getConnectedCities(String city) {
-        return null;
+        // Assuming Hong Kong was the given city
+        ArrayList<String> cities = new ArrayList<>();
+        cities.add("shanghai");
+        cities.add("taipei");
+        cities.add("manila");
+        cities.add("ho chi minh city");
+        cities.add("bangkok");
+        cities.add("kolkata");
+        return cities;
     }
 
     @Override
     public List<String> getCharterFlightCities(String city) {
-        return null;
+        // All but one arbitrary city @TODO: add cities
+        ArrayList<String> cities = new ArrayList<>();
+        cities.add("atlanta");
+        return cities;
     }
 
     @Override
     public List<String> getDirectFlightCities() {
-        return null;
+        // 7 arbitrary cities since that's the max amount of cities a player can fly direct to
+        ArrayList<String> cities = new ArrayList<>();
+        cities.add("lima");
+        cities.add("sydney");
+        cities.add("chicago");
+        cities.add("essen");
+        cities.add("moscow");
+        cities.add("beijing");
+        cities.add("lagos");
+        return cities;
     }
 
     @Override
     public UI_SharedKnowledge getShareableKnowledge(int playerID) {
-        return null;
+        // Arbitrary cards
+        ArrayList<UI_Card> gCards = new ArrayList<>();
+        gCards.add(new UI_Card("miami"));
+        gCards.add(new UI_Card("madrid"));
+        gCards.add(new UI_Card("riyadh"));
+        gCards.add(new UI_Card("jakarta"));
+
+        ArrayList<UI_Card> rCards = new ArrayList<>();
+        rCards.add(new UI_Card("santiago"));
+        rCards.add(new UI_Card("istanbul"));
+        return new UI_SharedKnowledge(gCards, rCards);
     }
 
     @Override
     public List<String> getRoleActions() {
-        return null;
+        // Empty for now 
+        return new ArrayList<>();
     }
 
     @Override
