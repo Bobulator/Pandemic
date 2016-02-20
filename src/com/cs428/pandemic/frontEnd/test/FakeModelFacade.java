@@ -155,12 +155,12 @@ public class FakeModelFacade implements IModelInterface{
     public List<UI_Card> getPlayerHand(int playerID) {
         // Arbitrary hand with at least one of each color
         ArrayList<UI_Card> uiCards = new ArrayList<>();
-        uiCards.add(new UI_Card("atlanta"));
-        uiCards.add(new UI_Card("hong kong"));
-        uiCards.add(new UI_Card("bangkok"));
-        uiCards.add(new UI_Card("chennai"));
-        uiCards.add(new UI_Card("paris"));
-        uiCards.add(new UI_Card("mexico city"));
+        uiCards.add(new UI_Card("atlanta", DiseaseColor.BLUE));
+        uiCards.add(new UI_Card("hong kong", DiseaseColor.RED));
+        uiCards.add(new UI_Card("bangkok", DiseaseColor.RED));
+        uiCards.add(new UI_Card("chennai", DiseaseColor.BLACK));
+        uiCards.add(new UI_Card("paris", DiseaseColor.BLUE));
+        uiCards.add(new UI_Card("mexico city", DiseaseColor.YELLOW));
         return uiCards;
     }
 
@@ -168,10 +168,10 @@ public class FakeModelFacade implements IModelInterface{
     public List<UI_Card> getInfectionDiscardedCards() {
         // Arbitrary cards of each color
         ArrayList<UI_Card> uiCards = new ArrayList<>();
-        uiCards.add(new UI_Card("san francisco"));
-        uiCards.add(new UI_Card("seoul"));
-        uiCards.add(new UI_Card("delhi"));
-        uiCards.add(new UI_Card("bogota"));
+        uiCards.add(new UI_Card("san francisco", DiseaseColor.BLUE));
+        uiCards.add(new UI_Card("seoul", DiseaseColor.RED));
+        uiCards.add(new UI_Card("delhi", DiseaseColor.BLACK));
+        uiCards.add(new UI_Card("bogota", DiseaseColor.YELLOW));
         return uiCards;
     }
 
@@ -179,10 +179,10 @@ public class FakeModelFacade implements IModelInterface{
     public List<UI_Card> getPlayerDiscardedCards() {
         // Arbitrary cards of each color
         ArrayList<UI_Card> uiCards = new ArrayList<>();
-        uiCards.add(new UI_Card("osaka"));
-        uiCards.add(new UI_Card("washington"));
-        uiCards.add(new UI_Card("sao paulo"));
-        uiCards.add(new UI_Card("tokyo"));
+        uiCards.add(new UI_Card("osaka", DiseaseColor.RED));
+        uiCards.add(new UI_Card("washington", DiseaseColor.BLUE));
+        uiCards.add(new UI_Card("sao paulo", DiseaseColor.YELLOW));
+        uiCards.add(new UI_Card("tokyo", DiseaseColor.RED));
         return uiCards;
     }
 
@@ -230,20 +230,20 @@ public class FakeModelFacade implements IModelInterface{
     public UI_SharedKnowledge getShareableKnowledge(int playerID) {
         // Arbitrary cards
         ArrayList<UI_Card> gCards = new ArrayList<>();
-        gCards.add(new UI_Card("miami"));
-        gCards.add(new UI_Card("madrid"));
-        gCards.add(new UI_Card("riyadh"));
-        gCards.add(new UI_Card("jakarta"));
+        gCards.add(new UI_Card("miami", DiseaseColor.YELLOW));
+        gCards.add(new UI_Card("madrid", DiseaseColor.BLUE));
+        gCards.add(new UI_Card("riyadh", DiseaseColor.BLACK));
+        gCards.add(new UI_Card("jakarta", DiseaseColor.RED));
 
         ArrayList<UI_Card> rCards = new ArrayList<>();
-        rCards.add(new UI_Card("santiago"));
-        rCards.add(new UI_Card("istanbul"));
+        rCards.add(new UI_Card("santiago", DiseaseColor.YELLOW));
+        rCards.add(new UI_Card("istanbul", DiseaseColor.BLACK));
         return new UI_SharedKnowledge(gCards, rCards);
     }
 
     @Override
     public List<String> getRoleActions() {
-        // Empty for now 
+        // Empty for now
         return new ArrayList<>();
     }
 

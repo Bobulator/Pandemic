@@ -1,5 +1,7 @@
 package com.cs428.pandemic.frontEnd.dataTransferObjects;
 
+import com.cs428.pandemic.frontEnd.enums.DiseaseColor;
+
 /**
  * Created by Chad Bacon on 2/16/2016.
  *
@@ -15,11 +17,19 @@ public class UI_Card {
     private String cardName;
 
     /**
+     * The disease color associated with this card's city.
+     */
+    private DiseaseColor diseaseColor;
+
+    /**
      *
      * @param cardName The name of the city to be associated with this card.
+     * @param diseaseColor The disease color associated with this card's city.
      */
-    public UI_Card(String cardName) {
+    public UI_Card(String cardName, DiseaseColor diseaseColor) {
+
         this.cardName = cardName;
+        this.diseaseColor = diseaseColor;
     }
 
     /**
@@ -28,5 +38,13 @@ public class UI_Card {
      */
     public String getCardName() {
         return cardName;
+    }
+
+    /**
+     *
+     * @return The disease color associated with this card's city.
+     */
+    public DiseaseColor getDiseaseColor() {
+        return diseaseColor;
     }
 }
