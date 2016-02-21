@@ -249,8 +249,12 @@ public class FakeModelFacade implements IModelInterface{
 
     @Override
     public List<String> getRoleActions() {
-        // Empty for now
-        return new ArrayList<>();
+        ArrayList<String> actions = new ArrayList<>();
+        actions.add("Special action 1");
+        actions.add("Special action 2");
+        actions.add("How long do these need to be?");
+        actions.add("And how long of an action can we handle?");
+        return actions;
     }
 
     @Override
@@ -282,14 +286,32 @@ public class FakeModelFacade implements IModelInterface{
 
     @Override
     public ICommandObject executeActionObject(String action) {
-        return null;
+        switch (action) {
+            case "Special action 1":
+                return null;
+            case "Special action 2":
+                return null;
+            case "How long do these need to be?":
+                return null;
+            case "And how long of an action can we handle?":
+                return null;
+            default:
+                // Something went wrong, the action should have been one of the ones sent to the UI
+                System.out.println("ERROR: unrecognized action: " + action);
+                return null;
+        }
     }
 
     @Override
-    public void endTurn() {}
+    public void endTurn() {
+        currentActions = 4;
+        if (currentPlayer == 3)
+            currentPlayer = 0;
+        else currentPlayer++;
+    }
 
     @Override
     public UI_DrawnCards drawCards() {
-        return null;
+        return new UI_DrawnCards(new UI_Card("tokyo", DiseaseColor.RED), new UI_Card("santiago", DiseaseColor.YELLOW));
     }
 }
