@@ -6,8 +6,6 @@ import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Disease;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_DrawnCards;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Player;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_SharedKnowledge;
-import com.cs428.pandemic.frontEnd.enums.Difficulty;
-import com.cs428.pandemic.frontEnd.enums.DiseaseColor;
 
 import java.util.List;
 import java.util.Map;
@@ -87,7 +85,7 @@ public interface IModelInterface {
      * @param difficulty The selected difficulty.
      * @return A list of UI_Players, each containing a player's ID, name, and role.
      */
-    List<UI_Player> startGame(List<String> players, Difficulty difficulty);
+    List<UI_Player> startGame(List<String> players, String difficulty);
 
     /**
      * Requests the model for each city's data, including its color, disease cube count, and
@@ -161,6 +159,12 @@ public interface IModelInterface {
      * @return A list of UI_Cards corresponding to each currently discarded Player Card.
      */
     List<UI_Card> getPlayerDiscardedCards();
+
+    /**
+     * Queries the model for the remaining number of player cards.
+     * @return The number of remaining player cards.
+     */
+    int getPlayerCardCount();
 
     /**
      * Queries the model for the current player's remaining actions.
@@ -244,14 +248,14 @@ public interface IModelInterface {
      * Requests the model to treat a disease of the given color from the current player's location.
      * @param diseaseColor The color of the disease to be treated.
      */
-    void treatDisease(DiseaseColor diseaseColor);
+    void treatDisease(String diseaseColor);
 
     /**
      * Requests the model to cure a disease of the given color using the given list of cards.
      * @param diseaseColor The color of the disease to be cured.
      * @param cards The list of cards the player is curing the disease with.
      */
-    void cureDisease(DiseaseColor diseaseColor, List<String> cards);
+    void cureDisease(String diseaseColor, List<String> cards);
 
     /**
      * Requests the model to build a research station in the given city.
