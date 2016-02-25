@@ -2,15 +2,16 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cs428.pandemic.backEnd.test;
+package com.cs428.pandemic.backEnd.test.model.gamestate;
 
+import asserts.LiteAssertFailedException;
+import test.annotations.LiteTest;
+import test.LiteDriver;
 import com.cs428.pandemic.backEnd.model.gamestate.Implementation.InfectionTrackerBuilder;
-import static org.junit.Assert.assertEquals;
 
 import com.cs428.pandemic.backEnd.model.gamestate.*;
-import java.util.List;
-import java.util.Random;
-import org.junit.*;
+
+import static asserts.LiteAsserts.*;
 
 /**
  *
@@ -21,16 +22,16 @@ public class InfectionTrackerBuilderTests
     private IInfectionTrackerBuilder builder;
     private int[] values;
     
-    @Before
     public void setup()
     {
         values = new int[]{2,2,2,3,3,4,4};
         builder = new InfectionTrackerBuilder();
     }
     
-    @Test
-    public void test()
+    @LiteTest
+    public void test() throws LiteAssertFailedException
     {
+        setup();
         int testNum = 1;
         try
         {
@@ -39,19 +40,19 @@ public class InfectionTrackerBuilderTests
                 builder.addTrackValue(values[i]);
             }
             IInfectionTracker tracker = builder.getTracker();
-            assertEquals("Test Infection Builder " + testNum++ + ": Turn tracker should not be null",
-                    true,tracker!=null);
+            assertEquals(true,tracker!=null,
+                    "Test Infection Builder " + testNum++ + ": Turn tracker should not be null");
             for(int i = 0; i < values.length; ++i)
             {
                 tracker.setInfectionsTrack(i);
-                assertEquals("Test Infection Builder " + testNum++ + ": value[" + i + "] passed from builder to tracker should be " + values[i],
-                    values[i],tracker.getInfectionsPerTurn());
+                assertEquals(values[i],tracker.getInfectionsPerTurn(),
+                    "Test Infection Builder " + testNum++ + ": value[" + i + "] passed from builder to tracker should be " + values[i]);
             }
         }
         catch(Exception e)
         {
-            assertEquals("Test Infection builder " + testNum++ + ": Threw an exception " + e.getMessage(),
-                    true,false);
+            assertEquals(true,false,
+                    "Test Infection builder " + testNum++ + ": Threw an exception " + e.getMessage());
         }
     }
 
@@ -61,7 +62,13 @@ public class InfectionTrackerBuilderTests
         {
                 "com.cs428.pandemic.backEnd.test.InfectionTrackerBuilderTests"
         };
-
-        org.junit.runner.JUnitCore.main(testClasses);
+        
+        LiteDriver driver = new LiteDriver("src");
+        for(String str:testClasses)
+        {
+            driver.queueTests(str);
+        }
+        driver.executeQueuedTests();
+        driver.prettyPrint(true);
     }
 }
