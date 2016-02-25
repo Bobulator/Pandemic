@@ -6,6 +6,7 @@ package com.cs428.pandemic.backEnd.test.model;
 
 import com.cs428.pandemic.backEnd.model.deck.IInfectionDeck;
 import com.cs428.pandemic.backEnd.model.deck.IPlayerDeck;
+import com.cs428.pandemic.backEnd.model.disease.IDiseaseCubes;
 import com.cs428.pandemic.backEnd.model.gamestate.IGameState;
 import com.cs428.pandemic.backEnd.model.map.IMap;
 import com.cs428.pandemic.backEnd.model.player.IPlayer;
