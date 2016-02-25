@@ -4,10 +4,10 @@
  */
 package com.cs428.pandemic.backEnd.test;
 
-import com.cs428.pandemic.backEnd.gamestate.Implementation.InfectionTrackerBuilder;
+import com.cs428.pandemic.backEnd.model.gamestate.Implementation.InfectionTrackerBuilder;
 import static org.junit.Assert.assertEquals;
 
-import com.cs428.pandemic.backEnd.gamestate.*;
+import com.cs428.pandemic.backEnd.model.gamestate.*;
 import java.util.List;
 import java.util.Random;
 import org.junit.*;

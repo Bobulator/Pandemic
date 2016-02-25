@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cs428.pandemic.backEnd.test;
+package com.cs428.pandemic.backEnd.model.gamestate.Implementation;
 
 import com.cs428.pandemic.backEnd.model.gamestate.IInfectionTracker;
 import com.cs428.pandemic.backEnd.model.gamestate.IInfectionTrackerBuilder;
@@ -13,30 +13,30 @@ import java.util.List;
  *
  * @author James
  */
-public class MockInfectionTrackBuilder implements IInfectionTrackerBuilder
+public class InfectionTrackerBuilder implements IInfectionTrackerBuilder
 {
     private List<Integer> values;
     
-    public MockInfectionTrackBuilder()
+    public InfectionTrackerBuilder()
     {
-        values = new ArrayList<Integer>();
+        this.values = new ArrayList<Integer>();
     }
     
     @Override
     public IInfectionTrackerBuilder addTrackValue(int infectionsPerTurn) 
     {
-        values.add(infectionsPerTurn);
+        this.values.add(infectionsPerTurn);
         return this;
     }
 
     @Override
     public IInfectionTracker getTracker() 
     {
-        return new MockInfectionTracker();
-    }
-    
-    public List<Integer> getValues()
-    {
-        return values;
+        int[] valueArray = new int[values.size()];
+        for(int i = 0; i < values.size(); ++i)
+        {
+            valueArray[i] = values.get(i);
+        }
+        return new InfectionTracker(valueArray);
     }
 }

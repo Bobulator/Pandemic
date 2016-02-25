@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cs428.pandemic.backEnd.gamestate;
+package com.cs428.pandemic.backEnd.model.gamestate;
 
-import com.cs428.pandemic.backEnd.gamestate.Implementation.StandardDiseaseData;
-import com.cs428.pandemic.backEnd.gamestate.Implementation.GameState;
-import com.cs428.pandemic.backEnd.gamestate.Implementation.InfectionTrackerDirector;
-import com.cs428.pandemic.backEnd.gamestate.Implementation.InfectionTrackerBuilder;
+import com.cs428.pandemic.backEnd.model.gamestate.Implementation.StandardDiseaseData;
+import com.cs428.pandemic.backEnd.model.gamestate.Implementation.GameState;
+import com.cs428.pandemic.backEnd.model.gamestate.Implementation.InfectionTrackerDirector;
+import com.cs428.pandemic.backEnd.model.gamestate.Implementation.InfectionTrackerBuilder;
 
 /**
  *

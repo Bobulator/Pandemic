@@ -4,7 +4,7 @@
  */
 package com.cs428.pandemic.backEnd.test;
 
-import com.cs428.pandemic.backEnd.gamestate.IInfectionTracker;
+import com.cs428.pandemic.backEnd.model.gamestate.IInfectionTracker;
 
 /**
  *

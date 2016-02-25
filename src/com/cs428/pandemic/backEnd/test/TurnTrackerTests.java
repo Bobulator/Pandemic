@@ -8,7 +8,7 @@ package com.cs428.pandemic.backEnd.test;
 
 import static org.junit.Assert.assertEquals;
 
-import com.cs428.pandemic.backEnd.turntracker.*;
+import com.cs428.pandemic.backEnd.model.turntracker.*;
 import java.util.Random;
 import org.junit.*;
 

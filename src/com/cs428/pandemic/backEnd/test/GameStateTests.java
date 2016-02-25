@@ -4,11 +4,11 @@
  */
 package com.cs428.pandemic.backEnd.test;
 
-import com.cs428.pandemic.backEnd.gamestate.Implementation.StandardDiseaseData;
-import com.cs428.pandemic.backEnd.gamestate.Implementation.GameState;
+import com.cs428.pandemic.backEnd.model.gamestate.Implementation.StandardDiseaseData;
+import com.cs428.pandemic.backEnd.model.gamestate.Implementation.GameState;
 import static org.junit.Assert.assertEquals;
 
-import com.cs428.pandemic.backEnd.gamestate.*;
+import com.cs428.pandemic.backEnd.model.gamestate.*;
 import java.util.List;
 import java.util.Random;
 import org.junit.*;
