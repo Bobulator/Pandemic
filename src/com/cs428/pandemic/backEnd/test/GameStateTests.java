@@ -4,6 +4,8 @@
  */
 package com.cs428.pandemic.backEnd.test;
 
+import com.cs428.pandemic.backEnd.gamestate.Implementation.StandardDiseaseData;
+import com.cs428.pandemic.backEnd.gamestate.Implementation.GameState;
 import static org.junit.Assert.assertEquals;
 
 import com.cs428.pandemic.backEnd.gamestate.*;
