@@ -8,7 +8,7 @@ import com.cs428.pandemic.backEnd.model.turntracker.ITurnTracker;
 import com.cs428.pandemic.backEnd.model.turntracker.TurnStateValue;
 
 /**
- *
+ * Turn Tracker that utilizes the State Pattern
  * @author James
  */
 public class TurnTracker implements ITurnTracker, ITurnTrackerMachine

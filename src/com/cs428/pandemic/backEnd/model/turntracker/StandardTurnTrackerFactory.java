@@ -7,7 +7,7 @@ package com.cs428.pandemic.backEnd.model.turntracker;
 import com.cs428.pandemic.backEnd.model.turntracker.standard.TurnTracker;
 
 /**
- *
+ * Generates the Simple Turn Tracker that does not use the state pattern
  * @author James
  */
 public class StandardTurnTrackerFactory implements ITurnTrackerFactory
