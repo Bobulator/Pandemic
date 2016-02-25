@@ -25,12 +25,70 @@ public abstract class AbstractRole {
      * </ul>
      */
     IRoleCommand getCanDriveFerry(final String cityName){ return null; }
+
+    /**
+     * CanDo method for the Direct Flight movement action. Verify that cityName
+     * matches one of the player's current cards.
+     * @param cityName Name of the city to see if the player can travel there.
+     * @return The return of the IRoleCommand execute is as follows:
+     * <ul>
+     *     <li> getResult: (LEGAL|ILLEGAL) </li>
+     *     <li> getMessage: error message if error </li>
+     *     <li> getChainCommand: null </li>
+     *     <li> getData: null </li>
+     * </ul>
+     */
     IRoleCommand getCanDirectFlight(final String cityName){ return null; }
+
+    /**
+     * CanDo method for the Charter Flight movement action. Verifies that the
+     * player has the card for the current city that they're in.
+     * @param cityName Name of the city to see if the player can travel there.
+     * @return The return of the IRoleCommand execute is as follows:
+     * <ul>
+     *     <li> getResult: (LEGAL|ILLEGAL) </li>
+     *     <li> getMessage: error message if error </li>
+     *     <li> getChainCommand: null </li>
+     *     <li> getData: null </li>
+     * </ul>
+     */
     IRoleCommand getCanCharterFlight(final String cityName){ return null; }
+
+    /**
+     * CanDo method for the Shuttle Flight movement action. Verifies that the
+     * player is currently in a city with a research station and that cutyName
+     * has a research station.
+     * @param cityName Name of the city to see if the player can travel there.
+     * @return The return of the IRoleCommand execute is as follows:
+     * <ul>
+     *     <li> getResult: (LEGAL|ILLEGAL) </li>
+     *     <li> getMessage: error message if error </li>
+     *     <li> getChainCommand: null </li>
+     *     <li> getData: null </li>
+     * </ul>
+     */
     IRoleCommand getCanShuttleFlight(final String cityName){ return null; }
 
+
+
+    /**
+     * Should always return true
+     * @return The return of the IRoleCommand execute is as follows:
+     * <ul>
+     *     <li> getResult: (LEGAL|ILLEGAL) </li>
+     *     <li> getMessage: error message if error </li>
+     *     <li> getChainCommand: null </li>
+     *     <li> getData: null </li>
+     * </ul>
+     */
     IRoleCommand getCanPass(){ return null; }
 
+
+    /**
+     *
+     * @param cityName
+     * @return
+     */
     IRoleCommand getCanBuildStation(final String cityName){ return null; }
     IRoleCommand getCanDiscoverCure(final String diseaseType){ return null; }
     IRoleCommand getCanTreatDisease(final String diseaseType){ return null; }
