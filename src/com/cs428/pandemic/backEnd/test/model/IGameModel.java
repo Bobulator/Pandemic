@@ -24,4 +24,5 @@ public interface IGameModel
     IPlayerDeck getPlayerDeck();
     IInfectionDeck getInfectionDeck();
     List<IPlayer> getPlayers();
+    IDiseaseCubes getDiseaseCubes();
 }
