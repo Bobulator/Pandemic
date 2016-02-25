@@ -4,6 +4,7 @@
  */
 package com.cs428.pandemic.backEnd.test.model.gamestate;
 
+import com.cs428.pandemic.backEnd.model.gamestate.Implementation.MappedDiseaseData;
 import test.LiteDriver;
 import asserts.LiteAssertFailedException;
 import com.cs428.pandemic.backEnd.model.gamestate.Implementation.StandardDiseaseData;
@@ -26,7 +27,7 @@ public class DiseaseDataTests
     
     public void setup() throws LiteAssertFailedException
     {
-        this.data = new StandardDiseaseData();
+        this.data = new MappedDiseaseData();
         int testNum = 1;
         DiseaseType[] allTypes = DiseaseType.values();
         for(int i = 0; i < allTypes.length; ++i)

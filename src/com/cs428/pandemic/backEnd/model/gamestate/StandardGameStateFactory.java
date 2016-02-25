@@ -4,10 +4,7 @@
  */
 package com.cs428.pandemic.backEnd.model.gamestate;
 
-import com.cs428.pandemic.backEnd.model.gamestate.Implementation.StandardDiseaseData;
-import com.cs428.pandemic.backEnd.model.gamestate.Implementation.GameState;
-import com.cs428.pandemic.backEnd.model.gamestate.Implementation.InfectionTrackerDirector;
-import com.cs428.pandemic.backEnd.model.gamestate.Implementation.InfectionTrackerBuilder;
+import com.cs428.pandemic.backEnd.model.gamestate.Implementation.*;
 
 /**
  *
@@ -38,6 +35,6 @@ public class StandardGameStateFactory implements IGameStateFactory
     @Override
     public IDiseaseData createDiseaseData() 
     {
-        return new StandardDiseaseData();
+        return new MappedDiseaseData();
     }
 }

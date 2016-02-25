@@ -12,7 +12,7 @@ import static asserts.LiteAsserts.*;
 import com.cs428.pandemic.backEnd.model.turntracker.*;
 import com.cs428.pandemic.backEnd.model.turntracker.ITurnTracker;
 import com.cs428.pandemic.backEnd.model.turntracker.TurnStateValue;
-import com.cs428.pandemic.backEnd.model.turntracker.TurnTracker;
+import com.cs428.pandemic.backEnd.model.turntracker.standard.TurnTracker;
 import java.util.Random;
 import test.LiteDriver;
 import test.annotations.LiteTest;
@@ -29,9 +29,10 @@ public class TurnTrackerTests
     
     public void setup()
     {
+        ITurnTrackerFactory fact = new StatePatternTurnTrackerFactory();
         this.numPlayers = 5;
         this.actionPoints = 4;
-        this.tracker = new TurnTracker(this.numPlayers);
+        this.tracker = fact.createTurnTracker(this.numPlayers);
         this.tracker.setTurnState(TurnStateValue.ACTION);
         this.tracker.setCurrentActionPoints(this.actionPoints);
     }
