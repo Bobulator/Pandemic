@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Uses a map from a DiseaseType enum to a DiseaseStatusInfo object to determine the stats for a Disease. Namely it it has been cured or eradicated.
  * @author James
  */
 public class MappedDiseaseData implements IDiseaseData
