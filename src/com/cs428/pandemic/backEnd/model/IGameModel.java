@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cs428.pandemic.backEnd.test.model;
+package com.cs428.pandemic.backEnd.model;
 
 import com.cs428.pandemic.backEnd.model.deck.IInfectionDeck;
 import com.cs428.pandemic.backEnd.model.deck.IPlayerDeck;
