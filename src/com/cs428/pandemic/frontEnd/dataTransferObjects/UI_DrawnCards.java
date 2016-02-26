@@ -8,23 +8,23 @@ package com.cs428.pandemic.frontEnd.dataTransferObjects;
  * how many.
  */
 public class UI_DrawnCards {
-
+    
     /**
      * The city name associated with the first drawn card.
      */
     private UI_Card card1;
-
+    
     /**
      * The city name associated with the second drawn card.
      */
     private UI_Card card2;
-
+    
     /**
      * The number of cards the player needs to discard as a result of their draw. This should be
      * between 0-2.
      */
     int toDiscard = 0;
-
+    
     /**
      * If this constructor is used the toDiscard int will default to 0.
      * @param card1 The city name associated with the first drawn card.
@@ -34,7 +34,7 @@ public class UI_DrawnCards {
         this.card1 = card1;
         this.card2 = card2;
     }
-
+    
     /**
      *
      * @param card1 The city name associated with the first drawn card.
@@ -46,7 +46,7 @@ public class UI_DrawnCards {
         this.card2 = card2;
         this.toDiscard = toDiscard;
     }
-
+    
     /**
      *
      * @return The city name of the first drawn card.
@@ -54,7 +54,7 @@ public class UI_DrawnCards {
     public UI_Card getCard1() {
         return card1;
     }
-
+    
     /**
      *
      * @return The city name of the second drawn card.
@@ -62,7 +62,7 @@ public class UI_DrawnCards {
     public UI_Card getCard2() {
         return card2;
     }
-
+    
     /**
      *
      * @return The number of cards to be discarded by the player.

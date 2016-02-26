@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+
 import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.gamePlay.GamePlayActivity;
 
