@@ -4,15 +4,14 @@
  */
 package com.cs428.pandemic.backEnd.test.model.gamestate;
 
-import asserts.LiteAssertFailedException;
+import com.cs428.pandemic.backEnd.model.gamestate.IInfectionTracker;
 import com.cs428.pandemic.backEnd.model.gamestate.Implementation.InfectionTracker;
-import static asserts.LiteAsserts.*;
 
-import com.cs428.pandemic.backEnd.model.gamestate.*;
-import java.util.List;
-import org.junit.*;
+import asserts.LiteAssertFailedException;
 import test.LiteDriver;
 import test.annotations.LiteTest;
+
+import static asserts.LiteAsserts.assertEquals;
 
 /**
  *
