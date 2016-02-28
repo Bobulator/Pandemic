@@ -13,6 +13,7 @@ import com.cs428.pandemic.frontEnd.enums.DiseaseColor;
 import com.cs428.pandemic.frontEnd.enums.Role;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -105,23 +106,42 @@ public class FakeModelFacade implements IModelInterface{
 
     @Override
     public Map<String, UI_City> getCityData() {
+        // TODO: 2/27/2016 (Chad) populate this method
         return null;
     }
 
     @Override
     public List<String> getResearchStationLocations() {
-        return null;
+        // Locations were chosen based on the most congested cities; see getPawnLocations().
+        ArrayList<String> cities = new ArrayList<>();
+        cities.add("atlanta");
+        cities.add("paris");
+        cities.add("washington");
+        cities.add("hongkong");
+        cities.add("kolkata");
+        return cities;
     }
 
     @Override
     public Map<Integer, String> getPawnLocations() {
-        return null;
+        // Locations were chosen based on proximity to other cities so we could test optimal
+        // piece placement in the most congested areas of the board. Note that while this function
+        // is flexible to the number of players being tested, 4 players will provide the most
+        // comprehensive test.
+        String[] cities = {"paris", "washington", "hongkong", "kolkata"};
+
+        HashMap<Integer, String> pawnLocations = new HashMap<>();
+        for (int i = 0; i < uiPlayers.size(); ++i) {
+            pawnLocations.put(uiPlayers.get(i).getPlayerID(), cities[i]);
+        }
+
+        return pawnLocations;
     }
 
     @Override
     public int getRemainingResearchStations() {
-        // Arbitrary value
-        return 5;
+        // Based on the getResearchStationLocations() method. But it can be any arbitrary value.
+        return 1;
     }
 
     @Override
