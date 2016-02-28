@@ -11,7 +11,7 @@ import android.app.DialogFragment;
  * making calls to the model.
  */
 public interface ICommandObject {
-    
+
     /**
      * Execute the command associated with this command object. The command object will be given
      * a DialogFragment to which it can draw and query any necessary data to the the user.
