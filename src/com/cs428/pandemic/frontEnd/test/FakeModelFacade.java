@@ -176,7 +176,7 @@ public class FakeModelFacade implements IModelInterface{
         // Arbitrary hand with at least one of each color
         ArrayList<UI_Card> uiCards = new ArrayList<>();
         uiCards.add(new UI_Card("atlanta", DiseaseColor.BLUE));
-        uiCards.add(new UI_Card("hong kong", DiseaseColor.RED));
+        uiCards.add(new UI_Card("hongkong", DiseaseColor.RED));
         uiCards.add(new UI_Card("bangkok", DiseaseColor.RED));
         uiCards.add(new UI_Card("chennai", DiseaseColor.BLACK));
         uiCards.add(new UI_Card("paris", DiseaseColor.BLUE));
@@ -188,7 +188,7 @@ public class FakeModelFacade implements IModelInterface{
     public List<UI_Card> getInfectionDiscardedCards() {
         // Arbitrary cards of each color
         ArrayList<UI_Card> uiCards = new ArrayList<>();
-        uiCards.add(new UI_Card("san francisco", DiseaseColor.BLUE));
+        uiCards.add(new UI_Card("sanfrancisco", DiseaseColor.BLUE));
         uiCards.add(new UI_Card("seoul", DiseaseColor.RED));
         uiCards.add(new UI_Card("delhi", DiseaseColor.BLACK));
         uiCards.add(new UI_Card("bogota", DiseaseColor.YELLOW));
@@ -201,7 +201,7 @@ public class FakeModelFacade implements IModelInterface{
         ArrayList<UI_Card> uiCards = new ArrayList<>();
         uiCards.add(new UI_Card("osaka", DiseaseColor.RED));
         uiCards.add(new UI_Card("washington", DiseaseColor.BLUE));
-        uiCards.add(new UI_Card("sao paulo", DiseaseColor.YELLOW));
+        uiCards.add(new UI_Card("saopaulo", DiseaseColor.YELLOW));
         uiCards.add(new UI_Card("tokyo", DiseaseColor.RED));
         return uiCards;
     }
@@ -224,7 +224,7 @@ public class FakeModelFacade implements IModelInterface{
         cities.add("shanghai");
         cities.add("taipei");
         cities.add("manila");
-        cities.add("ho chi minh city");
+        cities.add("hochiminhcity");
         cities.add("bangkok");
         cities.add("kolkata");
         return cities;
