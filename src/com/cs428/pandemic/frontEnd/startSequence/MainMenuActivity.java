@@ -1,10 +1,14 @@
 package com.cs428.pandemic.frontEnd.startSequence;
 
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -21,8 +25,8 @@ public class MainMenuActivity extends Activity {
 	public static final String DIFFICULTY = "DifficultyLevelFragment";
 	public static final String GAMEOVERVIEW = "GameOverviewFragment";
 	private int numberOfPlayers = 0;
-	String[] playerList;
-	String difficultyLevel;
+	private ArrayList<String> playerList;
+	private String difficultyLevel;
 	
 	@SuppressLint("InlinedApi")
 	@Override
@@ -50,20 +54,20 @@ public class MainMenuActivity extends Activity {
 	
 	public void replaceFragment(String className) {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		switch(className) {
-			case(NUMBERPLAYERS):
+		switch (className) {
+			case NUMBERPLAYERS:
 				transaction.replace(R.id.container, new NumberOfPlayersFragment());
 				break;
-			case(PLAYERNAMES):
+			case PLAYERNAMES:
 				transaction.replace(R.id.container, new PlayerNamesFragment());
 				break;
-			case(DIFFICULTY):
+			case DIFFICULTY:
 				transaction.replace(R.id.container, new DifficultyLevelFragment());
 				break;
-			case(RULES):
+			case RULES:
 				transaction.replace(R.id.container, new RulesFragment());
 				break;
-			case(GAMEOVERVIEW):
+			case GAMEOVERVIEW:
 				transaction.replace(R.id.container, new GameOverviewFragment());
 				break;
 			default:
@@ -74,7 +78,29 @@ public class MainMenuActivity extends Activity {
 		transaction.commit();
 	}
 	
+	public void refreshUI(Fragment fragment) {
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		transaction.replace(R.id.container, fragment);
+		transaction.commit();
+	}
+	
 	public void startGameActivity() {
+		PlayerListLab playerLab = PlayerListLab.get(this);
+		// updating the savedPlayerList
+		for (int i = 0; i < playerList.size(); i++)
+			playerLab.addPlayer(playerList.get(i));
+		
+		// saving the updated savedPlayerList on background thread
+		AsyncTask<Activity, Void, Void> savePlayerList = new AsyncTask<Activity, Void, Void>() {
+			protected Void doInBackground(Activity... params) {
+				for (Activity a : params) {
+					PlayerListLab.get(a).savePlayerList();
+				}
+				return null;
+			}
+		};
+		savePlayerList.execute(this);
+		
 		Intent i = new Intent(this, GamePlayActivity.class);
 		startActivity(i);
 	}
@@ -87,11 +113,11 @@ public class MainMenuActivity extends Activity {
 		numberOfPlayers = num;
 	}
 	
-	public String[] getPlayerList() {
+	public ArrayList<String> getPlayerList() {
 		return playerList;
 	}
 	
-	public void setPlayerList(String[] players) {
+	public void setPlayerList(ArrayList<String> players) {
 		playerList = players;
 	}
 	

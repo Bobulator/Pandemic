@@ -1,5 +1,7 @@
 package com.cs428.pandemic.frontEnd.startSequence;
 
+import java.util.ArrayList;
+
 import com.cs428.pandemic.R;
 
 import android.app.Fragment;
@@ -43,14 +45,14 @@ public class GameOverviewFragment extends Fragment {
 	
 	public void instantiateViewWidgets(View v, int numPlayers) {
 		MainMenuActivity act = (MainMenuActivity) getActivity();
-		String[] players = act.getPlayerList();
-		((TextView)v.findViewById(R.id.player_one_name)).setText(players[0]);
-		((TextView)v.findViewById(R.id.player_two_name)).setText(players[1]);
+		ArrayList<String> players = act.getPlayerList();
+		((TextView)v.findViewById(R.id.player_one_name)).setText(players.get(0));
+		((TextView)v.findViewById(R.id.player_two_name)).setText(players.get(1));
 		
 		if(numPlayers > 2) {
-			((TextView)v.findViewById(R.id.player_three_name)).setText(players[2]);
+			((TextView)v.findViewById(R.id.player_three_name)).setText(players.get(2));
 			if(numPlayers == 4)
-				((TextView)v.findViewById(R.id.player_four_name)).setText(players[3]);
+				((TextView)v.findViewById(R.id.player_four_name)).setText(players.get(3));
 		}
 		
 		((TextView)v.findViewById(R.id.difficulty_level)).setText("Difficulty: " + act.getDifficulty());

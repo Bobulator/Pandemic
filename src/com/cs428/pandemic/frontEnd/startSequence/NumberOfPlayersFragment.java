@@ -53,6 +53,6 @@ public class NumberOfPlayersFragment extends Fragment {
 	public void setNumber(int num) {
 		MainMenuActivity act = (MainMenuActivity) getActivity();
 		act.setNumberPlayers(num);
-		act.replaceFragment(act.PLAYERNAMES);
+		act.replaceFragment(MainMenuActivity.PLAYERNAMES);
 	}
 }

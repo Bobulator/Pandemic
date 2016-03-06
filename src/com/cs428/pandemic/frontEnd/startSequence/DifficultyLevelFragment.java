@@ -60,7 +60,7 @@ public class DifficultyLevelFragment extends Fragment {
 	private void setDifficulty(String diff) {
 		MainMenuActivity act = (MainMenuActivity) getActivity();
 		act.setDifficulty(diff);
-		act.replaceFragment(act.GAMEOVERVIEW);
+		act.replaceFragment(MainMenuActivity.GAMEOVERVIEW);
 	}
 	
 }
