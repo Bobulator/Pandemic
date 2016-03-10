@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">Pandemic</string>
+    <string name="delete">Delete Saved Player</string>
     <string name="difficulty_level">Difficulty Level</string>
     <string name="enter_names">Enter Player Names</string>
     <string name="four_player">Four Players</string>
