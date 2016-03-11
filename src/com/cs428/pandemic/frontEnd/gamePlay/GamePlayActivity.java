@@ -1,13 +1,13 @@
 package com.cs428.pandemic.frontEnd.gamePlay;
 
-import com.cs428.pandemic.R;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.cs428.pandemic.R;
 
 public class GamePlayActivity extends Activity {
 
@@ -29,8 +29,8 @@ public class GamePlayActivity extends Activity {
 		
 		setContentView(R.layout.activity_main_menu);
 		if (savedInstanceState == null) {
-//			getFragmentManager().beginTransaction()
-//					.add(R.id.container, new MainMenuFragment()).commit();
+			getFragmentManager().beginTransaction()
+					.add(R.id.container, new BoardFragment()).commit();
 		}
 	}
 	
