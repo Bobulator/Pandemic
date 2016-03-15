@@ -14,7 +14,7 @@ public class GamePlayActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		if (Build.VERSION.SDK_INT < 16) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -23,15 +23,17 @@ public class GamePlayActivity extends Activity {
         	int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         	decorView.setSystemUiVisibility(uiOptions);
         	ActionBar actionBar = getActionBar();
-        	actionBar.hide();
+			if (actionBar != null) {
+				actionBar.hide();
+			}
         }
-		
-		
-		setContentView(R.layout.activity_main_menu);
+
+
+		setContentView(R.layout.activity_gameplay);
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
-					.add(R.id.container, new BoardFragment()).commit();
+					.add(R.id.gameplay_container, new BoardFragment()).commit();
 		}
 	}
-	
+
 }
