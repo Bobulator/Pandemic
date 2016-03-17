@@ -57,11 +57,9 @@ public class SavedPlayerListFragment extends DialogFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				String name = mSavedPlayers.get(position);
-				if (!mCurrentPlayers.contains(name)) {
+				if (!mCurrentPlayers.contains(name))
 					mAddPlayer = name;
-
-				}
-				else 
+				else
 					Toast.makeText(getActivity(), "This player has already been entered, please choose another player", Toast.LENGTH_LONG).show();
 			}
 		});
