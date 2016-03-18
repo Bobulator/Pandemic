@@ -100,8 +100,10 @@ public class PlayerNamesFragment extends Fragment {
 	
 	// this method is called for any # of players in game to reduce code duplication
 	public void instantiateViewWidgets(View v, int numPlayers) {
-		mPlayers = new ArrayList<String>(numPlayers);
-		
+		mPlayers = new ArrayList<>();
+		for (int i = 0; i < numPlayers; i++)
+			mPlayers.add("");
+
 		mPlayerOne = (EditText)v.findViewById(R.id.player_one_name);
 		mPlayerOne.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 		mPlayerOne.addTextChangedListener(new TextWatcher() {
@@ -114,7 +116,7 @@ public class PlayerNamesFragment extends Fragment {
 				mPlayers.add(0,s.toString().toUpperCase(Locale.US));
 			}
 		});
-		
+
 		mPlayerTwo = (EditText)v.findViewById(R.id.player_two_name);
 		mPlayerTwo.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 		mPlayerTwo.addTextChangedListener(new TextWatcher() {
@@ -127,8 +129,8 @@ public class PlayerNamesFragment extends Fragment {
 				mPlayers.add(1, s.toString().toUpperCase(Locale.US));
 			}				
 		});
-		
-		if(numPlayers > 2) {
+
+		if (numPlayers > 2) {
 			mPlayerThree = (EditText)v.findViewById(R.id.player_three_name);
 			mPlayerThree.setFilters(new InputFilter[] {new InputFilter.AllCaps()});
 			mPlayerThree.addTextChangedListener(new TextWatcher() {
