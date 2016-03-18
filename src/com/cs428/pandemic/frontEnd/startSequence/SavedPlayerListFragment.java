@@ -1,5 +1,7 @@
 package com.cs428.pandemic.frontEnd.startSequence;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,8 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs428.pandemic.R;
-
-import java.util.ArrayList;
 
 public class SavedPlayerListFragment extends DialogFragment {
 	
@@ -57,16 +57,16 @@ public class SavedPlayerListFragment extends DialogFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				String name = mSavedPlayers.get(position);
-				if (!mCurrentPlayers.contains(name))
+				if (!mCurrentPlayers.contains(name)) 
 					mAddPlayer = name;
-				else
+				else 
 					Toast.makeText(getActivity(), "This player has already been entered, please choose another player", Toast.LENGTH_LONG).show();
 			}
 		});
 		
 		listView.setAdapter(new PlayerAdapter(mSavedPlayers));
 		
-		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
 		listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
 			@Override
 			public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -74,7 +74,6 @@ public class SavedPlayerListFragment extends DialogFragment {
 				inflater.inflate(R.menu.player_list_delete, menu);
 				return true;
 			}
-
 			@Override
 			public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 				switch (item.getItemId()) {
@@ -82,7 +81,7 @@ public class SavedPlayerListFragment extends DialogFragment {
 						PlayerAdapter adapter = (PlayerAdapter) listView.getAdapter();
 						PlayerListLab playerLab = PlayerListLab.get(getActivity());
 						for (int i = adapter.getCount() - 1; i >= 0; i--) {
-							if (listView.isItemChecked(i))
+							if (listView.isItemChecked(i)) 
 								playerLab.removePlayer(adapter.getItem(i));
 						}
 						mode.finish();
@@ -92,35 +91,34 @@ public class SavedPlayerListFragment extends DialogFragment {
 						return false;
 				}
 			}
-
 			@Override
-			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-				return false;
-			}
-
-			public void onDestroyActionMode(ActionMode mode) {
-			}
-
-			public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-			}
+			public boolean onPrepareActionMode(ActionMode mode, Menu menu) {return false;}
+			public void onDestroyActionMode(ActionMode mode) {}
+			public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {}
 		});
 
-		String title = "";
-		switch(mCurrentPlayers.size()){
-			case 0:
-				title = "Select Player 1";
-				break;
-			case 1:
-				title = "Select Player 2";
-				break;
-			case 2:
-				title = "Select Player 3";
-				break;
-			case 3:
-				title = "Select Player 4";
+		int i = 0;
+		for (; i < mCurrentPlayers.size(); i++) {
+			if (mCurrentPlayers.get(i).equals(""))
 				break;
 		}
 
+		String title = "";
+		switch (i){
+			case 0:
+				title = getString(R.string.select_one);
+				break;
+			case 1:
+				title = getString(R.string.select_two);
+				break;
+			case 2:
+				title = getString(R.string.select_three);
+				break;
+			case 3:
+				title = getString(R.string.select_four);
+				break;
+		}
+		
 		return new AlertDialog.Builder(getActivity())
 			.setView(v).setTitle(title)
 			.setNegativeButton(android.R.string.cancel,
@@ -170,8 +168,6 @@ public class SavedPlayerListFragment extends DialogFragment {
 				convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_player, null);
 			
 			String name = getItem(position);
-			if (name.equals("ANDREW"))
-				System.out.println();
 			TextView nameTextView = (TextView) convertView.findViewById(R.id.player_list_item_name);
 			nameTextView.setText(name);
 			
