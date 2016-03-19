@@ -1,6 +1,6 @@
 package com.cs428.pandemic.frontEnd;
 
-import android.app.DialogFragment;
+import android.app.FragmentManager;
 
 /**
  * Created by Chad Bacon on 2/16/2016.
@@ -15,7 +15,7 @@ public interface ICommandObject {
     /**
      * Execute the command associated with this command object. The command object will be given
      * a DialogFragment to which it can draw and query any necessary data to the the user.
-     * @param dialogFragment The DialogFragment with which to draw data and make queries of the user.
+     * @param fragmentManager The DialogFragment with which to draw data and make queries of the user.
      */
-    void doCommand(DialogFragment dialogFragment);
+    void doCommand(FragmentManager fragmentManager);
 }
