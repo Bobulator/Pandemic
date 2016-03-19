@@ -117,13 +117,13 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
      * @return The sample size by which the original image should be reduced.
      */
     public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of the image
+        // Raw width and height of the image
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
 
         // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-        // height and width larger than the requested height and width.
+        // width and height larger than the requested width and height.
         while ((height / inSampleSize) > reqHeight
                 && (width / inSampleSize) > reqWidth) {
             inSampleSize *= 2;
