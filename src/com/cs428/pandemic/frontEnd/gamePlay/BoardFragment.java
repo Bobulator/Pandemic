@@ -46,7 +46,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
 	
     private static final String TAG = "Touch";
     
-    private ImageView mBoard;
+    private ImageView boardImageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,28 +56,39 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_game_board, parent, false);
-        mBoard = (ImageView) v.findViewById(R.id.board_image_view);
-        mBoard.setOnTouchListener(this);
-        
+        View view = inflater.inflate(R.layout.fragment_game_board, parent, false);
+
         WindowManager wm = (WindowManager) getActivity().getSystemService(getActivity().WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
 
         // Display the game board
-        mBoard.setImageBitmap(
-                // Use a bitmap to scale the image resource down so as not to use too much memory
+        boardImageView = (ImageView) view.findViewById(R.id.board_image_view);
+        boardImageView.setOnTouchListener(this);
+        boardImageView.setImageBitmap(
+                // Use a bitmap to scale the image resource down so as not to use too much memory.
                 // The width and height were arbitrarily chosen as placeholders until we can find
-                // a more consistent way to determine what size we should draw the image
-//                decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, size.x, size.y));
-        		decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, 800, 400));
+                // a more consistent way to determine what size we should draw the image.
+                // decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, size.x, size.y));
+                decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, 800, 400));
 
         displayPlayerRolesDialog();
 
-        return v;
+        return view;
     }
 
+    /**
+     * Construct a Bitmap of the given resource that is as small as possible while remaining
+     * larger than the given width and height.
+     *
+     * @param res The resources from which the image is located.
+     * @param resId The specific id of the image to generate a Bitmap for.
+     * @param reqWidth The width constraint.
+     * @param reqHeight The height constraint.
+     * @return A Bitmap such that the width and height are as small as possible while remaining
+     * larger than the reqWidth and reqHeight.
+     */
     public Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
 
@@ -94,23 +105,30 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
+    /**
+     * Determine the extent to which the Bitmap dimensions should be reduced from the original image
+     * size using the given constraints. The reduction is determined such that the original image is
+     * reduced to be as small as possible while remaining larger than the given width and height.
+     *
+     * @param options The Bitmap options from which the original image dimensions are retrieved.
+     * @param reqWidth The width constraint.
+     * @param reqHeight The height constraint.
+     *
+     * @return The sample size by which the original image should be reduced.
+     */
     public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw height and width of the image
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
 
-        if (height > reqHeight || width > reqWidth) {
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
+        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+        // height and width larger than the requested height and width.
+        while ((height / inSampleSize) > reqHeight
+                && (width / inSampleSize) > reqWidth) {
+            inSampleSize *= 2;
         }
+        inSampleSize /= 2;
 
         return inSampleSize;
     }
