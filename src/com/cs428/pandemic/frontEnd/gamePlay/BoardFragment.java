@@ -1,6 +1,7 @@
 package com.cs428.pandemic.frontEnd.gamePlay;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -71,6 +72,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
                 // a more consistent way to determine what size we should draw the image
 //                decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, size.x, size.y));
         		decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, 800, 400));
+
+        displayPlayerRolesDialog();
 
         return v;
     }
@@ -182,4 +185,10 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
         point.set(x / 2, y / 2);
     }
 
+    public void displayPlayerRolesDialog() {
+        FragmentManager fm = getActivity().getFragmentManager();
+        RoleSummaryFragment dialog = new RoleSummaryFragment();
+        dialog.setTargetFragment(BoardFragment.this, 0);
+        dialog.show(fm, "roles");
+    }
 }
