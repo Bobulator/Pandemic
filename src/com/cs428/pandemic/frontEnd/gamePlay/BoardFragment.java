@@ -5,9 +5,13 @@ import android.app.FragmentManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -63,17 +67,31 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
         Point size = new Point();
         display.getSize(size);
 
+        displayPlayerRolesDialog();
+
+        // Use a bitmap to scale the image resource down so as not to use too much memory.
+        // The width and height were arbitrarily chosen as placeholders until we can find
+        // a more consistent way to determine what size we should draw the image.
+        Bitmap bitmap = decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, 800, 400);
+
+        // Use a canvas that makes drawing easy
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawBitmap(bitmap, 0, 0, null);
+
+        // Not sure how the pixel locations are related to the initial images. These are simply
+        // arbitrary proof-of-concept lines to demonstrate that this works.
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
+        canvas.drawLine(80, 80, 350, 350, p);
+        canvas.drawLine(80, 80, 1900, 1000, p);
+        canvas.drawLine(80, 80, 1900, 350, p);
+        canvas.drawLine(80, 80, 350, 1000, p);
+
         // Display the game board
         boardImageView = (ImageView) view.findViewById(R.id.board_image_view);
         boardImageView.setOnTouchListener(this);
-        boardImageView.setImageBitmap(
-                // Use a bitmap to scale the image resource down so as not to use too much memory.
-                // The width and height were arbitrarily chosen as placeholders until we can find
-                // a more consistent way to determine what size we should draw the image.
-                // decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, size.x, size.y));
-                decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, 800, 400));
-
-        displayPlayerRolesDialog();
+        // Attache the canvas to the ImageView
+        boardImageView.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
 
         return view;
     }
@@ -102,6 +120,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
 
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = false;
+        options.inMutable = true;
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
