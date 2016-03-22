@@ -49,6 +49,9 @@ public class FakeModelFacade implements IModelInterface{
     }
 
     @Override
+    public boolean canFlyShuttle() { return hasActions;}
+
+    @Override
     public boolean canShareKnowledge() {
         return hasActions;
     }
@@ -249,6 +252,15 @@ public class FakeModelFacade implements IModelInterface{
         cities.add("moscow");
         cities.add("beijing");
         cities.add("lagos");
+        return cities;
+    }
+
+    public List<String> getShuttleFlightCities() {
+        // A few arbitrary cities
+        ArrayList<String> cities = new ArrayList<>();
+        cities.add("atlanta");
+        cities.add("osaka");
+        cities.add("khartoum");
         return cities;
     }
 

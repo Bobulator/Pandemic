@@ -45,6 +45,12 @@ public interface IModelInterface {
     boolean canFlyDirect();
 
     /**
+     * Requests whether or not a player can use the 'shuttle flight' action.
+     * @return True if yes, otherwise False.
+     */
+    boolean canFlyShuttle();
+
+    /**
      * Requests whether or not a player can share knowledge in their current city with any player
      * as an action.
      * @return True if yes, otherwise False.
@@ -196,6 +202,12 @@ public interface IModelInterface {
     List<String> getDirectFlightCities();
 
     /**
+     * Queries the model for all possible shuttle flight destinations.
+     * @return A list containing the names of each city a player can fly to via 'shuttle flight'.
+     */
+    List<String> getShuttleFlightCities();
+
+    /**
      * Queries the model for all of the cards that a player can give OR receive using the 'Share
      * Knowledge' action.
      * @param playerID The player using the action.
@@ -214,7 +226,8 @@ public interface IModelInterface {
     // type; it is assumed that the model was successful in carrying out the requested action.
 
     /**
-     * Request the model to move the given player to the given city.
+     * Request the model to move the given player to the given city. This method will be used for
+     * the 'shuttle flight' option as well as normal movement.
      * @param playerID The ID of the player to be moved.
      * @param city The name of the city to move the player to.
      */
