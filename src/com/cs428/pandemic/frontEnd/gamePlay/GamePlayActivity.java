@@ -97,6 +97,9 @@ public class GamePlayActivity extends Activity
     @Override
     public void updateUI() {
 
+        // Notify the BoardFragment of changes made to the model
+        BoardFragment boardFragment = (BoardFragment) getFragmentManager().findFragmentById(R.id.game_board);
+        boardFragment.updateBoard();
     }
 
     @Override

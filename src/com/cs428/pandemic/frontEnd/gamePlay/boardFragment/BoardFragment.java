@@ -183,4 +183,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
     }
 
     public List<UI_Player> getPlayers() { return players; }
+
+    public void updateBoard() {
+
+    }
 }
