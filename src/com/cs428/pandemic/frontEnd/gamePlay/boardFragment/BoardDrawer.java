@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.cs428.pandemic.frontEnd.IModelInterface;
+
 /**
  * This class will handle drawing all of the components of the board, including the board itself,
  * cities, city connections, disease, built research stations, and pawn locations.
@@ -15,7 +17,14 @@ import android.graphics.Paint;
  */
 public class BoardDrawer {
 
-    public BoardDrawer() {}
+    private IModelInterface modelFacade;
+    private Canvas canvas;
+    private int width;
+    private int height;
+
+    public BoardDrawer(IModelInterface modelFacade) {
+        this.modelFacade = modelFacade;
+    }
 
     public Bitmap createBitmap(Resources res, int resId, int reqWidth, int reqHeight) {
         return decodeSampledBitmapFromResource(res, resId, reqWidth, reqHeight);
@@ -23,11 +32,17 @@ public class BoardDrawer {
 
     public Canvas drawBoard(Bitmap bitmap) {
 
-        Canvas canvas = new Canvas(bitmap);
+        initDrawer(bitmap);
+
+        // Draw the initial board
         canvas.drawBitmap(bitmap, 0, 0, null);
 
-        final int width = canvas.getWidth();
-        final int height = canvas.getHeight();
+        // Draw everything that lies 'on' the board, with each drawing overwriting any drawing that
+        // came before it.
+        drawCityConnections();
+        drawCities();
+        drawPlayerPawns();
+        drawResearchStations();
 
         // Not sure how the pixel locations are related to the initial images. These are simply
         // arbitrary proof-of-concept lines to demonstrate that this works.
@@ -39,6 +54,28 @@ public class BoardDrawer {
         canvas.drawLine(80, 80, 350, 1000, p);
 
         return canvas;
+    }
+
+    private void initDrawer(Bitmap bitmap) {
+        canvas = new Canvas(bitmap);
+        width = canvas.getWidth();
+        height = canvas.getHeight();
+    }
+
+    private void drawCityConnections() {
+
+    }
+
+    private void drawCities() {
+
+    }
+
+    private void drawPlayerPawns() {
+
+    }
+
+    private void drawResearchStations() {
+
     }
 
     /**

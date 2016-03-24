@@ -78,7 +78,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
         display.getSize(size);
 
         // The boardDrawer class will do all of the necessary drawing to create the board.
-        boardDrawer = new BoardDrawer();
+        boardDrawer = new BoardDrawer(modelFacade);
 
         // Use a bitmap to scale the image resource down so as not to use too much memory.
         // The width and height were arbitrarily chosen as placeholders until we can find
