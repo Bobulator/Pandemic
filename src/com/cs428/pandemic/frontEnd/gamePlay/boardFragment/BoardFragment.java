@@ -1,4 +1,4 @@
-package com.cs428.pandemic.frontEnd.gamePlay;
+package com.cs428.pandemic.frontEnd.gamePlay.boardFragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -25,6 +25,8 @@ import android.widget.ImageView;
 import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.IModelInterface;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Player;
+import com.cs428.pandemic.frontEnd.gamePlay.GamePlayActivity;
+import com.cs428.pandemic.frontEnd.gamePlay.RoleSummaryFragment;
 
 import java.util.ArrayList;
 import java.util.List;

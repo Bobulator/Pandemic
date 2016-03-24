@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Player;
+import com.cs428.pandemic.frontEnd.gamePlay.boardFragment.BoardFragment;
 
 import java.util.ArrayList;
 import java.util.List;

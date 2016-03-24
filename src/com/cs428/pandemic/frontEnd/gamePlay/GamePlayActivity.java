@@ -12,6 +12,7 @@ import android.view.WindowManager;
 
 import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.IModelInterface;
+import com.cs428.pandemic.frontEnd.gamePlay.boardFragment.BoardFragment;
 import com.cs428.pandemic.frontEnd.test.FakeModelFacade;
 
 public class GamePlayActivity extends Activity 
