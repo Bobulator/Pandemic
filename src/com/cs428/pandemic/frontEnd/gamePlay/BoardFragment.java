@@ -77,8 +77,6 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
         Point size = new Point();
         display.getSize(size);
 
-        displayPlayerRolesDialog();
-
         // Use a bitmap to scale the image resource down so as not to use too much memory.
         // The width and height were arbitrarily chosen as placeholders until we can find
         // a more consistent way to determine what size we should draw the image.
@@ -121,7 +119,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
      * @return A Bitmap such that the width and height are as small as possible while remaining
      * larger than the reqWidth and reqHeight.
      */
-    public Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+    private Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
 
         // First decode with inJustDecodeBounds=true to check dimensions
@@ -149,7 +147,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
      *
      * @return The sample size by which the original image should be reduced.
      */
-    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         // Raw width and height of the image
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -236,14 +234,16 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
         point.set(x / 2, y / 2);
     }
 
-    public void displayPlayerRolesDialog() {
+    private void displayPlayerRolesDialog() {
         FragmentManager fm = getActivity().getFragmentManager();
         RoleSummaryFragment dialog = new RoleSummaryFragment();
         dialog.setTargetFragment(BoardFragment.this, 0);
         dialog.show(fm, "roles");
     }
 
-    public List<UI_Player> startGame(ArrayList<String> players, String difficulty) {
+    private List<UI_Player> startGame(ArrayList<String> players, String difficulty) {
         return modelFacade.startGame(players, difficulty);
     }
+
+    public List<UI_Player> getPlayers() { return players; }
 }

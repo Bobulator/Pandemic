@@ -9,8 +9,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cs428.pandemic.R;
+import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Player;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Hayden on 3/17/2016.
@@ -26,6 +28,10 @@ public class RoleSummaryFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         initializePlayerLists();
+
+        // Retrieve the current list of players from the parent fragment (BoardFragment)
+        List<UI_Player> players = ((BoardFragment)getTargetFragment()).getPlayers();
+
         int numbPlayers = listOf4Players.size();    //testing 2 player layout
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
