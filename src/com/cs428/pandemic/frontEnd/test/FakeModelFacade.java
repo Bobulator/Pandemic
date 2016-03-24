@@ -76,13 +76,16 @@ public class FakeModelFacade implements IModelInterface{
     @Override
     public List<UI_Player> startGame(List<String> players, String difficulty) {
         // Verify that the UI sent a valid list of players
-        assert(players.size() >= 2 && players.size() <= 4);
+        assert(players != null && players.size() >= 2 && players.size() <= 4);
+
+        // Verify that the difficulty is not null
+        assert(difficulty != null);
 
         // Validate the difficulty sent by the UI. An invalid difficulty has no effect on this
         // class; in such a case a message will be sent to the console and then things will
         // continue as normal.
         try {
-            Difficulty.valueOf(difficulty);
+            Difficulty.stringToEnum(difficulty);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             System.out.println("Invalid difficulty parameter: " + difficulty);

@@ -19,6 +19,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.cs428.pandemic.R;
+import com.cs428.pandemic.frontEnd.IModelInterface;
+import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Hayden on 3/11/2016.
@@ -48,9 +53,14 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
     
     private ImageView boardImageView;
 
+    private IModelInterface modelFacade;
+
+    private List<UI_Player> players;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        modelFacade = ((GamePlayActivity)getActivity()).getModelFacade();
     }
 
     @Override
@@ -73,6 +83,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
                 // decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, size.x, size.y));
                 decodeSampledBitmapFromResource(getResources(), R.drawable.game_board_nocities, 800, 400));
 
+        Bundle args = getArguments();
+        players = startGame(args.getStringArrayList("players"), args.getString("difficulty"));
         displayPlayerRolesDialog();
 
         return view;
@@ -208,5 +220,9 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
         RoleSummaryFragment dialog = new RoleSummaryFragment();
         dialog.setTargetFragment(BoardFragment.this, 0);
         dialog.show(fm, "roles");
+    }
+
+    public List<UI_Player> startGame(ArrayList<String> players, String difficulty) {
+        return modelFacade.startGame(players, difficulty);
     }
 }

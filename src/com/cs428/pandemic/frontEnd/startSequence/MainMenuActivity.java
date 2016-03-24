@@ -15,7 +15,9 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.cs428.pandemic.R;
+import com.cs428.pandemic.frontEnd.IModelInterface;
 import com.cs428.pandemic.frontEnd.gamePlay.GamePlayActivity;
+import com.cs428.pandemic.frontEnd.test.FakeModelFacade;
 
 public class MainMenuActivity extends Activity {
 
@@ -43,8 +45,7 @@ public class MainMenuActivity extends Activity {
         	ActionBar actionBar = getActionBar();
         	actionBar.hide();
         }
-		
-		
+
 		setContentView(R.layout.activity_main_menu);
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
@@ -101,8 +102,14 @@ public class MainMenuActivity extends Activity {
 		};
 		savePlayerList.execute(this);
 		
-		Intent i = new Intent(this, GamePlayActivity.class);
-		startActivity(i);
+		Intent intent = new Intent(this, GamePlayActivity.class);
+		// Pass the players and the difficulty as extra parameters to the next activity since it
+		// doesn't make sense for this activity to have a dependency on the Facade (since it never
+		// needs to use it).
+		intent.putStringArrayListExtra("players", playerList);
+		intent.putExtra("difficulty", difficultyLevel);
+
+		startActivity(intent);
 	}
 	
 	public int getNumberPlayers() {
@@ -125,8 +132,6 @@ public class MainMenuActivity extends Activity {
 		return difficultyLevel;
 	}
 	
-	public void setDifficulty(String difficulty) {
-		difficultyLevel = difficulty;
-	}
+	public void setDifficulty(String difficulty) { difficultyLevel = difficulty; }
 	
 }
