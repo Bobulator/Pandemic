@@ -101,7 +101,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
         // Display the game board
         boardImageView = (ImageView) view.findViewById(R.id.board_image_view);
         boardImageView.setOnTouchListener(this);
-        // Attache the canvas to the ImageView
+        // Attach the canvas to the ImageView
         boardImageView.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
 
         Bundle args = getArguments();
