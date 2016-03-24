@@ -12,11 +12,12 @@ import android.view.WindowManager;
 
 import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.IModelInterface;
+import com.cs428.pandemic.frontEnd.IUI_Updater;
 import com.cs428.pandemic.frontEnd.gamePlay.boardFragment.BoardFragment;
 import com.cs428.pandemic.frontEnd.test.FakeModelFacade;
 
-public class GamePlayActivity extends Activity 
-		implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class GamePlayActivity extends Activity
+		implements NavigationDrawerFragment.NavigationDrawerCallbacks, IUI_Updater {
 	
 	private NavigationDrawerFragment mNavigationDrawerFragment;
 
@@ -91,5 +92,15 @@ public class GamePlayActivity extends Activity
 
     public IModelInterface getModelFacade() {
         return modelFacade;
+    }
+
+    @Override
+    public void updateUI() {
+
+    }
+
+    @Override
+    public void ResolveEpidemic() {
+
     }
 }
