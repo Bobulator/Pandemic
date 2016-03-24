@@ -86,6 +86,9 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
         Canvas canvas = new Canvas(bitmap);
         canvas.drawBitmap(bitmap, 0, 0, null);
 
+        final int width = canvas.getWidth();
+        final int height = canvas.getHeight();
+
         // Not sure how the pixel locations are related to the initial images. These are simply
         // arbitrary proof-of-concept lines to demonstrate that this works.
         Paint p = new Paint();
