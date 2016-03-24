@@ -2,6 +2,7 @@ package com.cs428.pandemic.frontEnd.test;
 
 import com.cs428.pandemic.frontEnd.ICommandObject;
 import com.cs428.pandemic.frontEnd.IModelInterface;
+import com.cs428.pandemic.frontEnd.IUI_Updater;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Card;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Disease;
@@ -77,12 +78,15 @@ public class FakeModelFacade implements IModelInterface{
     }
 
     @Override
-    public List<UI_Player> startGame(List<String> players, String difficulty) {
+    public List<UI_Player> startGame(List<String> players, String difficulty, IUI_Updater uiUpdater) {
         // Verify that the UI sent a valid list of players
         assert(players != null && players.size() >= 2 && players.size() <= 4);
 
         // Verify that the difficulty is not null
         assert(difficulty != null);
+
+        // Verify that the uiUpdater is not null
+        assert(uiUpdater != null);
 
         // Validate the difficulty sent by the UI. An invalid difficulty has no effect on this
         // class; in such a case a message will be sent to the console and then things will

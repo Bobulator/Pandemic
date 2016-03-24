@@ -179,7 +179,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
     }
 
     private List<UI_Player> startGame(ArrayList<String> players, String difficulty) {
-        return modelFacade.startGame(players, difficulty);
+        return modelFacade.startGame(players, difficulty, (GamePlayActivity) this.getActivity());
     }
 
     public List<UI_Player> getPlayers() { return players; }

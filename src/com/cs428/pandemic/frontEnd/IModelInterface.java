@@ -91,7 +91,7 @@ public interface IModelInterface {
      * @param difficulty The selected difficulty.
      * @return A list of UI_Players, each containing a player's ID, name, and role.
      */
-    List<UI_Player> startGame(List<String> players, String difficulty);
+    List<UI_Player> startGame(List<String> players, String difficulty, IUI_Updater uiUpdater);
 
     /**
      * Requests the model for each city's data, including its color, disease cube count, and
