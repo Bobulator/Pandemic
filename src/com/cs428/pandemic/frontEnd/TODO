@@ -6,3 +6,4 @@ MEDIUM PRIORITY
 
 LOW PRIORITY
 [ ] @Todo Modify the possible inputs for the PlayerNamesFragment so players can't use stuff like newline characters in their name. (added by Chad)
+[ ] @Todo fix layout of saved player dialog & prevent bar from appearing @ top. (added by Andrew)
