@@ -2,9 +2,7 @@ package com.cs428.pandemic.frontEnd.gamePlay.boardFragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.PointF;
@@ -12,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,35 +35,39 @@ import java.util.List;
  * draw the largest image possible so as to fill the dimensions of the screen without wasting any
  * memory.
  */
-public class BoardFragment extends Fragment implements View.OnTouchListener {
+public class BoardFragment extends Fragment implements View.OnTouchListener, GestureDetector.OnGestureListener {
+
+    public static String PLAYERS_ARGS = "players";
+    public static String DIFFICULTY_ARGS = "difficulty";
 
 	// 3 possible states
-    static final int NONE = 0;
-    static final int DRAG = 1;
-    static final int ZOOM = 2;
-    int mode = NONE;
+    private static final int NONE = 0;
+    private static final int DRAG = 1;
+    private static final int ZOOM = 2;
+    private int mode = NONE;
     
-    Matrix matrix = new Matrix();
-    Matrix savedMatrix = new Matrix();
+    private Matrix matrix = new Matrix();
+    private Matrix savedMatrix = new Matrix();
     
     // Remember some things for zooming
-    PointF start = new PointF();
-    PointF mid = new PointF();
-    double oldDist = 1.0;
+    private PointF start = new PointF();
+    private PointF mid = new PointF();
+    private double oldDist = 1.0;
 	
-    private static final String TAG = "Touch";
+    private static final String TAG = "BoardFragment";
     
-    private ImageView boardImageView;
+    private ImageView mBoardImage;
 
-    private IModelInterface modelFacade;
-    private BoardDrawer boardDrawer;
+    private IModelInterface mModelFacade;
+    private BoardDrawer mBoardDrawer;
 
-    private List<UI_Player> players;
+    private List<UI_Player> mPlayers;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        modelFacade = ((GamePlayActivity)getActivity()).getModelFacade();
+		setRetainInstance(true);
+        mModelFacade = ((GamePlayActivity)getActivity()).getModelFacade();
     }
 
     @Override
@@ -75,27 +78,27 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
         WindowManager wm = (WindowManager) getActivity().getSystemService(getActivity().WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
-        display.getSize(size);
+        display.getSize(size); // size.x, size.y are size of phone screen
 
         // The boardDrawer class will do all of the necessary drawing to create the board.
-        boardDrawer = new BoardDrawer(modelFacade);
+        mBoardDrawer = new BoardDrawer(mModelFacade);
 
         // Use a bitmap to scale the image resource down so as not to use too much memory.
         // The width and height were arbitrarily chosen as placeholders until we can find
         // a more consistent way to determine what size we should draw the image.
-        Bitmap bitmap = boardDrawer.createBitmap(getResources(), R.drawable.game_board_nocities, 800, 400);
+        Bitmap bitmap = mBoardDrawer.createBitmap(getResources(), R.drawable.game_board_nocities, size.x, size.y);
 
         // Draw everything onto the bitmap
-        boardDrawer.drawBoard(bitmap);
+        mBoardDrawer.drawBoard(bitmap);
 
         // Display the game board
-        boardImageView = (ImageView) view.findViewById(R.id.board_image_view);
-        boardImageView.setOnTouchListener(this);
+        mBoardImage = (ImageView) view.findViewById(R.id.board_image_view);
+        mBoardImage.setOnTouchListener(this);
         // Attach the canvas to the ImageView
-        boardImageView.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
+        mBoardImage.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
 
         Bundle args = getArguments();
-        players = startGame(args.getStringArrayList("players"), args.getString("difficulty"));
+        mPlayers = startGame(args.getStringArrayList("players"), args.getString("difficulty"));
         displayPlayerRolesDialog();
 
         return view;
@@ -179,12 +182,43 @@ public class BoardFragment extends Fragment implements View.OnTouchListener {
     }
 
     private List<UI_Player> startGame(ArrayList<String> players, String difficulty) {
-        return modelFacade.startGame(players, difficulty, (GamePlayActivity) this.getActivity());
+        return mModelFacade.startGame(players, difficulty, (GamePlayActivity) this.getActivity());
     }
 
-    public List<UI_Player> getPlayers() { return players; }
+    public List<UI_Player> getPlayers() { return mPlayers; }
 
     public void updateBoard() {
 
     }
+
+	@Override
+	public boolean onDown(MotionEvent e) {
+		return false;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent e) {
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) {
+		((GamePlayActivity) getActivity()).toggleToolbar();
+		return false;
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
+		return false;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent e) {
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+			float velocityY) {
+		return false;
+	}
 }

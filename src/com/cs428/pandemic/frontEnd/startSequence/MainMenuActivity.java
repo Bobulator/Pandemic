@@ -3,7 +3,6 @@ package com.cs428.pandemic.frontEnd.startSequence;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -20,6 +19,9 @@ import com.cs428.pandemic.frontEnd.gamePlay.GamePlayActivity;
 import com.cs428.pandemic.frontEnd.test.FakeModelFacade;
 
 public class MainMenuActivity extends Activity {
+
+    public static final String EXTRA_PLAYERS = "players";
+    public static final String EXTRA_DIFFICULTY = "difficulty";
 
 	public static final String RULES = "RulesFragment";
 	public static final String NUMBERPLAYERS = "NumberOfPlayersFragment";
@@ -42,8 +44,6 @@ public class MainMenuActivity extends Activity {
         	View decorView = getWindow().getDecorView();
         	int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         	decorView.setSystemUiVisibility(uiOptions);
-        	ActionBar actionBar = getActionBar();
-        	actionBar.hide();
         }
 
 		setContentView(R.layout.activity_main_menu);
@@ -101,15 +101,12 @@ public class MainMenuActivity extends Activity {
 			}
 		};
 		savePlayerList.execute(this);
-		
-		Intent intent = new Intent(this, GamePlayActivity.class);
-		// Pass the players and the difficulty as extra parameters to the next activity since it
-		// doesn't make sense for this activity to have a dependency on the Facade (since it never
-		// needs to use it).
-		intent.putStringArrayListExtra("players", playerList);
-		intent.putExtra("difficulty", difficultyLevel);
 
+		Intent intent = new Intent(this, GamePlayActivity.class);
+		intent.putStringArrayListExtra(EXTRA_PLAYERS, playerList);
+		intent.putExtra(EXTRA_DIFFICULTY, difficultyLevel);
 		startActivity(intent);
+		this.finish();
 	}
 	
 	public int getNumberPlayers() {
@@ -132,6 +129,8 @@ public class MainMenuActivity extends Activity {
 		return difficultyLevel;
 	}
 	
-	public void setDifficulty(String difficulty) { difficultyLevel = difficulty; }
+	public void setDifficulty(String difficulty) {
+		difficultyLevel = difficulty;
+	}
 	
 }
