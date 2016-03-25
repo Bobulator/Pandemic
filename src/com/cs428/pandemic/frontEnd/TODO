@@ -1,9 +1,0 @@
-HIGH PRIORITY
-[ ] @Todo Place bounds on the pinch and zoom functionality of the BoardFragment so the player can't move beyond the borders of the image, either by zooming or scrolling. (added by Chad)
-
-MEDIUM PRIORITY
-[ ] @Todo Update the button colors between the StartSequence and the RoleSummaryFragment so that they're consistent. (added by Chad)
-
-LOW PRIORITY
-[ ] @Todo Modify the possible inputs for the PlayerNamesFragment so players can't use stuff like newline characters in their name. (added by Chad)
-[ ] @Todo fix layout of saved player dialog & prevent bar from appearing @ top. (added by Andrew)
