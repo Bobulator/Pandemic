@@ -26,14 +26,14 @@ public class GamePlayActivity extends AppCompatActivity
 
     // Have a pointer to the Facade so all fragments started from this activity can have access to
     // the Facade.
-    private IModelInterface modelFacade;
+    private IModelInterface mModelFacade;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
         // This facade needs to be changed when we integrate with the model
-        modelFacade = new FakeModelFacade();
+        mModelFacade = new FakeModelFacade();
 		
 		if (Build.VERSION.SDK_INT < 16) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -95,7 +95,7 @@ public class GamePlayActivity extends AppCompatActivity
 	}
 
     public IModelInterface getModelFacade() {
-        return modelFacade;
+        return mModelFacade;
     }
 
     @Override
