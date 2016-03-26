@@ -8,7 +8,7 @@ import asserts.LiteAssertFailedException;
 import test.annotations.LiteClass;
 import test.annotations.LiteTest;
 import test.LiteDriver;
-import com.cs428.pandemic.backEnd.model.gamestate.implementation.InfectionTrackerBuilder;
+import com.cs428.pandemic.backEnd.model.gamestate.implementationtemp.InfectionTrackerBuilder;
 
 import com.cs428.pandemic.backEnd.model.gamestate.*;
 

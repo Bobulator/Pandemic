@@ -5,7 +5,7 @@
 package com.cs428.pandemic.backEndTest.model.gamestate;
 
 import asserts.LiteAssertFailedException;
-import com.cs428.pandemic.backEnd.model.gamestate.implementation.InfectionTrackerDirector;
+import com.cs428.pandemic.backEnd.model.gamestate.implementationtemp.InfectionTrackerDirector;
 import static asserts.LiteAsserts.*;
 
 import com.cs428.pandemic.backEnd.model.gamestate.*;
