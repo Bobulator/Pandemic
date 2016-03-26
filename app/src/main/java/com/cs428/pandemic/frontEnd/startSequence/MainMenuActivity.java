@@ -139,7 +139,7 @@ public class MainMenuActivity extends Activity {
 		numberOfPlayers = num;
 	}
 	
-	public ArrayList<String> getmCurrentPlayersList() {
+	public ArrayList<String> getCurrentPlayersList() {
 		return mCurrentPlayersList;
 	}
 	
