@@ -80,22 +80,10 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Ges
         Point size = new Point();
         display.getSize(size); // size.x, size.y are size of phone screen
 
-        // The boardDrawer class will do all of the necessary drawing to create the board.
-        mBoardDrawer = new BoardDrawer(mModelFacade);
+		mBoardImage = (ImageView) view.findViewById(R.id.board_image_view);
+		mBoardImage.setOnTouchListener(this);
 
-        // Use a bitmap to scale the image resource down so as not to use too much memory.
-        // The width and height were arbitrarily chosen as placeholders until we can find
-        // a more consistent way to determine what size we should draw the image.
-        Bitmap bitmap = mBoardDrawer.createBitmap(getResources(), R.drawable.game_board_nocities, 200, 200);
-
-        // Draw everything onto the bitmap
-        mBoardDrawer.drawBoard(bitmap);
-
-        // Display the game board
-        mBoardImage = (ImageView) view.findViewById(R.id.board_image_view);
-        mBoardImage.setOnTouchListener(this);
-        // Attach the canvas to the ImageView
-        mBoardImage.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
+        updateBoard();
 
         Bundle args = getArguments();
         mPlayers = startGame(args.getStringArrayList("players"), args.getString("difficulty"));
@@ -188,7 +176,20 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Ges
     public List<UI_Player> getPlayers() { return mPlayers; }
 
     public void updateBoard() {
+		// The boardDrawer class will do all of the necessary drawing to create the board.
+		mBoardDrawer = new BoardDrawer(mModelFacade);
 
+		// Use a bitmap to scale the image resource down so as not to use too much memory.
+		// The width and height were arbitrarily chosen as placeholders until we can find
+		// a more consistent way to determine what size we should draw the image.
+		Bitmap bitmap = mBoardDrawer.createBitmap(getResources(), R.drawable.game_board_nocities, 200, 200);
+        System.out.println("BOARD BITMAP IS USING " + bitmap.getByteCount() + " BYTES!!!!!");
+
+		// Draw everything onto the bitmap
+		mBoardDrawer.drawBoard(bitmap);
+
+		// Attach the canvas to the ImageView
+		mBoardImage.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
     }
 
 	@Override
