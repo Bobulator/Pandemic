@@ -4,7 +4,7 @@
  */
 package com.cs428.pandemic.backEnd.model.gamestate;
 
-import com.cs428.pandemic.backEnd.model.gamestate.Implementation.*;
+import com.cs428.pandemic.backEnd.model.gamestate.implementation.*;
 
 /**
  *
