@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cs428.pandemic.backEnd.model.gamestate.implementationtemp;
+package com.cs428.pandemic.backEnd.model.gamestate.implementation;
 
 /**
  * Holds the data for a given disease: whether it has been cured or whether it has been eradicated

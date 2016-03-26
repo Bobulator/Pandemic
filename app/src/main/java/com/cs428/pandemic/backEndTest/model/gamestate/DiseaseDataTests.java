@@ -4,7 +4,7 @@
  */
 package com.cs428.pandemic.backEndTest.model.gamestate;
 
-import com.cs428.pandemic.backEnd.model.gamestate.implementationtemp.MappedDiseaseData;
+import com.cs428.pandemic.backEnd.model.gamestate.implementation.MappedDiseaseData;
 import test.LiteDriver;
 import asserts.LiteAssertFailedException;
 //import static org.junit.Assert.assertEquals;

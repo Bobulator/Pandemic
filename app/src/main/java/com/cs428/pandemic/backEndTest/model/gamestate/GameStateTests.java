@@ -7,8 +7,8 @@ package com.cs428.pandemic.backEndTest.model.gamestate;
 import test.LiteDriver;
 import asserts.LiteAssertFailedException;
 import test.annotations.*;
-import com.cs428.pandemic.backEnd.model.gamestate.implementationtemp.StandardDiseaseData;
-import com.cs428.pandemic.backEnd.model.gamestate.implementationtemp.GameState;
+import com.cs428.pandemic.backEnd.model.gamestate.implementation.StandardDiseaseData;
+import com.cs428.pandemic.backEnd.model.gamestate.implementation.GameState;
 
 import com.cs428.pandemic.backEnd.model.gamestate.*;
 
