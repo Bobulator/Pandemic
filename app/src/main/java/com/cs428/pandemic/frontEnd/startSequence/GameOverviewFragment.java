@@ -45,7 +45,7 @@ public class GameOverviewFragment extends Fragment {
 	
 	public void instantiateViewWidgets(View v, int numPlayers) {
 		MainMenuActivity act = (MainMenuActivity) getActivity();
-		ArrayList<String> players = act.getPlayerList();
+		ArrayList<String> players = act.getmCurrentPlayersList();
 		((TextView)v.findViewById(R.id.player_one_name)).setText(players.get(0));
 		((TextView)v.findViewById(R.id.player_two_name)).setText(players.get(1));
 		

@@ -87,7 +87,7 @@ public class PlayerNamesFragment extends Fragment {
 					namesSet = true;
 				
 				if (namesSet) {
-					act.setPlayerList(mPlayers);
+					act.setmCurrentPlayersList(mPlayers);
 					act.replaceFragment(MainMenuActivity.DIFFICULTY);
 				} else 
 					Toast.makeText(getActivity(), "Must give all players a name!", Toast.LENGTH_LONG).show();

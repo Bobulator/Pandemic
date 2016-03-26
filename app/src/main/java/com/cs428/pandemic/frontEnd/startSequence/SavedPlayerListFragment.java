@@ -48,7 +48,7 @@ public class SavedPlayerListFragment extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		mAddPlayer = "";
 		mCurrentPlayers = (ArrayList<String>)getArguments().getSerializable(EXTRA_PLAYERS);
-		mSavedPlayers = PlayerListLab.get(getActivity()).getPlayers();
+		mSavedPlayers = ((MainMenuActivity) getActivity()).getSavedPlayerList();
 		
 		View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_list_players, null);
 		
@@ -79,13 +79,12 @@ public class SavedPlayerListFragment extends DialogFragment {
 				switch (item.getItemId()) {
 					case R.id.menu_item_delete:
 						PlayerAdapter adapter = (PlayerAdapter) listView.getAdapter();
-						PlayerListLab playerLab = PlayerListLab.get(getActivity());
 						for (int i = adapter.getCount() - 1; i >= 0; i--) {
 							if (listView.isItemChecked(i)) 
-								playerLab.removePlayer(adapter.getItem(i));
+								((MainMenuActivity) getActivity()).removeSavedPlayer(adapter.getItem(i));
 						}
 						mode.finish();
-						playerLab.savePlayerList();
+						((MainMenuActivity) getActivity()).saveSavedPlayerList();
 						return true;
 					default:
 						return false;
