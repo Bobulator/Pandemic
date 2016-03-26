@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cs428.pandemic.backEnd.model.gamestate.Implementation;
+package com.cs428.pandemic.backEnd.model.gamestate.implementation;
 
 import com.cs428.pandemic.backEnd.model.gamestate.IInfectionTracker;
 import com.cs428.pandemic.backEnd.model.gamestate.IInfectionTrackerBuilder;
