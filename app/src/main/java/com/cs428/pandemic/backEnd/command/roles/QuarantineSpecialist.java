@@ -1,3 +1,4 @@
+/*
 package com.cs428.pandemic.backEnd.command.roles;
 
 import com.cs428.pandemic.backEnd.command.CaseyBFG;
@@ -23,3 +24,4 @@ public class QuarantineSpecialist extends CaseyBFG{
 	}
 	
 }
+*/

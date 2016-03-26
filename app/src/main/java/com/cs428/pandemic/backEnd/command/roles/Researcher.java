@@ -1,3 +1,4 @@
+/*
 package com.cs428.pandemic.backEnd.command.roles;
 
 import java.util.ArrayList;
@@ -59,3 +60,4 @@ public class Researcher extends CaseyBFG{
 	}
 	
 }
+*/

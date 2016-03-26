@@ -1,5 +1,7 @@
 package com.cs428.pandemic.backEnd.command;
 
+import android.app.FragmentManager;
+
 import com.cs428.pandemic.backEnd.model.IGameModel;
 
 /**
@@ -31,9 +33,8 @@ public interface ICommand {
      *     <li> getChainCommand() may return a command object that should be invoked externally</li>
      *     <li> getData() may return data accompanying results of the command </li>
      * </ul>
-     * @param model The current game model.
      * @return The result of the operation expresses as an IResult object.
      */
-    ICommandResult execute(IGameModel model);
+    ICommandResult execute(FragmentManager fm);
 
 }

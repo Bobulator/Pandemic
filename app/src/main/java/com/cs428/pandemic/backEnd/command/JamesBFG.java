@@ -1,3 +1,4 @@
+/*
 package com.cs428.pandemic.backEnd.command;
 
 import com.cs428.pandemic.backEnd.model.IGameModel;
@@ -32,7 +33,8 @@ public abstract class JamesBFG {
     // TODO: add in a setup function that is called at the beginning of each players turn.
     // This function will, among other things, set the number of actions on the TurnTracker to 4
 
-    /**
+    */
+/**
      * CanDo method for the Drive/Ferry movement action.
      * @param cityName Name of the city to see if the player can travel there.
      * @return The return of the ICommand execute is as follows:
@@ -42,7 +44,8 @@ public abstract class JamesBFG {
      *     <li> getChainCommand: null </li>
      *     <li> getData: null </li>
      * </ul>
-     */
+     *//*
+
     ICommand getCanDriveFerry(final String cityName){
 
         return new ICommand() {
@@ -63,7 +66,8 @@ public abstract class JamesBFG {
         };
     }
 
-    /**
+    */
+/**
      * CanDo method for the Direct Flight movement action. Verify that cityName
      * matches one of the player's current cards.
      * @param cityName Name of the city to see if the player can travel there.
@@ -74,10 +78,12 @@ public abstract class JamesBFG {
      *     <li> getChainCommand: null </li>
      *     <li> getData: null </li>
      * </ul>
-     */
+     *//*
+
     ICommand getCanDirectFlight(final String cityName){ return null; }
 
-    /**
+    */
+/**
      * CanDo method for the Charter Flight movement action. Verifies that the
      * player has the card for the current city that they're in.
      * @param cityName Name of the city to see if the player can travel there.
@@ -88,10 +94,12 @@ public abstract class JamesBFG {
      *     <li> getChainCommand: null </li>
      *     <li> getData: null </li>
      * </ul>
-     */
+     *//*
+
     ICommand getCanCharterFlight(final String cityName){ return null; }
 
-    /**
+    */
+/**
      * CanDo method for the Shuttle Flight movement action. Verifies that the
      * player is currently in a city with a research station and that cutyName
      * has a research station.
@@ -103,12 +111,14 @@ public abstract class JamesBFG {
      *     <li> getChainCommand: null </li>
      *     <li> getData: null </li>
      * </ul>
-     */
+     *//*
+
     ICommand getCanShuttleFlight(final String cityName){ return null; }
 
 
 
-    /**
+    */
+/**
      * Should always return true
      * @return The return of the ICommand execute is as follows:
      * <ul>
@@ -117,15 +127,18 @@ public abstract class JamesBFG {
      *     <li> getChainCommand: null </li>
      *     <li> getData: null </li>
      * </ul>
-     */
+     *//*
+
     ICommand getCanPass(){ return null; }
 
 
-    /**
+    */
+/**
      *
      * @param cityName
      * @return
-     */
+     *//*
+
     ICommand getCanBuildStation(final String cityName){ return null; }
 
 
@@ -252,13 +265,15 @@ public abstract class JamesBFG {
         };
     }
 
-    /*
+    */
+/*
     TODO: ALSO ADD...
         - outbreaks (3 steps in separate functions?)
         - infection
         - turn setup (that sets the number of remaining actions
 
-     */
+     *//*
+
     // ========================
     // ==== HELPER METHODS ====
     // ========================
@@ -462,3 +477,4 @@ public abstract class JamesBFG {
     }
 
 }
+*/

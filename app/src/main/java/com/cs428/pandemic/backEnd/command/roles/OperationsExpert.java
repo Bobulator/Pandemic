@@ -1,3 +1,4 @@
+/*
 package com.cs428.pandemic.backEnd.command.roles;
 
 import java.util.ArrayList;
@@ -72,7 +73,8 @@ public class OperationsExpert extends CaseyBFG{
         };
     }
 	
-	/**
+	*/
+/**
 	 * Checks to see if the player is at a research station and has at least one city card
 	 * @param specialAction the specific special action to be checked
 	 * @return The return of the ICommand execute is as follows:
@@ -82,7 +84,8 @@ public class OperationsExpert extends CaseyBFG{
      *     <li> getChainCommand: null </li>
      *     <li> getData: germane information (if necessary) </li>
      * </ul>
-	 */
+	 *//*
+
 	@Override
 	public ICommand getCanPerformSpecialAction(String specialAction){
 		switch(specialAction){
@@ -162,3 +165,4 @@ public class OperationsExpert extends CaseyBFG{
         };
 	}
 }
+*/

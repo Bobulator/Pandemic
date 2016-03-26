@@ -1,3 +1,4 @@
+/*
 package com.cs428.pandemic.backEnd.command.roles;
 
 import java.util.ArrayList;
@@ -12,9 +13,11 @@ import com.cs428.pandemic.backEnd.model.deck.IPlayerCard;
 import com.cs428.pandemic.backEnd.model.gamestate.DiseaseType;
 import com.cs428.pandemic.backEnd.model.player.IPlayer;
 
+*/
 /**
  * Created by Casey on 3/11/16.
- */
+ *//*
+
 public class Scientist extends CaseyBFG {
 	
     public Scientist(IPlayer player){
@@ -59,3 +62,4 @@ public class Scientist extends CaseyBFG {
 		return null;
 	}
 }
+*/
