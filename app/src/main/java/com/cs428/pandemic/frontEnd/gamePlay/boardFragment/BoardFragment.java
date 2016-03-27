@@ -85,9 +85,10 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Ges
 
         updateBoard();
 
+		displayPlayerRolesDialog();
+
         Bundle args = getArguments();
         mPlayers = startGame(args.getStringArrayList("players"), args.getString("difficulty"));
-        displayPlayerRolesDialog();
 
         return view;
     }
