@@ -9,7 +9,7 @@ public class UberTestDriver {
 
     public static void main(String... args){
 
-        LiteDriver mainDriver = new LiteDriver("src","com.cs428.pandemic.backEndTest");
+        LiteDriver mainDriver = new LiteDriver("app.src.main.java","com.cs428.pandemic.backEndTest");
 
         // the first flag controls whether we scan recursively
         // the second flag controls whether we look for tests in classes that aren't marked as tests
