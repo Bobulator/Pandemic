@@ -3,6 +3,7 @@ package com.cs428.pandemic.backEnd.manager;
 import java.util.List;
 import java.util.Map;
 
+import com.cs428.pandemic.backEnd.command.CommandBFG;
 import com.cs428.pandemic.frontEnd.ICommandObject;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Card;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
@@ -13,6 +14,7 @@ import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_SharedKnowledge;
 
 public class GameManager implements IGameManager{
 
+	private Map<Integer, CommandBFG> playerRoleObjects;
 	@Override
 	public void initializeGame() {
 		// TODO Auto-generated method stub
@@ -49,6 +51,7 @@ public class GameManager implements IGameManager{
 		
 	}
 
+	// Populate the playerRoleObjects map
 	@Override
 	public void assignPlayerRole() {
 		// TODO Auto-generated method stub
@@ -339,6 +342,12 @@ public class GameManager implements IGameManager{
 	public UI_DrawnCards drawCards() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Map<Integer, CommandBFG> getPlayerRoleObjects(){
+
+			return playerRoleObjects;
 	}
 
 }

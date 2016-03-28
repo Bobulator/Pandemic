@@ -3,6 +3,7 @@ package com.cs428.pandemic.backEnd.manager;
 import java.util.List;
 import java.util.Map;
 
+import com.cs428.pandemic.backEnd.command.CommandBFG;
 import com.cs428.pandemic.frontEnd.ICommandObject;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Card;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
@@ -389,5 +390,10 @@ public interface IGameManager {
      * @return A UI_DrawnCards object containing the drawn cards as well as how many cards the
      * must discard (0-2).
      */
-    UI_DrawnCards drawCards(); 
+    UI_DrawnCards drawCards();
+
+    /**
+     * @return A mapping of player indices to their respective CommandBFG role implementations
+     */
+    Map<Integer, CommandBFG> getPlayerRoleObjects();
 }

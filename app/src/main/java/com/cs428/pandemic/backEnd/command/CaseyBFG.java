@@ -12,6 +12,7 @@ import com.cs428.pandemic.backEnd.model.player.IPlayer;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.cs428.pandemic.backEnd.command.ICommandResult.ResultType.*;
 
@@ -229,51 +230,109 @@ public abstract class CaseyBFG {
     }
 
     /**
-     * Check to see if the player's location is being populated by any other players, that the player
-     * has at least one card, and that there are actions remaining
-     *
-     * @return true if they can give the crap out of this knowledge, otherwise false
-     * TODO Call can receieve knowledge on all players other than yourself instead of checking their locations
+     * This method is called from another player's (the player whose turn it is) canReceiveKnowledge
+     * Check to see if this player's location is the same as the passed in location and they have a card to give
+     * @param location The name of the city of the player (another role) calling this function
+     * @return true if this player can give knowledge based on the calling player's location, otherwise false
      */
-    public boolean canGiveKnowledge() {
-
-        // Make sure at least one other player is at the player's location
-        boolean hasOtherPlayer = false;
-        for (IPlayer gamePlayer : Model.getInstance().getPlayers()) {
-
-            // Make sure you aren't looking at yourself
-            if (player.getPlayerIndex() != gamePlayer.getPlayerIndex()) {
-
-                // Check other players' locations against your location
-                if (player.getLocation().getName().equals(gamePlayer.getLocation().getName())) {
-
-                    hasOtherPlayer = true;
-                    break;
-                }
-            }
-        }
-
-        if (!hasOtherPlayer) {
-            return false;
-        }
+    public boolean canGiveKnowledgeToCurrentPlayer(String location){
 
         // Make sure the player has at least one city card
         // TODO change .size() to something that actually will work for just city cards
         if (player.getHand().size() <= 0) {
+
             return false;
         }
 
-        // Make sure the player has actions remaining
-        if (Model.getInstance().getTurnTracker().getCurrentActionPoints() <= 0) {
+        if (!player.getLocation().getName().equals(location)){
+
             return false;
         }
 
         return true;
     }
 
-    public boolean canReceiveKnowledge() {
+    /**
+     * Check to see if the player's location is being populated by any other players, that the player
+     * has at least one card, and that there are actions remaining
+     *
+     * @return true if they can give the crap out of this knowledge, otherwise false
+     */
+    public boolean canGiveKnowledgeToAnyPlayer(Map<Integer, CommandBFG> playerRoleObjects) {
+
+        // Make sure the player has enough action points
+        if (Model.getInstance().getTurnTracker().getCurrentActionPoints() <= 0){
+
+            return false;
+        }
+
+        // Make sure the player has at least one city card
+        // TODO change .size() to something that actually will work for just city cards
+        if (player.getHand().size() <= 0) {
+
+            return false;
+        }
+
+        // Check all players other than the current player for the ability to receive knowledge
+        for (Map.Entry<Integer, CommandBFG> role : playerRoleObjects.entrySet()) {
+
+            // Check all other roles besides "this"
+            if (role.getKey() != player.getPlayerIndex()) {
+
+                // Check if this role can receive knowledge from the current player
+                if (role.getValue().canReceiveKnowledgeFromCurrentPlayer(player.getLocation().getName())) {
+
+                    return true;
+                }
+
+            }
+        }
+
         return false;
     }
+
+    /**
+     * Check to see if the player's location is being populated by any other players, and that there are actions remaining
+     *
+     * @return true if they can give the crap out of this knowledge, otherwise false
+     */
+    public boolean canReceiveKnowledgeFromAnyPlayer(Map<Integer, CommandBFG> playerRoleObjects) {
+
+        // Make sure the player has enough action points
+        if (Model.getInstance().getTurnTracker().getCurrentActionPoints() <= 0){
+
+            return false;
+        }
+
+
+        for (Map.Entry<Integer, CommandBFG> role : playerRoleObjects.entrySet()) {
+
+            // Check all other roles besides "this"
+            if (role.getKey() != player.getPlayerIndex()) {
+
+                // Check if any role can give knowledge to the current player
+                if (role.getValue().canGiveKnowledgeToCurrentPlayer(player.getLocation().getName())) {
+
+                    return true;
+                }
+
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * This method is called from another player's (the player whose turn it is) canGiveKnowledge
+     * Check to see if this player's location is the same as the passed in location
+     * @param location The name of the city of the player (another role) calling this function
+     * @return true if this player can receive knowledge based on the calling player's location, otherwise false
+     */
+    public boolean canReceiveKnowledgeFromCurrentPlayer(String location){
+
+       return (player.getLocation().getName().equals(location));
+    }
+
 
     // Will return a list of the actions the player can do from their special actions list
     // will probably need an Object param also for additional data
