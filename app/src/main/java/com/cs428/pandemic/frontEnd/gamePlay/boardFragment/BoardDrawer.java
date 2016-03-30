@@ -6,8 +6,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Xml;
 
 import com.cs428.pandemic.frontEnd.IModelInterface;
+
+import org.xmlpull.v1.XmlPullParser;
 
 /**
  * This class will handle drawing all of the components of the board, including the board itself,
@@ -19,6 +22,7 @@ public class BoardDrawer {
 
     private IModelInterface modelFacade;
     private Canvas canvas;
+    private XmlPullParser xmlPullParser;
     private int width;
     private int height;
 
@@ -58,6 +62,7 @@ public class BoardDrawer {
 
     private void initDrawer(Bitmap bitmap) {
         canvas = new Canvas(bitmap);
+        xmlPullParser = Xml.newPullParser();
         width = canvas.getWidth();
         height = canvas.getHeight();
     }
