@@ -1,6 +1,7 @@
 package com.cs428.pandemic.frontEnd.gamePlay.boardFragment;
 
 import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Xml;
 
+import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.IModelInterface;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -20,17 +22,20 @@ import org.xmlpull.v1.XmlPullParser;
  */
 public class BoardDrawer {
 
+    private Resources res;
     private IModelInterface modelFacade;
     private Canvas canvas;
-    private XmlPullParser xmlPullParser;
+    private CityParser cityParser;
+    private Cities cities;
     private int width;
     private int height;
 
-    public BoardDrawer(IModelInterface modelFacade) {
+    public BoardDrawer(Resources res, IModelInterface modelFacade) {
+        this.res = res;
         this.modelFacade = modelFacade;
     }
 
-    public Bitmap createBitmap(Resources res, int resId, int reqWidth, int reqHeight) {
+    public Bitmap createBitmap(int resId, int reqWidth, int reqHeight) {
         return decodeSampledBitmapFromResource(res, resId, reqWidth, reqHeight);
     }
 
@@ -40,6 +45,9 @@ public class BoardDrawer {
 
         // Draw the initial board
         canvas.drawBitmap(bitmap, 0, 0, null);
+
+        // Retrieve City locations
+        cities = cityParser.parseXML();
 
         // Draw everything that lies 'on' the board, with each drawing overwriting any drawing that
         // came before it.
@@ -62,7 +70,7 @@ public class BoardDrawer {
 
     private void initDrawer(Bitmap bitmap) {
         canvas = new Canvas(bitmap);
-        xmlPullParser = Xml.newPullParser();
+        cityParser = new CityParser(res.getXml(R.xml.relative_city_locations));
         width = canvas.getWidth();
         height = canvas.getHeight();
     }
