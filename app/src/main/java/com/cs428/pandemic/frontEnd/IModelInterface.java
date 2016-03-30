@@ -222,66 +222,72 @@ public interface IModelInterface {
     List<String> getRoleActions();
 
     // Do Methods
-    // These methods request changes to the model state. Most of the methods have a void return
-    // type; it is assumed that the model was successful in carrying out the requested action.
+    // These methods request changes to the model state. Because every action is potentially
+    // overridable, most methods will return a CommandObject which will take care of creating a
+    // dialog to query input from the player as well as requesting specific changes in the model.
 
     /**
-     * Request the model to move the given player to the given city. This method will be used for
-     * the 'shuttle flight' option as well as normal movement.
-     * @param playerID The ID of the player to be moved.
-     * @param city The name of the city to move the player to.
+     * This method is called when a player wants to do a move or 'drive' action. For most players,
+     * this is simply moving the player to a immediately connected city.
+     * @return CommandObject that performs the move.
      */
-    void movePlayer(int playerID, String city);
+    ICommandObject movePlayer();
 
     /**
-     * Requests the model to fly the given player to the given city using the given card.
-     * @param playerID The ID of the player to be flown.
-     * @param cityCard The card being used to fly.
-     * @param destinationCity The name of the city the player is flying to.
+     * Requests the model for a charter flight CommandObject.
+     * @return CommandObject to perform the charter flight.
      */
-    void flyPlayer(int playerID, String cityCard, String destinationCity);
+    ICommandObject doCharterFlight();
 
     /**
-     * Requests the model to discard the given card for the given player.
-     * @param playerID The ID of the player discarding cards.
-     * @param cardNames A list of the cards to be discarded (1-2).
+     * Requests the model for a direct flight CommandObject.
+     * @return CommandObject to perform the direct flight.
      */
-    void discardCard(int playerID, List<String> cardNames);
+    ICommandObject doDirectFlight();
 
     /**
-     * Requests the model to move the given card from the a given player's hand to another given
-     * player's hand.
-     * @param givingPlayerID The player giving up the card.
-     * @param receivingPlayerID The player to receive the card.
-     * @param cardName The name of the card to be given.
+     * Requests the model for a shuttle flight CommandObject.
+     * @return CommandObject to perform the shuttle flight.
      */
-    void shareKnowledge(int givingPlayerID, int receivingPlayerID, String cardName);
+    ICommandObject doShuttleFlight();
 
     /**
-     * Requests the model to treat a disease of the given color from the current player's location.
-     * @param diseaseColor The color of the disease to be treated.
+     * Requests the model for a discard card CommandObject.
+     * @return CommandObject to perform discard card.
      */
-    void treatDisease(String diseaseColor);
+    ICommandObject discardCard();
+
 
     /**
-     * Requests the model to cure a disease of the given color using the given list of cards.
-     * @param diseaseColor The color of the disease to be cured.
-     * @param cards The list of cards the player is curing the disease with.
+     * Requests the model for a share knowledge CommandObject.
+     * @return CommandObject to perform share knowledge.
      */
-    void cureDisease(String diseaseColor, List<String> cards);
+    ICommandObject shareKnowledge();
 
     /**
-     * Requests the model to build a research station in the given city.
-     * @param city The name of the city where a research station should be built.
+     * Requests the model for a treat disease CommandObject.
+     * @return CommandObject to perform treat disease.
      */
-    void buildResearchStation(String city);
+    ICommandObject treatDisease();
+
+    /**
+     * Requests the model for a cure disease CommandObject.
+     * @return CommandObject to perform cure disease.
+     */
+    ICommandObject cureDisease();
+
+    /**
+     * Requests the model for a build research station CommandObject.
+     * @return CommandObject to build a research station.
+     */
+    ICommandObject buildResearchStation();
 
     /**
      * Requests the model to play the given event card from the given player's hand.
      * @param playerID The ID of the player who is playing the card from their hand.
      * @param card The name of the event card that is being played.
      */
-    void playEventCard(int playerID, String card);
+    ICommandObject playEventCard(int playerID, String card);
 
     /**
      * Requests the model to 'pass' for the current player. In effect, this method should only
@@ -295,7 +301,7 @@ public interface IModelInterface {
      * @param action The name of the special action the player wishes to perform.
      * @return The CommandObject to be executed.
      */
-    ICommandObject executeActionObject(String action);
+    ICommandObject doSpecialRoleAction(String action);
 
     /**
      * Requests the model to begin the end turn phase. During this method the model will make calls

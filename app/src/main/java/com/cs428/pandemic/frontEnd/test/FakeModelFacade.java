@@ -27,7 +27,7 @@ import java.util.Map;
  * and how many actions the current player has. Note that when a player takes an action all it does
  * is decrement the current actions count.
  */
-public class FakeModelFacade implements IModelInterface{
+public class FakeModelFacade implements IModelInterface {
     private Role[] roles = {Role.MEDIC, Role.SCIENTIST, Role.DISPATCHER, Role.RESEARCHER};
     private int currentPlayer = 0;
     private int currentActions = 4;
@@ -50,7 +50,9 @@ public class FakeModelFacade implements IModelInterface{
     }
 
     @Override
-    public boolean canFlyShuttle() { return hasActions;}
+    public boolean canFlyShuttle() {
+        return hasActions;
+    }
 
     @Override
     public boolean canShareKnowledge() {
@@ -80,13 +82,13 @@ public class FakeModelFacade implements IModelInterface{
     @Override
     public List<UI_Player> startGame(List<String> players, String difficulty, IUI_Updater uiUpdater) {
         // Verify that the UI sent a valid list of players
-        assert(players != null && players.size() >= 2 && players.size() <= 4);
+        assert (players != null && players.size() >= 2 && players.size() <= 4);
 
         // Verify that the difficulty is not null
-        assert(difficulty != null);
+        assert (difficulty != null);
 
         // Verify that the uiUpdater is not null
-        assert(uiUpdater != null);
+        assert (uiUpdater != null);
 
         // Validate the difficulty sent by the UI. An invalid difficulty has no effect on this
         // class; in such a case a message will be sent to the console and then things will
@@ -101,9 +103,9 @@ public class FakeModelFacade implements IModelInterface{
         // Give each player an id 0-3
         int id = 0;
 
-        for(String player : players) {
+        for (String player : players) {
             // Validate each player's name
-            assert(player != null && !player.isEmpty());
+            assert (player != null && !player.isEmpty());
 
             // Assign each player an arbitrary role, based on their id
             UI_Player uip = new UI_Player(id, player, roles[id]);
@@ -297,60 +299,72 @@ public class FakeModelFacade implements IModelInterface{
     }
 
     @Override
-    public void movePlayer(int playerID, String city) {}
+    public ICommandObject movePlayer() {
+        return null;
+    }
 
     @Override
-    public void flyPlayer(int playerID, String cityCard, String destinationCity) {}
+    public ICommandObject doCharterFlight() {
+        return null;
+    }
 
     @Override
-    public void discardCard(int playerID, List<String> cardNames) {}
+    public ICommandObject doDirectFlight() {
+        return null;
+    }
 
     @Override
-    public void shareKnowledge(int givingPlayerID, int receivingPlayerID, String cardName) {}
+    public ICommandObject doShuttleFlight() {
+        return null;
+    }
 
     @Override
-    public void treatDisease(String diseaseColor) {}
+    public ICommandObject discardCard() {
+        return null;
+    }
 
     @Override
-    public void cureDisease(String diseaseColor, List<String> cards) {}
+    public ICommandObject shareKnowledge() {
+        return null;
+    }
 
     @Override
-    public void buildResearchStation(String city) {}
+    public ICommandObject treatDisease() {
+        return null;
+    }
 
     @Override
-    public void playEventCard(int playerID, String card) {}
+    public ICommandObject cureDisease() {
+        return null;
+    }
 
     @Override
-    public void pass() {}
+    public ICommandObject buildResearchStation() {
+        return null;
+    }
 
     @Override
-    public ICommandObject executeActionObject(String action) {
-        switch (action) {
-            case "Special action 1":
-                return null;
-            case "Special action 2":
-                return null;
-            case "How long do these need to be?":
-                return null;
-            case "And how long of an action can we handle?":
-                return null;
-            default:
-                // Something went wrong, the action should have been one of the ones sent to the UI
-                System.out.println("ERROR: unrecognized action: " + action);
-                return null;
-        }
+    public ICommandObject playEventCard(int playerID, String card) {
+        return null;
+    }
+
+    @Override
+    public void pass() {
+
+    }
+
+    @Override
+    public ICommandObject doSpecialRoleAction(String action) {
+        return null;
     }
 
     @Override
     public void endTurn() {
-        currentActions = 4;
-        if (currentPlayer == 3)
-            currentPlayer = 0;
-        else currentPlayer++;
+
     }
 
     @Override
     public UI_DrawnCards drawCards() {
-        return new UI_DrawnCards(new UI_Card("tokyo", DiseaseColor.RED), new UI_Card("santiago", DiseaseColor.YELLOW));
+        return null;
     }
 }
