@@ -11,7 +11,11 @@ import com.cs428.pandemic.backEnd.model.map.GameMap;
 import com.cs428.pandemic.backEnd.model.map.ICity;
 import com.cs428.pandemic.backEnd.model.map.IGameMap;
 import com.cs428.pandemic.backEnd.model.player.Player;
+import com.cs428.pandemic.backEnd.model.prevData.Board;
+import com.cs428.pandemic.backEnd.model.prevData.CityName;
+import com.cs428.pandemic.backEnd.model.prevData.PlayerDeck;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -28,16 +32,17 @@ public class Model {
     private static List<CityCardParams> cities;
     private static List<EventCardParams> eventCards;
 
-    public static IGameModel getInstance(){
-        // TODO: James implement this John
-        if(instance == null) {
+    public static IGameModel getInstance()
+    {
+        if(instance == null) 
+        {
             CompositeModelFactory fact = new CompositeModelFactory();
             ICardFactory cardFact = new CardFactory();
             IGameModelBuilder builder = fact.createModelBuilder();
-            IGameMap map = new GameMap();
             IGameDecksHolder holder = fact.createGameDeck();
-            cities = Model.initCities(cardFact);
-            eventCards = Model.initEvents(cardFact);
+            cities = initCities(cardFact);
+            eventCards = initEvents(cardFact);
+            IGameMap map = initMap();
             holder.prepareDecks(numberOfPlayers, cities, eventCards);
             builder.setDeck(holder)
                     .setMap(map)
@@ -54,18 +59,36 @@ public class Model {
         }
         return instance;
     }
+    
+    private static IGameMap initMap()
+    {
+        GameMapBuilder builder = new GameMapBuilder();
+        List<Object[]> cityVals = new Board().getCityValues();
+        for(Object[] arr : cityVals)
+        {
+            List<String> adjacencies = new ArrayList<>();
+            for(CityName cityName : (HashSet<CityName>)arr[2])
+            {
+                adjacencies.add(cityName.name());
+            }
+            builder.addCity((String)arr[0], (DiseaseType)arr[1], adjacencies);
+        }
+        return builder.createMap();
+    }
 
     private static List<CityCardParams> initCities(ICardFactory fact)
     {
-        List<CityCardParams> retCities = new ArrayList<>();
-        retCities.add(fact.createCityParams("City", DiseaseType.RED));
-        return retCities;
+        return new Board().getCityCardParams(fact);
     }
 
     private static List<EventCardParams> initEvents(ICardFactory fact)
     {
-        List<EventCardParams> retCities = new ArrayList<>();
-        retCities.add(fact.createEventCardParams("Event Name","Event Color"));
-        return retCities;
+        return new PlayerDeck().getEventCards(fact);
+    }
+    
+    public static void main(String[] args)
+    {
+        IGameModel model = getInstance();
+        model.getMap();
     }
 }

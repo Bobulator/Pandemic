@@ -84,7 +84,10 @@ public class PlayerDeckBuilder
         {
             for(int i = 0; i < piles.length; ++i)
             {
-                piles[i].add(cards.remove(0));
+                if(cards.size() > 0)
+                {
+                    piles[i].add(cards.remove(0));
+                }
             }
         }
         for(int i = 0; i < piles.length; ++i)
