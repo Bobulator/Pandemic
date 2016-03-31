@@ -11,8 +11,11 @@ import android.util.Xml;
 
 import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.IModelInterface;
+import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
 
 import org.xmlpull.v1.XmlPullParser;
+
+import java.util.Map;
 
 /**
  * This class will handle drawing all of the components of the board, including the board itself,
@@ -56,15 +59,6 @@ public class BoardDrawer {
         drawPlayerPawns();
         drawResearchStations();
 
-        // Not sure how the pixel locations are related to the initial images. These are simply
-        // arbitrary proof-of-concept lines to demonstrate that this works.
-        Paint p = new Paint();
-        p.setColor(Color.WHITE);
-        canvas.drawLine(80, 80, 350, 350, p);
-        canvas.drawLine(80, 80, 1900, 1000, p);
-        canvas.drawLine(80, 80, 1900, 350, p);
-        canvas.drawLine(80, 80, 350, 1000, p);
-
         return canvas;
     }
 
@@ -76,7 +70,32 @@ public class BoardDrawer {
     }
 
     private void drawCityConnections() {
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
 
+        Map<String, UI_City> cityData = modelFacade.getCityData();
+        for (Map.Entry<String, UI_City> entry : cityData.entrySet()) {
+            String city = entry.getKey();
+            UI_City data = entry.getValue();
+
+            float startX = (float) (cities.getRelativeX(city) * width);
+            float startY = (float) (cities.getRelativeY(city) * height);
+
+            for (String neighbor : data.getNeighbors()) {
+                float endX = (float) (cities.getRelativeX(neighbor) * width);
+                float endY = (float) (cities.getRelativeY(neighbor) * height);
+
+                // Is the edge supposed to go offscreen?
+                if ((endX - startX) > (width / 2)) {
+                    endX = 0;
+                    endY = startY + ((endY - startY) / 2);
+                } else if ((endX - startX) < -(width / 2)) {
+                    endX = width;
+                    endY = startY + ((endY - startY) / 2);
+                }
+                canvas.drawLine(startX, startY, endX, endY, p);
+            }
+        }
     }
 
     private void drawCities() {
