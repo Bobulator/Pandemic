@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.cs428.pandemic.BuildConfig;
 import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.IModelInterface;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 public class BoardDrawer {
 
-    private Resources res;
+    private Resources resources;
     private IModelInterface modelFacade;
     private Canvas canvas;
     private CityParser cityParser;
@@ -30,12 +31,12 @@ public class BoardDrawer {
     private int height;
 
     public BoardDrawer(Resources res, IModelInterface modelFacade) {
-        this.res = res;
+        this.resources = res;
         this.modelFacade = modelFacade;
     }
 
     public Bitmap createBitmap(int resId, int reqWidth, int reqHeight) {
-        return decodeSampledBitmapFromResource(res, resId, reqWidth, reqHeight);
+        return decodeSampledBitmapFromResource(resources, resId, reqWidth, reqHeight);
     }
 
     public Canvas drawBoard(Bitmap bitmap) {
@@ -48,10 +49,13 @@ public class BoardDrawer {
         // Retrieve City locations
         cities = cityParser.parseXML();
 
+        // Retrieve city data from model
+        Map<String, UI_City> cityData = modelFacade.getCityData();
+
         // Draw everything that lies 'on' the board, with each drawing overwriting any drawing that
         // came before it.
-        drawCityConnections();
-        drawCities();
+        drawCityConnections(cityData);
+        drawCities(cityData);
         drawPlayerPawns();
         drawResearchStations();
 
@@ -60,26 +64,25 @@ public class BoardDrawer {
 
     private void initDrawer(Bitmap bitmap) {
         canvas = new Canvas(bitmap);
-        cityParser = new CityParser(res.getXml(R.xml.relative_city_locations));
+        cityParser = new CityParser(resources.getXml(R.xml.relative_city_locations));
         width = canvas.getWidth();
         height = canvas.getHeight();
     }
 
-    private void drawCityConnections() {
+    private void drawCityConnections(Map<String, UI_City> cityData) {
         Paint p = new Paint();
         p.setColor(Color.WHITE);
 
-        Map<String, UI_City> cityData = modelFacade.getCityData();
         for (Map.Entry<String, UI_City> entry : cityData.entrySet()) {
             String city = entry.getKey();
             UI_City data = entry.getValue();
 
-            float startX = (float) (cities.getRelativeX(city) * width);
-            float startY = (float) (cities.getRelativeY(city) * height);
+            float startX = (float) (cities.getRelativeX(city) * width) + 30f;
+            float startY = (float) (cities.getRelativeY(city) * height) + 30f;
 
             for (String neighbor : data.getNeighbors()) {
-                float endX = (float) (cities.getRelativeX(neighbor) * width);
-                float endY = (float) (cities.getRelativeY(neighbor) * height);
+                float endX = (float) (cities.getRelativeX(neighbor) * width) + 30f;
+                float endY = (float) (cities.getRelativeY(neighbor) * height) + 30f;
 
                 // Is the edge supposed to go offscreen?
                 if ((endX - startX) > (width / 2)) {
@@ -94,8 +97,33 @@ public class BoardDrawer {
         }
     }
 
-    private void drawCities() {
+    private void drawCities(Map<String, UI_City> cityData) {
+        for (Map.Entry<String, UI_City> entry : cityData.entrySet()) {
+            String city = entry.getKey();
+            UI_City data = entry.getValue();
 
+            float x = (float) ((cities.getRelativeX(city)) * width);
+            float y = (float) ((cities.getRelativeY(city)) * height);
+
+            int resId = -1;
+            switch (data.getDiseaseColor()) {
+                case BLACK:
+                    resId = R.drawable.icon_city_black_less;
+                    break;
+                case BLUE:
+                    resId = R.drawable.icon_city_blue_less;
+                    break;
+                case RED:
+                    resId = R.drawable.icon_city_red_less;
+                    break;
+                case YELLOW:
+                    resId = R.drawable.icon_city_yellow_less;
+                    break;
+            }
+            Bitmap cityBitmap = BitmapFactory.decodeResource(resources, resId);
+            cityBitmap = Bitmap.createScaledBitmap(cityBitmap, 60, 60, false);
+            canvas.drawBitmap(cityBitmap, x, y, null);
+        }
     }
 
     private void drawPlayerPawns() {
