@@ -1,19 +1,15 @@
 package com.cs428.pandemic.frontEnd.gamePlay.boardFragment;
 
 import android.content.res.Resources;
-import android.content.res.XmlResourceParser;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Xml;
 
 import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.IModelInterface;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
-
-import org.xmlpull.v1.XmlPullParser;
 
 import java.util.Map;
 
