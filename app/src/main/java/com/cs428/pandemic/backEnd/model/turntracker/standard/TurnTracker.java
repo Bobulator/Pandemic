@@ -107,18 +107,18 @@ public class TurnTracker implements ITurnTracker
     @Override
     public boolean decrementActionPoints(int amount) 
     {
-        if(this.state == TurnStateValue.ACTION)
+        if(getTurnState() == TurnStateValue.ACTION)
         {
-            this.actionPoints -= amount;
-            if(this.actionPoints < 0)
+            if(actionPoints - amount < 0)
             {
                 return false;
             }
             else
             {
+                actionPoints -= amount;
                 if(this.actionPoints == 0)
                 {
-                    this.advanceTurnState();
+                    advanceTurnState();
                 }
                 return true;
             }

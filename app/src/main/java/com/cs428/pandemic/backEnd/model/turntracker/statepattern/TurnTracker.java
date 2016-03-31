@@ -79,16 +79,16 @@ public class TurnTracker implements ITurnTracker, ITurnTrackerMachine
     {
         if(getTurnState() == TurnStateValue.ACTION)
         {
-            actionPoints -= amount;
-            if(actionPoints < 0)
+            if(actionPoints - amount < 0)
             {
                 return false;
             }
             else
             {
-                if(actionPoints == 0)
+                actionPoints -= amount;
+                if(this.actionPoints == 0)
                 {
-                    currentState.advanceTurnState(this);
+                    advanceTurnState();
                 }
                 return true;
             }

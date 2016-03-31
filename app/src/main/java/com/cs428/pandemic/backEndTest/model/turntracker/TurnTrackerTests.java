@@ -149,6 +149,8 @@ public class TurnTrackerTests
                 "Test Action Points " + val++ + ": decrementing Action Points below 0 should return false ");
         assertEquals(TurnStateValue.ACTION, this.tracker.getTurnState(), 
                 "Test Action Points " + val++ + ": decrementing Action Points below 0 should NOT change the turn state ");
+        assertEquals(1, this.tracker.getCurrentActionPoints(), 
+                "Test Action Points " + val++ + ": decrementing Action Points below 0 should NOT change the turn state ");
     }
 
     public static void main(String[] args)

@@ -22,26 +22,50 @@ import static asserts.LiteAsserts.*;
 public class GameStateTests
 {
     private IGameState state;
-    
+    private int maxOutbreaks;
     public void setup()
     {
+        maxOutbreaks = 8;
         IInfectionTracker tracker = new MockInfectionTracker();
         IDiseaseData data = new StandardDiseaseData();
-        state = new GameState(0,tracker,data);
+        state = new GameState(maxOutbreaks,0,tracker,data);
     }
     
     @LiteTest
     public void testOutbreaks() throws LiteAssertFailedException
     {
-        setup();
-        int testNum = 1;
-        int start = 2;
-        state.setNumberOfOutbreaks(start);
-        assertEquals(start, state.getNumberOfOutbreaks(),
-                "Test Outbreaks " + testNum++ + ": current outbreak counter should be set to " + start);
-        state.outBreak();
-        assertEquals(start + 1, state.getNumberOfOutbreaks(),
-                "Test Outbreaks " + testNum++ + ": outbreaks should be " + (start + 1));
+        try
+        {
+            setup();
+            int testNum = 1;
+            int start = 2;
+            state.setNumberOfOutbreaks(start);
+            assertEquals(start, state.getNumberOfOutbreaks(),
+                    "Test Outbreaks " + testNum++ + ": current outbreak counter should be set to " + start);
+            state.outBreak();
+            assertEquals(start + 1, state.getNumberOfOutbreaks(),
+                    "Test Outbreaks " + testNum++ + ": outbreaks should be " + (start + 1));
+            try
+            {
+                state.setNumberOfOutbreaks(maxOutbreaks);
+                assertEquals(true,false,"Exception should be thrown");
+            }
+            catch(TooManyOutbreaksException e)
+            {
+                state.setNumberOfOutbreaks(maxOutbreaks - 1);
+            }
+            try
+            {
+                state.outBreak();
+                assertEquals(true,false,"Exception should be thrown");
+            }
+            catch(TooManyOutbreaksException e){}
+        }
+        catch(TooManyOutbreaksException e)
+        {
+            assertEquals(true,false,
+                    "Exception should not be thrown: " + e.getMessage());
+        }
     }
     
     public static void main(String[] args)

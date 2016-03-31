@@ -6,11 +6,11 @@ package com.cs428.pandemic.backEnd.model.gamestate.implementation;
 
 import com.cs428.pandemic.backEnd.model.gamestate.DiseaseType;
 import com.cs428.pandemic.backEnd.model.gamestate.IDiseaseData;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * Uses a map from a DiseaseType enum to a DiseaseStatusInfo object to determine the stats for a Disease. Namely it it has been cured or eradicated.
+ * Uses a map from a DiseaseType enum to a DiseaseStatusInfo object to determine the stats for a Disease. Namely it it has been cured or eradicated
  * @author James
  */
 public class MappedDiseaseData implements IDiseaseData
@@ -19,7 +19,7 @@ public class MappedDiseaseData implements IDiseaseData
     
     public MappedDiseaseData()
     {
-        this(new HashMap<DiseaseType,DiseaseStatusInfo>());
+        this(new EnumMap<DiseaseType,DiseaseStatusInfo>(DiseaseType.class));
     }
     
     public MappedDiseaseData(Map<DiseaseType,DiseaseStatusInfo> newMap)

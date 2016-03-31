@@ -13,13 +13,13 @@ public interface IGameState
     /**
      * Advances the outbreak tracker
      */
-    void outBreak();
+    void outBreak() throws TooManyOutbreaksException;
     
     /**
      * Sets the number of outbreaks that have happened
      * @param amount the number of outbreaks
      */
-    void setNumberOfOutbreaks(int amount);
+    void setNumberOfOutbreaks(int amount) throws TooManyOutbreaksException;
     
     /**
      * Gets the number of outbreaks that have happened
