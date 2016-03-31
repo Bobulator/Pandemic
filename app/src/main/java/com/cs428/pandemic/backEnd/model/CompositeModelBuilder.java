@@ -14,164 +14,81 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ *
  * @author James
  */
-public class CompositeModelBuilder implements IGameModelBuilder 
+public class CompositeModelBuilder implements IGameModelBuilder
 {
-    private ITurnTrackerStorage tracker;
-    private IGameStateStorage gameState;
-    private IMapStorage gameMap;
-    private IGameDecksHolderStorage gameDecks;
+    private ITurnTracker tracker;
+    private IGameState gameState;
+    private IGameMap gameMap;
+    private IGameDecksHolder gameDecks;
     private List<IPlayer> players;
-    private IDiseaseCubesStorage diseaseCubes;
-    
+    private IDiseaseCubes diseaseCubes;
+
     public CompositeModelBuilder()
     {
-        tracker = new ITurnTrackerStorage()
-        {
-            @Override
-            public ITurnTracker getTurnTracker() 
-            {
-                return null;
-            }
-        };
-        gameState = new IGameStateStorage()
-        {
-            @Override
-            public IGameState getGameState() 
-            {
-                return null;
-            }
-        };
-        gameMap = new IMapStorage()
-        {
-            @Override
-            public IGameMap getMap()
-            {
-                return null;
-            }
-        };
-        gameDecks = new IGameDecksHolderStorage()
-        {
-            @Override
-            public IGameDecksHolder getGameDecks() 
-            {
-                return null;
-            }
-        };
+        tracker = null;
+        gameState = null;
+        gameMap = null;
+        gameDecks = null;
         players = new ArrayList<>();
-        diseaseCubes = new IDiseaseCubesStorage()
-        {
-            @Override
-            public IDiseaseCubes getDiseaseCubes() 
-            {
-                return null;
-            }
-        };
+        diseaseCubes = null;
     }
-    
+
     @Override
     public IGameModelBuilder setTracker(ITurnTracker track)
     {
-        final ITurnTracker turnTracker = track;
-        tracker = new ITurnTrackerStorage()
-        {
-            @Override
-            public ITurnTracker getTurnTracker() 
-            {
-                return turnTracker;
-            }
-        };
+        tracker = track;
         return this;
     }
-            
+
     @Override
     public IGameModelBuilder setGameState(IGameState state)
     {
-        final IGameState tehBawsState = state;
-        gameState = new IGameStateStorage()
-        {
-            @Override
-            public IGameState getGameState() 
-            {
-                return tehBawsState;
-            }
-        };
+        gameState = state;
         return this;
     }
-    
+
     @Override
     public IGameModelBuilder setMap(IGameMap map)
     {
-        final IGameMap theMap = map;
-        gameMap = new IMapStorage()
-        {
-            @Override
-            public IGameMap getMap()
-            {
-                return theMap;
-            }
-        };
+        gameMap = map;
         return this;
     }
-    
+
     @Override
     public IGameModelBuilder setDeck(IGameDecksHolder decks)
     {
-        final IGameDecksHolder theDecks = decks;
-        gameDecks = new IGameDecksHolderStorage()
-        {
-            @Override
-            public IGameDecksHolder getGameDecks() 
-            {
-                return theDecks;
-            }
-        };
+        gameDecks = decks;
         return this;
     }
-    
+
     @Override
     public IGameModelBuilder setPlayers(List<IPlayer> playerList)
     {
         players = playerList;
         return this;
     }
-    
+
     @Override
     public IGameModelBuilder addPlayers(IPlayer player)
     {
         players.add(player);
         return this;
     }
-    
+
     @Override
     public IGameModelBuilder setDiseaseCubes(IDiseaseCubes cubes)
     {
-        final IDiseaseCubes theDiseaseCubes = cubes;
-        diseaseCubes = new IDiseaseCubesStorage()
-        {
-            @Override
-            public IDiseaseCubes getDiseaseCubes() 
-            {
-                return theDiseaseCubes;
-            }
-        };
+        diseaseCubes = cubes;
         return this;
     }
-    
+
     @Override
     public IGameModel createModel()
     {
         final List<IPlayer> playerList = players;
-        IPlayerStorage playerStorage = new IPlayerStorage()
-        {
-            @Override
-            public List<IPlayer> getPlayers() 
-            {
-                return playerList;
-            }
-        };
-        return new CompositeModel(tracker,gameState,gameMap,gameDecks,playerStorage,diseaseCubes);
+        return new CompositeModel(tracker,gameState,gameMap,gameDecks,playerList,diseaseCubes);
     }
 }

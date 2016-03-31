@@ -18,19 +18,19 @@ import java.util.List;
  */
 public class CompositeModel implements IGameModel
 {
-    private ITurnTrackerStorage tracker;
-    private IGameStateStorage gameState;
-    private IMapStorage gameMap;
-    private IGameDecksHolderStorage gameDecks;
-    private IPlayerStorage players;
-    private IDiseaseCubesStorage diseaseCubes;
-    
-    public CompositeModel(ITurnTrackerStorage track, 
-            IGameStateStorage state, 
-            IMapStorage map, 
-            IGameDecksHolderStorage decks, 
-            IPlayerStorage playerList, 
-            IDiseaseCubesStorage diseases)
+    private ITurnTracker tracker;
+    private IGameState gameState;
+    private IGameMap gameMap;
+    private IGameDecksHolder gameDecks;
+    private List<IPlayer> players;
+    private IDiseaseCubes diseaseCubes;
+
+    public CompositeModel(ITurnTracker track,
+                          IGameState state,
+                          IGameMap map,
+                          IGameDecksHolder decks,
+                          List<IPlayer> playerList,
+                          IDiseaseCubes diseases)
     {
         tracker = track;
         gameState = state;
@@ -41,38 +41,38 @@ public class CompositeModel implements IGameModel
     }
 
     @Override
-    public ITurnTracker getTurnTracker() 
+    public ITurnTracker getTurnTracker()
     {
-        return tracker.getTurnTracker();
+        return tracker;
     }
 
     @Override
-    public IGameState getGameState() 
+    public IGameState getGameState()
     {
-        return gameState.getGameState();
+        return gameState;
     }
 
     @Override
     public IGameMap getMap()
     {
-        return gameMap.getMap();
+        return gameMap;
     }
 
     @Override
-    public IGameDecksHolder getGameDecks() 
+    public IGameDecksHolder getGameDecks()
     {
-        return gameDecks.getGameDecks();
+        return gameDecks;
     }
 
     @Override
-    public List<IPlayer> getPlayers() 
+    public List<IPlayer> getPlayers()
     {
-        return players.getPlayers();
+        return players;
     }
 
     @Override
-    public IDiseaseCubes getDiseaseCubes() 
+    public IDiseaseCubes getDiseaseCubes()
     {
-        return diseaseCubes.getDiseaseCubes();
+        return diseaseCubes;
     }
 }
