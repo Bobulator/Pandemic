@@ -22,7 +22,7 @@ public class StandardGameStateFactory implements IGameStateFactory
     @Override
     public IGameState createGameState() 
     {
-        return new GameState(0,createInfectionTracker(),createDiseaseData());
+        return (IGameState) new GameState(8,0,createInfectionTracker(),createDiseaseData());
     }
 
     @Override

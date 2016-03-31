@@ -4,6 +4,7 @@
  */
 package com.cs428.pandemic.backEnd.model.deck;
 
+import com.cs428.pandemic.backEnd.model.gamestate.DiseaseType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,29 +50,28 @@ public class PlayerDeckBuilder
     
     PlayerDeckBuilder setEpidemics(ICardFactory fact)
     {
-        Collections.shuffle(cards);
-        int epidCount = numEpidemics;
-        int extraCount = cards.size() % epidCount;
-        int baseGroupSize = cards.size() / epidCount;
-        int curIndex = 0;
-        for(int i = 0; i < epidCount; i++) 
-        {
-            int groupSize = baseGroupSize;
-            if(extraCount > 0) 
-            {
-                groupSize++;
-                extraCount--;
-            }
-            int epicLoc = rand.nextInt(groupSize);
-            cards.add(curIndex + epicLoc, fact.createPlayerEpidemicCard());
-            curIndex += groupSize + 1;
-        }
+//        Collections.shuffle(cards);
+//        int epidCount = numEpidemics;
+//        int extraCount = cards.size() % epidCount;
+//        int baseGroupSize = cards.size() / epidCount;
+//        int curIndex = 0;
+//        for(int i = 0; i < epidCount; i++) 
+//        {
+//            int groupSize = baseGroupSize;
+//            if(extraCount > 0) 
+//            {
+//                groupSize++;
+//                extraCount--;
+//            }
+//            int epicLoc = rand.nextInt(groupSize);
+//            cards.add(curIndex + epicLoc, fact.createPlayerEpidemicCard());
+//            curIndex += groupSize + 1;
+//        }
         return this;
     }
     
     PlayerDeckBuilder setEpidemics2nd(ICardFactory fact)
     {
-        /*
         Collections.shuffle(cards);
         int numPiles = numEpidemics;
         List<IPlayerCard>[] piles = new ArrayList<>[numPiles];
@@ -92,12 +92,25 @@ public class PlayerDeckBuilder
             Collections.shuffle(piles[i]);
             cards.addAll(piles[i]);
         }
-        */
+        //*/
         return this;
     }
     
     CardCollection<IPlayerCard> buildDeck()
     {
         return new CardCollection<>(cards, rand);
+    }
+    
+    public static void main(String[] args)
+    {
+        PlayerDeckBuilder builder = new PlayerDeckBuilder();
+        builder.setRandomizer();
+        CardFactory fact = new CardFactory();
+        for(int i = 0; i < 50; ++i)
+        {
+            builder.addCard(fact.createPlayerCityCard("City " + i,DiseaseType.BLACK));
+        }
+        builder.setEpidemics(17)
+               .setEpidemics2nd(fact);
     }
 }

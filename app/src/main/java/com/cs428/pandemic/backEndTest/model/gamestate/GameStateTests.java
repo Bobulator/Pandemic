@@ -4,11 +4,11 @@
  */
 package com.cs428.pandemic.backEndTest.model.gamestate;
 
+import com.cs428.pandemic.backEnd.model.gamestate.implementation.StandardDiseaseData;
+import com.cs428.pandemic.backEnd.model.gamestate.implementation.GameState;
 import test.LiteDriver;
 import asserts.LiteAssertFailedException;
 import test.annotations.*;
-import com.cs428.pandemic.backEnd.model.gamestate.implementation.StandardDiseaseData;
-import com.cs428.pandemic.backEnd.model.gamestate.implementation.GameState;
 
 import com.cs428.pandemic.backEnd.model.gamestate.*;
 
@@ -28,7 +28,7 @@ public class GameStateTests
         maxOutbreaks = 8;
         IInfectionTracker tracker = new MockInfectionTracker();
         IDiseaseData data = new StandardDiseaseData();
-        state = new GameState(maxOutbreaks,0,tracker,data);
+        state = (IGameState)new GameState(maxOutbreaks,0,tracker,data);
     }
     
     @LiteTest
