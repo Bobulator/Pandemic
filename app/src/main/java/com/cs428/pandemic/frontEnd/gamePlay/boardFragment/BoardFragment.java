@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -35,7 +36,8 @@ import java.util.List;
  * draw the largest image possible so as to fill the dimensions of the screen without wasting any
  * memory.
  */
-public class BoardFragment extends Fragment implements View.OnTouchListener, GestureDetector.OnGestureListener {
+public class BoardFragment extends Fragment implements View.OnTouchListener,
+		GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener {
 
     public static String PLAYERS_ARGS = "players";
     public static String DIFFICULTY_ARGS = "difficulty";
@@ -57,10 +59,9 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Ges
     private static final String TAG = "BoardFragment";
     
     private ImageView mBoardImage;
-
     private IModelInterface mModelFacade;
     private BoardDrawer mBoardDrawer;
-
+	private GestureDetectorCompat mGestureDetect;
     private List<UI_Player> mPlayers;
 
     @Override
@@ -68,6 +69,8 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Ges
         super.onCreate(savedInstanceState);
 		setRetainInstance(true);
         mModelFacade = ((GamePlayActivity)getActivity()).getModelFacade();
+		mGestureDetect = new GestureDetectorCompat(getActivity(), this);
+		mGestureDetect.setOnDoubleTapListener(this);
     }
 
     @Override
@@ -95,59 +98,57 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Ges
 
     @Override
 	public boolean onTouch(View v, MotionEvent event) {
-		ImageView view = (ImageView) v;
-        // make the image scalable as a matrix
-        view.setScaleType(ImageView.ScaleType.MATRIX);
-        double scale;
-	        
-        switch (event.getAction() & MotionEvent.ACTION_MASK) {
-	        case MotionEvent.ACTION_DOWN: //first finger down only
-	            savedMatrix.set(matrix);
-	            start.set(event.getX(), event.getY());
-	            Log.d(TAG, "mode=DRAG" );
-	            mode = DRAG;
-	            break;
-	        case MotionEvent.ACTION_UP: //first finger lifted
-	        	break;
-	        case MotionEvent.ACTION_POINTER_UP: //second finger lifted
-	            mode = NONE;
-	            Log.d(TAG, "mode=NONE" );
-	            break;
-	        case MotionEvent.ACTION_POINTER_DOWN: //second finger down
-	            oldDist = spacing(event); // calculates the distance between two points where user touched.
-	            Log.d(TAG, "oldDist=" + oldDist);
-	            // minimal distance between both the fingers
-	            if (oldDist > 5f) {
-	                savedMatrix.set(matrix);
-	                midPoint(mid, event); // sets the mid-point of the straight line between two points where user touched.
-	                mode = ZOOM;
-	                Log.d(TAG, "mode=ZOOM" );
-	            }
-	            break;
-	
-	        case MotionEvent.ACTION_MOVE:
-	            if (mode == DRAG)
-	            { //movement of first finger
-	                matrix.set(savedMatrix);
-	                if (view.getLeft() >= -392)
-	                {
-	                    matrix.postTranslate(event.getX() - start.x, event.getY() - start.y);
-	                }
-	            }
-	            else if (mode == ZOOM) { //pinch zooming
-	                double newDist = spacing(event);
-	                Log.d(TAG, "newDist=" + newDist);
-	                if (newDist > 5f) {
-	                    matrix.set(savedMatrix);
-	                    scale = newDist/oldDist; //thinking I need to play around with this value to limit it**
-	                    matrix.postScale((float)scale, (float)scale, mid.x, mid.y);
-	                }
-	            }
-	            break;
-	    }
-	    // Perform the transformation
-	    view.setImageMatrix(matrix);
-	
+		if (!mGestureDetect.onTouchEvent(event)) {
+			ImageView view = (ImageView) v;
+			// make the image scalable as a matrix
+			view.setScaleType(ImageView.ScaleType.MATRIX);
+			double scale;
+
+			switch (event.getAction() & MotionEvent.ACTION_MASK) {
+				case MotionEvent.ACTION_DOWN: //first finger down only
+					savedMatrix.set(matrix);
+					start.set(event.getX(), event.getY());
+					Log.d(TAG, "mode=DRAG");
+					mode = DRAG;
+					break;
+				case MotionEvent.ACTION_UP: //first finger lifted
+					break;
+				case MotionEvent.ACTION_POINTER_UP: //second finger lifted
+					mode = NONE;
+					Log.d(TAG, "mode=NONE");
+					break;
+				case MotionEvent.ACTION_POINTER_DOWN: //second finger down
+					oldDist = spacing(event); // calculates the distance between two points where user touched.
+					Log.d(TAG, "oldDist=" + oldDist);
+					// minimal distance between both the fingers
+					if (oldDist > 5f) {
+						savedMatrix.set(matrix);
+						midPoint(mid, event); // sets the mid-point of the straight line between two points where user touched.
+						mode = ZOOM;
+						Log.d(TAG, "mode=ZOOM");
+					}
+					break;
+
+				case MotionEvent.ACTION_MOVE:
+					if (mode == DRAG) { //movement of first finger
+						matrix.set(savedMatrix);
+						if (view.getLeft() >= -392) {
+							matrix.postTranslate(event.getX() - start.x, event.getY() - start.y);
+						}
+					} else if (mode == ZOOM) { //pinch zooming
+						double newDist = spacing(event);
+						Log.d(TAG, "newDist=" + newDist);
+						if (newDist > 5f) {
+							matrix.set(savedMatrix);
+							scale = newDist / oldDist; //thinking I need to play around with this value to limit it**
+							matrix.postScale((float) scale, (float) scale, mid.x, mid.y);
+						}
+					}
+					break;
+			}
+			// Perform the transformation
+			view.setImageMatrix(matrix);
+		}
 	    return true;
 	}
 	
@@ -204,7 +205,6 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Ges
 
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-		((GamePlayActivity) getActivity()).toggleToolbar();
 		return false;
 	}
 
@@ -221,6 +221,23 @@ public class BoardFragment extends Fragment implements View.OnTouchListener, Ges
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
+		return false;
+	}
+
+	@Override
+	public boolean onSingleTapConfirmed(MotionEvent e) {
+		((GamePlayActivity) getActivity()).toggleMenuButton();
+		return true;
+	}
+
+	@Override
+	public boolean onDoubleTap(MotionEvent e) {
+		((GamePlayActivity) getActivity()).toggleMenuButton();
+		return true;
+	}
+
+	@Override
+	public boolean onDoubleTapEvent(MotionEvent e) {
 		return false;
 	}
 }

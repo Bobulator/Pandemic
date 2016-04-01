@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -23,6 +24,8 @@ public class GamePlayActivity extends AppCompatActivity
 
 	private NavigationDrawerFragment mNavigationDrawerFragment;
     private FloatingActionButton mMenuFab;
+
+    private String TAG = "GamePlayActivity";
 
     // Have a pointer to the Facade so all fragments started from this activity can have access to
     // the Facade.
@@ -87,7 +90,7 @@ public class GamePlayActivity extends AppCompatActivity
         // TODO: handle menu item selection        
     }
 
-	public void toggleToolbar() {
+	public void toggleMenuButton() {
 		if (mMenuFab.isShown())
             mMenuFab.hide();
 		else
