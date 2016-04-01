@@ -12,9 +12,9 @@ import android.widget.Button;
 
 public class DifficultyLevelFragment extends Fragment {
 
-	private final String NORMAL = "Normal";
-	private final String HARD = "Hard";
-	private final String INSANE = "Insanity";
+	public static final String NORMAL = "Normal";
+	public static final String HARD = "Hard";
+	public static final String INSANE = "Insanity";
 	private Button mNormalButton;
 	private Button mHardButton;
 	private Button mInsaneButton;

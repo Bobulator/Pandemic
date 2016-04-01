@@ -1,6 +1,5 @@
 package com.cs428.pandemic.frontEnd.startSequence;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
@@ -12,6 +11,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -47,8 +47,10 @@ public class MainMenuActivity extends Activity {
 	private int numberOfPlayers = 0;
 	private ArrayList<String> mCurrentPlayersList;
 	private ArrayList<String> mSavedPlayersList;
-	private String difficultyLevel;
+	private String mDifficultyLevel;
 	private JSONSerializer serializer;
+
+	private boolean DEBUG = false;
 	
 	@SuppressLint("InlinedApi")
 	@Override
@@ -65,13 +67,27 @@ public class MainMenuActivity extends Activity {
         	decorView.setSystemUiVisibility(uiOptions);
         }
 
-		setContentView(R.layout.activity_main_menu);
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new MainMenuFragment()).commit();
+		if (DEBUG) {
+			getSavedPlayerList();
+			mDifficultyLevel = DifficultyLevelFragment.NORMAL;
+			mCurrentPlayersList = new ArrayList<>();
+			mCurrentPlayersList.add("CHAD");
+			mCurrentPlayersList.add("HAYDEN");
+			startGameActivity();
+		} else {
+			setContentView(R.layout.activity_main_menu);
+			if (savedInstanceState == null) {
+				getFragmentManager().beginTransaction()
+						.add(R.id.container, new MainMenuFragment()).commit();
+			}
 		}
 	}
-	
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		return super.dispatchTouchEvent(ev);
+	}
+
 	public void replaceFragment(String className) {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		switch (className) {
@@ -126,7 +142,7 @@ public class MainMenuActivity extends Activity {
 
 		Intent intent = new Intent(this, GamePlayActivity.class);
 		intent.putStringArrayListExtra(EXTRA_PLAYERS, mCurrentPlayersList);
-		intent.putExtra(EXTRA_DIFFICULTY, difficultyLevel);
+		intent.putExtra(EXTRA_DIFFICULTY, mDifficultyLevel);
 		startActivity(intent);
 		this.finish();
 	}
@@ -148,11 +164,11 @@ public class MainMenuActivity extends Activity {
 	}
 	
 	public String getDifficulty() {
-		return difficultyLevel;
+		return mDifficultyLevel;
 	}
 	
 	public void setDifficulty(String difficulty) {
-		difficultyLevel = difficulty;
+		mDifficultyLevel = difficulty;
 	}
 
 	public ArrayList<String> getSavedPlayerList() {
