@@ -68,12 +68,7 @@ public class MainMenuActivity extends Activity {
         }
 
 		if (DEBUG) {
-			getSavedPlayerList();
-			mDifficultyLevel = DifficultyLevelFragment.NORMAL;
-			mCurrentPlayersList = new ArrayList<>();
-			mCurrentPlayersList.add("CHAD");
-			mCurrentPlayersList.add("HAYDEN");
-			startGameActivity();
+			debug();
 		} else {
 			setContentView(R.layout.activity_main_menu);
 			if (savedInstanceState == null) {
@@ -83,9 +78,13 @@ public class MainMenuActivity extends Activity {
 		}
 	}
 
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
-		return super.dispatchTouchEvent(ev);
+	public void debug() {
+		getSavedPlayerList();
+		mDifficultyLevel = DifficultyLevelFragment.NORMAL;
+		mCurrentPlayersList = new ArrayList<>();
+		mCurrentPlayersList.add("CHAD");
+		mCurrentPlayersList.add("HAYDEN");
+		startGameActivity();
 	}
 
 	public void replaceFragment(String className) {

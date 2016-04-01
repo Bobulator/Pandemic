@@ -44,7 +44,7 @@ public class MainMenuFragment extends Fragment {
 		mSettingsButton = (Button)v.findViewById(R.id.settingsButton);
 		mSettingsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				// show settings fragment
+				((MainMenuActivity) getActivity()).debug();
 			}
 		});
 		
