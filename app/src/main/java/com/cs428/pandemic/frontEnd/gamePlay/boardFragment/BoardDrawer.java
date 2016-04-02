@@ -45,8 +45,7 @@ public class BoardDrawer {
     final float RESEARCH_STATION_OFFSET_Y = 0.024728f;
     final float PAWN_SIZE_X = 0.008333f;
     final float PAWN_SIZE_Y = 0.029674f;
-
-
+    
 
     public BoardDrawer(Resources res, IModelInterface modelFacade, List<UI_Player> players) {
         this.resources = res;
@@ -294,6 +293,9 @@ public class BoardDrawer {
                 break;
             case QUARANTINE_SPECIALIST:
                 resId = R.drawable.piece_playerpawn_quarantinespecialist;
+                break;
+            case CONTINGENCY_PLANNER:
+                resId = R.drawable.piece_playerpawn_contingencyplanner;
                 break;
             default:
                 resId = -1;

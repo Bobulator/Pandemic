@@ -85,11 +85,12 @@ public class RoleSummaryFragment extends DialogFragment {
     }
 
     public void initializeRoleMap() {
-        roleMap.put(Role.QUARANTINE_SPECIALIST, R.drawable.card_role_contingencyplanner);
+        roleMap.put(Role.QUARANTINE_SPECIALIST, R.drawable.card_role_quarantinespecialist);
         roleMap.put(Role.DISPATCHER, R.drawable.card_role_dispatcher);
         roleMap.put(Role.MEDIC, R.drawable.card_role_medic);
         roleMap.put(Role.OPERATIONS_EXPERT, R.drawable.card_role_operationsexpert);
         roleMap.put(Role.RESEARCHER, R.drawable.card_role_researcher);
         roleMap.put(Role.SCIENTIST, R.drawable.card_role_scientist);
+        roleMap.put(Role.CONTINGENCY_PLANNER, R.drawable.card_role_contingencyplanner);
     }
 }

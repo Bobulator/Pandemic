@@ -5,5 +5,5 @@ package com.cs428.pandemic.frontEnd.enums;
  * Contains each role that can be assigned to a player.
  */
 public enum Role {
-    MEDIC, RESEARCHER, SCIENTIST, DISPATCHER, OPERATIONS_EXPERT, QUARANTINE_SPECIALIST
+    MEDIC, RESEARCHER, SCIENTIST, DISPATCHER, OPERATIONS_EXPERT, QUARANTINE_SPECIALIST, CONTINGENCY_PLANNER
 }
