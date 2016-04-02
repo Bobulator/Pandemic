@@ -7,11 +7,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.cs428.pandemic.BuildConfig;
 import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.IModelInterface;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
+import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Player;
+import com.cs428.pandemic.frontEnd.enums.Role;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +27,7 @@ public class BoardDrawer {
 
     private Resources resources;
     private IModelInterface modelFacade;
+    private List<UI_Player> players;
     private Canvas canvas;
     private CityParser cityParser;
     private Cities cities;
@@ -40,11 +43,15 @@ public class BoardDrawer {
     final float RESEARCH_STATION_SIZE_Y = 0.029674f;
     final float RESEARCH_STATION_OFFSET_X = 0.013889f;
     final float RESEARCH_STATION_OFFSET_Y = 0.024728f;
+    final float PAWN_SIZE_X = 0.008333f;
+    final float PAWN_SIZE_Y = 0.029674f;
 
 
-    public BoardDrawer(Resources res, IModelInterface modelFacade) {
+
+    public BoardDrawer(Resources res, IModelInterface modelFacade, List<UI_Player> players) {
         this.resources = res;
         this.modelFacade = modelFacade;
+        this.players = players;
     }
 
     public Bitmap createBitmap(int resId, int reqWidth, int reqHeight) {
@@ -91,12 +98,12 @@ public class BoardDrawer {
             String city = entry.getKey();
             UI_City data = entry.getValue();
 
-            float startX = (float) ((cities.getRelativeX(city) + CONNECTION_OFFSET_X) * width);
-            float startY = (float) ((cities.getRelativeY(city) + CONNECTION_OFFSET_Y) * height);
+            float startX = (cities.getRelativeX(city) + CONNECTION_OFFSET_X) * width;
+            float startY = (cities.getRelativeY(city) + CONNECTION_OFFSET_Y) * height;
 
             for (String neighbor : data.getNeighbors()) {
-                float endX = (float) ((cities.getRelativeX(neighbor) + CONNECTION_OFFSET_X) * width);
-                float endY = (float) ((cities.getRelativeY(neighbor) + CONNECTION_OFFSET_Y) * height);
+                float endX = (cities.getRelativeX(neighbor) + CONNECTION_OFFSET_X) * width;
+                float endY = (cities.getRelativeY(neighbor) + CONNECTION_OFFSET_Y) * height;
 
                 // Is the edge supposed to go offscreen?
                 if ((endX - startX) > (width / 2)) {
@@ -116,8 +123,8 @@ public class BoardDrawer {
             String city = entry.getKey();
             UI_City data = entry.getValue();
 
-            float x = (float) ((cities.getRelativeX(city)) * width);
-            float y = (float) ((cities.getRelativeY(city)) * height);
+            float x = (cities.getRelativeX(city)) * width;
+            float y = (cities.getRelativeY(city)) * height;
 
             int resId = -1;
             switch (data.getDiseaseColor()) {
@@ -141,7 +148,51 @@ public class BoardDrawer {
     }
 
     private void drawPlayerPawns() {
+        System.out.println("IN DRAW PLAYER PAWNS");
+        Map<Integer, String> playerLocations = modelFacade.getPawnLocations();
 
+        // Keep track of how many players are in each city
+        Map<String, Integer> numPlayersInCity = new HashMap<>();
+
+        for (Map.Entry<Integer, String> entry : playerLocations.entrySet()) {
+            int playerId = entry.getKey();
+            String playerLocation = entry.getValue();
+
+            // Keep track of how many players are in each city since that will affect the offsets
+            // by which they're drawn.
+            int count = numPlayersInCity.containsKey(playerLocation) ? numPlayersInCity.get(playerLocation) + 1 : 1;
+            numPlayersInCity.put(playerLocation, count);
+
+            // 15 x 30
+
+            UI_Player player = getPlayerById(playerId);
+            int resId = getRoleResId(player != null ? player.getPlayerRole() : null);
+
+            // Determine player offset by the number of players already in their city
+            float xOffset;
+            float yOffset;
+            if (count == 1) {
+                xOffset = 0.0125f;
+                yOffset = 0.0f;
+            } else if (count == 2) {
+                xOffset = 0.018056f;
+                yOffset = 0.004946f;
+            } else if (count == 3) {
+                xOffset = 0.006944f;
+                yOffset = 0.004946f;
+            } else {
+                xOffset = 0.0125f;
+                yOffset = 0.009891f;
+            }
+
+            float x = (cities.getRelativeX(playerLocation) + xOffset) * width;
+            float y = (cities.getRelativeY(playerLocation) + yOffset) * height;
+
+            System.out.println("DRAWING PAWN WITH RES ID = " + resId);
+            Bitmap playerPawnBitmap = BitmapFactory.decodeResource(resources, resId);
+            playerPawnBitmap = Bitmap.createScaledBitmap(playerPawnBitmap, (int) (PAWN_SIZE_X * width), (int) (PAWN_SIZE_Y * height), false);
+            canvas.drawBitmap(playerPawnBitmap, x, y, null);
+        }
     }
 
     private void drawResearchStations() {
@@ -153,8 +204,8 @@ public class BoardDrawer {
         float x;
         float y;
         for (String researchStationLocation : researchStationLocations) {
-            x = (float) (cities.getRelativeX(researchStationLocation) + RESEARCH_STATION_OFFSET_X) * width;
-            y = (float) (cities.getRelativeY(researchStationLocation) + RESEARCH_STATION_OFFSET_Y) * height;
+            x = (cities.getRelativeX(researchStationLocation) + RESEARCH_STATION_OFFSET_X) * width;
+            y = (cities.getRelativeY(researchStationLocation) + RESEARCH_STATION_OFFSET_Y) * height;
             canvas.drawBitmap(researchStationBitmap, x, y, null);
         }
     }
@@ -213,5 +264,40 @@ public class BoardDrawer {
         inSampleSize /= 2;
 
         return inSampleSize;
+    }
+
+    private UI_Player getPlayerById(int id) {
+        for (UI_Player player : players) {
+            if (player.getPlayerID() == id)
+                return player;
+        }
+        return null;
+    }
+
+    private int getRoleResId(Role role) {
+        int resId;
+        switch (role) {
+            case MEDIC:
+                resId = R.drawable.piece_playerpawn_medic;
+                break;
+            case RESEARCHER:
+                resId = R.drawable.piece_playerpawn_researcher;
+                break;
+            case SCIENTIST:
+                resId = R.drawable.piece_playerpawn_scientist;
+                break;
+            case DISPATCHER:
+                resId = R.drawable.piece_playerpawn_dispatcher;
+                break;
+            case OPERATIONS_EXPERT:
+                resId = R.drawable.piece_playerpawn_operationsexpert;
+                break;
+            case QUARANTINE_SPECIALIST:
+                resId = R.drawable.piece_playerpawn_quarantinespecialist;
+                break;
+            default:
+                resId = -1;
+        }
+        return resId;
     }
 }
