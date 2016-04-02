@@ -194,11 +194,17 @@ public class FakeModelFacade implements IModelInterface {
         // piece placement in the most congested areas of the board. Note that while this function
         // is flexible to the number of players being tested, 4 players will provide the most
         // comprehensive test.
-        String[] cities = {"Paris", "Washington", "HongKong", "Kolkata"};
+//        String[] cities = {"Paris", "Washington", "HongKong", "Kolkata"};
+//
+//        HashMap<Integer, String> pawnLocations = new HashMap<>();
+//        for (int i = 0; i < uiPlayers.size(); ++i) {
+//            pawnLocations.put(uiPlayers.get(i).getPlayerID(), cities[i]);
+//        }
 
+        // OR, have all the players in the same city:
         HashMap<Integer, String> pawnLocations = new HashMap<>();
         for (int i = 0; i < uiPlayers.size(); ++i) {
-            pawnLocations.put(uiPlayers.get(i).getPlayerID(), cities[i]);
+            pawnLocations.put(uiPlayers.get(i).getPlayerID(), "Atlanta");
         }
 
         return pawnLocations;
