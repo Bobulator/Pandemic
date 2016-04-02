@@ -180,11 +180,11 @@ public class FakeModelFacade implements IModelInterface {
     public List<String> getResearchStationLocations() {
         // Locations were chosen based on the most congested cities; see getPawnLocations().
         ArrayList<String> cities = new ArrayList<>();
-        cities.add("atlanta");
-        cities.add("paris");
-        cities.add("washington");
-        cities.add("hongkong");
-        cities.add("kolkata");
+        cities.add("Atlanta");
+        cities.add("Paris");
+        cities.add("Washington");
+        cities.add("HongKong");
+        cities.add("Kolkata");
         return cities;
     }
 
@@ -194,7 +194,7 @@ public class FakeModelFacade implements IModelInterface {
         // piece placement in the most congested areas of the board. Note that while this function
         // is flexible to the number of players being tested, 4 players will provide the most
         // comprehensive test.
-        String[] cities = {"paris", "washington", "hongkong", "kolkata"};
+        String[] cities = {"Paris", "Washington", "HongKong", "Kolkata"};
 
         HashMap<Integer, String> pawnLocations = new HashMap<>();
         for (int i = 0; i < uiPlayers.size(); ++i) {

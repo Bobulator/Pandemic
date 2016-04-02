@@ -12,6 +12,7 @@ import com.cs428.pandemic.R;
 import com.cs428.pandemic.frontEnd.IModelInterface;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +30,17 @@ public class BoardDrawer {
     private Cities cities;
     private int width;
     private int height;
+
+    // Relative icon offsets
+    final float CONNECTION_OFFSET_X = 0.016667f;
+    final float CONNECTION_OFFSET_Y = 0.029674f;
+    final float CITY_SIZE_X = 0.033333f;
+    final float CITY_SIZE_Y = 0.059347f;
+    final float RESEARCH_STATION_SIZE_X = 0.016667f;
+    final float RESEARCH_STATION_SIZE_Y = 0.029674f;
+    final float RESEARCH_STATION_OFFSET_X = 0.013889f;
+    final float RESEARCH_STATION_OFFSET_Y = 0.024728f;
+
 
     public BoardDrawer(Resources res, IModelInterface modelFacade) {
         this.resources = res;
@@ -67,6 +79,8 @@ public class BoardDrawer {
         cityParser = new CityParser(resources.getXml(R.xml.relative_city_locations));
         width = canvas.getWidth();
         height = canvas.getHeight();
+        System.out.println(width);
+        System.out.println(height);
     }
 
     private void drawCityConnections(Map<String, UI_City> cityData) {
@@ -77,12 +91,12 @@ public class BoardDrawer {
             String city = entry.getKey();
             UI_City data = entry.getValue();
 
-            float startX = (float) (cities.getRelativeX(city) * width) + 30f;
-            float startY = (float) (cities.getRelativeY(city) * height) + 30f;
+            float startX = (float) ((cities.getRelativeX(city) + CONNECTION_OFFSET_X) * width);
+            float startY = (float) ((cities.getRelativeY(city) + CONNECTION_OFFSET_Y) * height);
 
             for (String neighbor : data.getNeighbors()) {
-                float endX = (float) (cities.getRelativeX(neighbor) * width) + 30f;
-                float endY = (float) (cities.getRelativeY(neighbor) * height) + 30f;
+                float endX = (float) ((cities.getRelativeX(neighbor) + CONNECTION_OFFSET_X) * width);
+                float endY = (float) ((cities.getRelativeY(neighbor) + CONNECTION_OFFSET_Y) * height);
 
                 // Is the edge supposed to go offscreen?
                 if ((endX - startX) > (width / 2)) {
@@ -121,7 +135,7 @@ public class BoardDrawer {
                     break;
             }
             Bitmap cityBitmap = BitmapFactory.decodeResource(resources, resId);
-            cityBitmap = Bitmap.createScaledBitmap(cityBitmap, 60, 60, false);
+            cityBitmap = Bitmap.createScaledBitmap(cityBitmap, (int) (CITY_SIZE_X * width), (int) (CITY_SIZE_Y * height), false);
             canvas.drawBitmap(cityBitmap, x, y, null);
         }
     }
@@ -131,7 +145,18 @@ public class BoardDrawer {
     }
 
     private void drawResearchStations() {
+        List<String> researchStationLocations = modelFacade.getResearchStationLocations();
 
+        Bitmap researchStationBitmap = BitmapFactory.decodeResource(resources, R.drawable.icon_researchstation);
+        researchStationBitmap = Bitmap.createScaledBitmap(researchStationBitmap, (int) (RESEARCH_STATION_SIZE_X * width), (int) (RESEARCH_STATION_SIZE_Y * height), false);
+
+        float x;
+        float y;
+        for (String researchStationLocation : researchStationLocations) {
+            x = (float) (cities.getRelativeX(researchStationLocation) + RESEARCH_STATION_OFFSET_X) * width;
+            y = (float) (cities.getRelativeY(researchStationLocation) + RESEARCH_STATION_OFFSET_Y) * height;
+            canvas.drawBitmap(researchStationBitmap, x, y, null);
+        }
     }
 
     /**
