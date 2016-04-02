@@ -37,11 +37,11 @@ public class Cities {
         cityMap.put(city, new Coordinates(rel_x, rel_y));
     }
 
-    public double getRelativeX(String city) {
+    public float getRelativeX(String city) {
         return cityMap.get(city).getRelative_x();
     }
 
-    public double getRelativeY(String city) {
+    public float getRelativeY(String city) {
         return cityMap.get(city).getRelative_y();
     }
 }
