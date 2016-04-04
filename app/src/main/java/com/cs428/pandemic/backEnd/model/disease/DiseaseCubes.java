@@ -108,7 +108,26 @@ public class DiseaseCubes implements IDiseaseCubes{
 				throw new Exception("INVALID DISEASE TYPE");
 		}
 	}
-	
+
+	public void putBackDiseaseCubes(String diseaseName, int amount) throws TooManyDiseaseCubesException {
+		switch(diseaseName) {
+			case "Red":
+				putBackRed(amount);
+				break;
+			case "Blue":
+				putBackBlue(amount);
+				break;
+			case "Black":
+				putBackBlack(amount);
+				break;
+			case "Yellow":
+				putBackYellow(amount);
+				break;
+			default:
+
+		}
+	}
+
 	public int getRed(){
 		return red;
 	}

@@ -13,5 +13,40 @@ public enum DiseaseType
     YELLOW,
     RED,
     BLUE,
-    BLACK
+    BLACK;
+
+    @Override
+    public String toString() {
+
+        switch(this){
+
+            case YELLOW:
+                return "Yellow";
+            case RED:
+                return "Red";
+            case BLUE:
+                return "Blue";
+            case BLACK:
+                return "Black";
+            default:
+                return "YOU SUCK";
+        }
+    }
+
+    public static DiseaseType getType(String name){
+
+        switch(name){
+
+            case "Yellow":
+                return YELLOW;
+            case "Red":
+                return RED;
+            case "Blue":
+                return BLUE;
+            case "Black":
+                return BLACK;
+            default:
+                return null;
+        }
+    }
 }

@@ -5,16 +5,17 @@ import android.app.FragmentManager;
 import com.cs428.pandemic.backEnd.model.IGameModel;
 import com.cs428.pandemic.backEnd.model.Model;
 import com.cs428.pandemic.backEnd.model.deck.*;
+import com.cs428.pandemic.backEnd.model.disease.TooManyDiseaseCubesException;
 import com.cs428.pandemic.backEnd.model.gamestate.DiseaseType;
 import com.cs428.pandemic.backEnd.model.gamestate.IInfectionTracker;
 import com.cs428.pandemic.backEnd.model.map.ICity;
 import com.cs428.pandemic.backEnd.model.player.IPlayer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.cs428.pandemic.backEnd.command.ICommandResult.ResultType.*;
 
 public abstract class CaseyBFG {
 
@@ -196,9 +197,9 @@ public abstract class CaseyBFG {
         // TODO player.getHand() does not work; we
         CardCollection<IPlayerCard> curCards = player.getHand();
         if (curCards.size() < 5 || (curCards.getColorCount(DiseaseType.RED) < 5 &&
-                curCards.getColorCount(DiseaseType.BLUE) < 5 &&
-                curCards.getColorCount(DiseaseType.BLACK) < 5 &&
-                curCards.getColorCount(DiseaseType.YELLOW) < 5))
+                                    curCards.getColorCount(DiseaseType.BLUE) < 5 &&
+                                    curCards.getColorCount(DiseaseType.BLACK) < 5 &&
+                                    curCards.getColorCount(DiseaseType.YELLOW) < 5))
             return false;
 
         // Make sure the player has actions remaining
@@ -333,164 +334,130 @@ public abstract class CaseyBFG {
        return (player.getLocation().getName().equals(location));
     }
 
-
-    // Will return a list of the actions the player can do from their special actions list
-    // will probably need an Object param also for additional data
-    public abstract boolean canDoAnySpecialAction();
-
-
     // ====================
     // ==== DO METHODS ====
     // ====================
-    public ICommand getDoDriveFerry(final String cityName) {
+    public ICommand getDoDriveFerry() {
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
+            public void execute(FragmentManager fm) {
+
+                String currentLocation = player.getLocation().getName();
+
+                // Use this list on the frame to give the user city options
+                List<String> adjacentCities = Model.getInstance().getMap().getCity(currentLocation).getAdjacentCityNames();
+
+                /* ****FRAME MAGIC**** */
+
+                // Get city name from user
+                String cityName = "";
 
                 // Set the player's location to cityName
                 player.setLocation(Model.getInstance().getMap().getCity(cityName));
 
                 // Decrement action counter
                 Model.getInstance().getTurnTracker().decrementActionPoints(1);
-
-                return doSuccess("Drive the crap out of that ferry, John.");
             }
         };
     }
 
     /**
-     * Performs the fly action by removing the card associated with the provided cityCardName from the player's
+     * Performs the fly action by optionally removing the card associated with the provided cityCardName from the player's
      * hand and discarding it, moving the player to the provided destination, and decrementing the action counter.
      *
-     * @param destination The name of the city the player is moving to.
-     * @return the return of the ICommand execute is as follows:
-     * <ul>
-     * <li> getResult: (SUCCESS) </li>
-     * <li> getMessage: success message </li>
-     * <li> getChainCommand: null </li>
-     * <li> getData: germane information (if necessary) </li>
-     * </ul>
-     */
-    public ICommand getDoFly(final String cityCardName, final String destination) {
-        return new ICommand() {
-            @Override
-            public ICommandResult execute(FragmentManager fm) {
+     * @param destination the name of the city to fly to
+     * @param discardCard true if the player should discard, false otherwise
+    */
+    protected void move(String destination, boolean discardCard) {
 
-                // Remove the card represented by cityCardName from the player's hand
-                IPlayerCard removedCard = player.removeCityCard(cityCardName);
+        if (discardCard) {
 
-                // Discard the removed card
-                Model.getInstance().getGameDecks().addCard(removedCard, CardFamilyType.PLAYER, DeckType.DISCARD);
+            // Remove the card represented by cityCardName from the player's hand
+            IPlayerCard removedCard = player.removeCityCard(destination);
 
-                // Set the player's location to destination
-                player.setLocation(Model.getInstance().getMap().getCity(destination));
+            // Discard the removed card
+            Model.getInstance().getGameDecks().addCard(removedCard, CardFamilyType.PLAYER, DeckType.DISCARD);
+        }
 
-                // Decrement action counter
-                Model.getInstance().getTurnTracker().decrementActionPoints(1);
+        // Set the player's location to destination
+        player.setLocation(Model.getInstance().getMap().getCity(destination));
 
-                return doSuccess("Fly the crap out of it, John.");
-            }
-        };
+        // Decrement action counter
+        Model.getInstance().getTurnTracker().decrementActionPoints(1);
     }
 
     /**
-     * Performs the Direct Flight action by moving the player to the provided destination, removing
-     * the card associated with the destination from the player's and discarding it, and decrementing
+     * Performs the Direct Flight action by moving the player to the chosen destination, removing
+     * the card associated with the destination from the player's hand and discarding it, and decrementing
      * the action counter.
      *
-     * @param destination The name of the city the player is moving to.
-     * @return The return of the ICommand execute is as follows:
-     * <ul>
-     * <li> getResult: (SUCCESS) </li>
-     * <li> getMessage: success message </li>
-     * <li> getChainCommand: null </li>
-     * <li> getData: germane information (if necessary) </li>
-     * </ul>
+     * @return The ICommand the UI will call execute on
      */
-    public ICommand getDoDirectFlight(final String destination) {
+    public ICommand getDoDirectFlight() {
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
+            public void execute(FragmentManager fm) {
 
-                // Set the player's location to destination
-                player.setLocation(Model.getInstance().getMap().getCity(destination));
+                // Get list of city cards in player's hand
+                // TODO Need to be able to get names of all cities in the player's hand other than the current location
+                List<String> cityNames = null;
 
-                // Remove the card associated with destination from the player's hand
-                IPlayerCard removedCard = player.removeCityCard(destination);
+                /* ****FRAME MAGIC**** */
 
-                // Discard the removed card
-                Model.getInstance().getGameDecks().addCard(removedCard, CardFamilyType.PLAYER, DeckType.DISCARD);
+                // Get this from the user
+                String destination = "";
 
-                // Decrement action counter
-                Model.getInstance().getTurnTracker().decrementActionPoints(1);
-
-                return doSuccess("Take the crap out of this direct flight, John.");
+                move(destination, true);
             }
         };
     }
 
     /**
-     * Performs the Charter Flight action by moving the player to the provided destination,
+     * Performs the Charter Flight action by moving the player to the chosen destination,
      * removing the card associated with the player's current location from the player's hand
      * and discarding it, and decrementing the action counter.
      *
-     * @param destination The name of the city the player is moving to.
-     * @return The return of the ICommand execute is as follows:
-     * <ul>
-     * <li> getResult: (SUCCESS) </li>
-     * <li> getMessage: success message </li>
-     * <li> getChainCommand: null </li>
-     * <li> getData: germane information (if necessary) </li>
-     * </ul>
      */
-    public ICommand getDoCharterFlight(final String destination) {
+    public ICommand getDoCharterFlight() {
 
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
+            public void execute(FragmentManager fm) {
 
-                // Set the player's location to cityName
-                player.setLocation(Model.getInstance().getMap().getCity(destination));
+                // Get names of all cities in the player's hand other than the current location
+                String currentLocation = player.getLocation().getName();
+                List<String> charterCityNames = Model.getInstance().getMap().getAllOtherLocations(currentLocation);
 
-                // Discard the card associated with cityName
-                IPlayerCard removedCard = player.removeCityCard(player.getLocation().getName());
+                /* ****FRAME MAGIC**** */
 
-                // Discard the removed card
-                Model.getInstance().getGameDecks().addCard(removedCard, CardFamilyType.PLAYER, DeckType.DISCARD);
+                // Get this from the user
+                String destination = "";
 
-                // Decrement action counter
-                Model.getInstance().getTurnTracker().decrementActionPoints(1);
-
-                return doSuccess("Take the crap out of this direct flight, John.");
+                move(destination, true);
             }
         };
     }
 
     /**
-     * Performs the Shuttle Flight action by moving the player to the provided destination
+     * Performs the Shuttle Flight action by moving the player to the chosen destination
      * and decrementing the action counter.
      *
-     * @param destination
-     * @return The return of the ICommand execute is as follows:
-     * <ul>
-     * <li> getResult: (SUCCESS) </li>
-     * <li> getMessage: success message </li>
-     * <li> getChainCommand: null </li>
-     * <li> getData: germane information (if necessary) </li>
-     * </ul>
+     * @return The ICommand the UI will call execute on
      */
-    public ICommand getDoShuttleFlight(final String destination) {
+    public ICommand getDoShuttleFlight() {
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
+            public void execute(FragmentManager fm) {
 
-                // Set the player's location to destination
-                player.setLocation(Model.getInstance().getMap().getCity(destination));
+                // Get list of research station locations to present to the user
+                List<String> researchStations = Model.getInstance().getMap().getResearchStationLocations();
 
-                // Decrement action counter
-                Model.getInstance().getTurnTracker().decrementActionPoints(1);
+                /* ****FRAME MAGIC**** */
 
-                return doSuccess("Shuttle the crap out of this flight, John.");
+                // Get this from the user
+                String destination = "";
+
+                move(destination, false);
             }
         };
     }
@@ -498,24 +465,16 @@ public abstract class CaseyBFG {
     /**
      * Decrements the player's action count by 1
      *
-     * @return The return of the ICommand execute is as follows:
-     * <ul>
-     * <li> getResult: (SUCCESS) </li>
-     * <li> getMessage: success message </li>
-     * <li> getChainCommand: null </li>
-     * <li> getData: germane information (if necessary) </li>
-     * </ul>
+     * @return The ICommand the UI will call execute on
      */
     public ICommand getDoPass() {
 
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
+            public void execute(FragmentManager fm) {
 
                 // Decrement action counter
                 Model.getInstance().getTurnTracker().decrementActionPoints(1);
-
-                return doSuccess("Pass the crap out of this, John.");
             }
         };
 
@@ -525,33 +484,38 @@ public abstract class CaseyBFG {
      * Puts a research station on the player's location. If there are no research stations remaining, the player
      * chooses which city to remove a research station from. Removes the card associated with the player's location
      * from the player's hand and discards that card. Decrements the action counter.
-     * <ul>
-     * <li> getResult: (SUCCESS) </li>
-     * <li> getMessage: success message </li>
-     * <li> getChainCommand: null </li>
-     * <li> getData: germane information (if necessary) </li>
-     * </ul>
+     *
+     * @return The ICommand the UI will call execute on
      */
     public ICommand getDoBuildStation() {
 
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
-                // Check to see if there are available research stations
-                // If not, tell the GUI to have the player choose which research station to move
-                // Add getCitiesWithResearchStations() to the GameMap
-                if (Model.getInstance().getMap().getRemainingResearchStationCount() <= 0) {
+            public void execute(FragmentManager fm) {
+
+                String currentLocation = player.getLocation().getName();
+
+                // Try to place the research station on the map. If there are not enough in the pile
+                // this method will return false
+                // If placement fails, tell the GUI to have the player choose which research station to move
+                // and then place the research station
+                if (!Model.getInstance().getMap().placeResearchStation(currentLocation)) {
+
                     List<String> researchStationLocations = Model.getInstance().getMap().getResearchStationLocations();
+
+                    /* ****FRAME MAGIC**** */
+
                     // GUI must have the player choose one of these locations to remove a research station from
                     // Return null if cancel is selected
                     String selectedLocation = "";
 
                     // Remove the research station from the selected location
-                    Model.getInstance().getMap().getCity(selectedLocation).removeResearchStation();
-                }
+                    Model.getInstance().getMap().removeResearchStation(selectedLocation);
 
-                // Place the research station at the player's location
-                player.getLocation().addResearchStation();
+
+                    // Place the research station at the player's location
+                    Model.getInstance().getMap().placeResearchStation(currentLocation);
+                }
 
                 // Remove the card from the player's hand
                 IPlayerCard removedCard = player.removeCityCard(player.getLocation().getName());
@@ -561,37 +525,74 @@ public abstract class CaseyBFG {
 
                 // Decrement the action points
                 Model.getInstance().getTurnTracker().decrementActionPoints(1);
-
-                return doSuccess("Build the crap out of this research station, John.");
             }
         };
     }
 
-    ICommand getDoDiscoverCure(final DiseaseType diseaseType, final List<String> cityNames) {
+    /**
+     * Discovers a cure for the chosen disease type by choosing and
+     * discarding 5 city cards of that color, then decrements the action counter.
+     *
+     * @return The ICommand the UI will call execute on
+     */
+    public ICommand getDoDiscoverCure() {
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
+            public void execute(FragmentManager fm) {
 
-                for (String city : cityNames) {
+                // Show user frame of all disease types.
+                // Types for which the player has enough city cards to cure the disease will be enabled
+
+                List<String> cureableDiseases = new ArrayList<String>();
+
+                for (DiseaseType d : DiseaseType.values()){
+
+                    if (player.getHand().getColorCount(d) >= 5){
+
+                        cureableDiseases.add(d.toString());
+                    }
+                }
+
+                /* ****FRAME MAGIC**** */
+
+                // Get this from the user
+                String diseaseName = "";
+
+                // Show user all city cards of diseaseType in their hand
+                // TODO NEED FUNCTION FOR ALL CITY CARDS IN PLAYER'S HAND
+
+                // Have user choose 5 cards to discard
+
+                /* ****FRAME MAGIC**** */
+
+                // Get this from the user
+                List<String> discardCityNames = null;
+
+                for (String city : discardCityNames) {
                     // remove the cards from the player's hand
                     IPlayerCard removedCard = player.removeCityCard(city);
-                    if (removedCard == null)
-                        return doFailure("You did not have the city card that you tried to discard.");
 
                     // add the cards to the discard pile
                     Model.getInstance().getGameDecks().addCard(removedCard, CardFamilyType.PLAYER, DeckType.DISCARD);
                 }
 
                 // set the cure marker
+                // TODO Make sure valueOf works with the string we are getting
+
+                DiseaseType diseaseType = DiseaseType.getType(diseaseName);
                 Model.getInstance().getGameState().getDiseaseData().cure(diseaseType);
 
                 // check to see if the disease is eradicated
                 // if so, set that marker
                 try {
+
                     if (Model.getInstance().getDiseaseCubes().getDiseaseCount(diseaseType) == 24) {
+
                         Model.getInstance().getGameState().getDiseaseData().eradicate(diseaseType);
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
+
                     System.out.println(e.getMessage());
                     e.printStackTrace();
                 }
@@ -599,20 +600,62 @@ public abstract class CaseyBFG {
                 // decrement the number of remaining actions
                 Model.getInstance().getTurnTracker().decrementActionPoints(1);
 
-                return doSuccess("Cure discoverd.");
             }
         };
     }
 
-    ICommand getDoTreatDisease(final String diseaseType) {
-        return null;
+    /**
+     * Before a disease is cured, remove 1 cube (of the player's choosing) from the player's current location for 1 action
+     * After a disease is cured, remove all cubes of a single type from the player's current location for 1 action
+     * @return The ICommand the UI will call execute on
+     */
+    public ICommand getDoTreatDisease() {
+
+        return new ICommand() {
+            @Override
+            public void execute(FragmentManager fm) {
+
+                // Get list of disease types on player's location
+                // Maybe get count to display on popup
+                List<String> presentDiseases = player.getLocation().getPresentDiseases();
+
+                /* ****FRAME MAGIC**** */
+
+                // Get this from the user
+                String selectedDisease = "";
+
+                int removedCubes = 0;
+
+                if (Model.getInstance().getGameState().getDiseaseData().isCured(DiseaseType.getType(selectedDisease))){
+
+                    removedCubes = player.getLocation().removeDiseaseCube(DiseaseType.getType(selectedDisease), true);
+                }
+                else {
+
+                    removedCubes = player.getLocation().removeDiseaseCube(DiseaseType.getType(selectedDisease), false);
+                }
+
+                try {
+
+                    Model.getInstance().getDiseaseCubes().putBackDiseaseCubes(selectedDisease, removedCubes);
+                }
+                catch (TooManyDiseaseCubesException e){
+
+                    System.out.println("YOU'RE THE WORSTESTEST");
+                }
+
+                // decrement the number of remaining actions
+                Model.getInstance().getTurnTracker().decrementActionPoints(1);
+
+            }
+        };
     }
 
     public ICommand getDoGiveKnowledge(final String cityName) {
 
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
+            public void execute(FragmentManager fm) {
                 //Remove the card from the
                 IPlayerCard card = player.removeCityCard(cityName);
                 //Put the card in the receiving player's hand
@@ -621,16 +664,11 @@ public abstract class CaseyBFG {
 
                 //Decrement action points
                 Model.getInstance().getTurnTracker().decrementActionPoints(1);
-
-                // TODO How do players discard? And how do we trigger it?
-
-
-                return doSuccess("Shared the crap out of that knowledge, John", tooManyCards);
             }
         };
     }
 
-    ICommand getDoReceiveKnowledge(final String cityName) {
+    ICommand getDoReceiveKnowledge() {
         return null;
     }
 
@@ -642,11 +680,10 @@ public abstract class CaseyBFG {
     public ICommand getIncrease() {
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
+            public void execute(FragmentManager fm) {
                 IInfectionTracker tracker = Model.getInstance().getGameState().getInfectionTracker();
                 tracker.advanceTrack(1);
                 final int newInfectionRate = tracker.getInfectionsPerTurn();
-                return doSuccess("Infection Rate advanced by 1. Will now draw " + newInfectionRate + " infections per turn", newInfectionRate);
             }
         };
     }
@@ -654,8 +691,7 @@ public abstract class CaseyBFG {
     public ICommand getInfect() {
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
-                return doSuccess("Succeeded in infecting the stuffz", true);
+            public void execute(FragmentManager fm) {
             }
         };
     }
@@ -663,222 +699,39 @@ public abstract class CaseyBFG {
     public ICommand getIntensify() {
         return new ICommand() {
             @Override
-            public ICommandResult execute(FragmentManager fm) {
+            public void execute(FragmentManager fm) {
                 Model.getInstance().getGameDecks().intensify();
-                return doSuccess("Shuffled Infection Discard into Infection Draw", true);
             }
         };
     }
 
-    // Returns a list of all the special actions the player can perform
-    public abstract List<String> getCanDoSpecialActions(String specialAction);
+    /**
+     * @return a list of all the special actions the player can perform
+     */
+    public abstract List<String> getCanDoSpecialActions();
 
+    /**
+     *
+     * @param specialAction A string corresponding to a special action in the user's role
+     * @return true if this action can be performed, otherwise false
+     */
+    public abstract boolean canPerformSpecialAction(String specialAction);
+
+    /**
+     *
+     * @param specialAction A string corresponding to a special action in the user's role
+     * @return The return of the ICommand execute is as follows:
+     */
     public abstract ICommand getPerformSpecialAction(String specialAction);
+
     
     /*
     TODO: ALSO ADD...
         - outbreaks (3 steps in separate functions?)
         - infection
         - turn setup (that sets the number of remaining actions
+    */
 
-     */
-    // ========================
-    // ==== HELPER METHODS ====
-    // ========================
-
-    protected ICommandResult canDoSuccess(final String message) {
-        return new ICommandResult() {
-            @Override
-            public ResultType getResult() {
-                return LEGAL;
-            }
-
-            @Override
-            public String getMessage() {
-                return message;
-            }
-
-            @Override
-            public ICommand getChainCommand() {
-                return null;
-            }
-
-            @Override
-            public Object getData() {
-                return null;
-            }
-        };
-    }
-
-    protected ICommandResult canDoFailure(final String message) {
-        return new ICommandResult() {
-            @Override
-            public ResultType getResult() {
-                return ResultType.ILLEGAL;
-            }
-
-            @Override
-            public String getMessage() {
-                return message;
-            }
-
-            @Override
-            public ICommand getChainCommand() {
-                return null;
-            }
-
-            @Override
-            public Object getData() {
-                return null;
-            }
-        };
-    }
-
-    protected ICommandResult doSuccess(final String message) {
-
-        return new ICommandResult() {
-            @Override
-            public ResultType getResult() {
-                return ResultType.SUCCESS;
-            }
-
-            @Override
-            public String getMessage() {
-                return message;
-            }
-
-            @Override
-            public ICommand getChainCommand() {
-                return null;
-            }
-
-            @Override
-            public Object getData() {
-                return null;
-            }
-        };
-    }
-
-    protected ICommandResult doFailure(final String message) {
-
-        return new ICommandResult() {
-            @Override
-            public ResultType getResult() {
-                return FAILURE;
-            }
-
-            @Override
-            public String getMessage() {
-                return message;
-            }
-
-            @Override
-            public ICommand getChainCommand() {
-                return null;
-            }
-
-            @Override
-            public Object getData() {
-                return null;
-            }
-        };
-    }
-
-    protected ICommandResult canDoSuccess(final String message, final Object data) {
-        return new ICommandResult() {
-            @Override
-            public ResultType getResult() {
-                return LEGAL;
-            }
-
-            @Override
-            public String getMessage() {
-                return message;
-            }
-
-            @Override
-            public ICommand getChainCommand() {
-                return null;
-            }
-
-            @Override
-            public Object getData() {
-                return data;
-            }
-        };
-    }
-
-    protected ICommandResult canDoFailure(final String message, final Object data) {
-        return new ICommandResult() {
-            @Override
-            public ResultType getResult() {
-                return ILLEGAL;
-            }
-
-            @Override
-            public String getMessage() {
-                return message;
-            }
-
-            @Override
-            public ICommand getChainCommand() {
-                return null;
-            }
-
-            @Override
-            public Object getData() {
-                return data;
-            }
-        };
-    }
-
-    protected ICommandResult doSuccess(final String message, final Object data) {
-        return new ICommandResult() {
-            @Override
-            public ResultType getResult() {
-                return SUCCESS;
-            }
-
-            @Override
-            public String getMessage() {
-                return message;
-            }
-
-            @Override
-            public ICommand getChainCommand() {
-                return null;
-            }
-
-            @Override
-            public Object getData() {
-                return data;
-            }
-        };
-    }
-
-    protected ICommandResult doFailure(final String message, final Object data) {
-        return new ICommandResult() {
-            @Override
-            public ResultType getResult() {
-                return FAILURE;
-            }
-
-            @Override
-            public String getMessage() {
-                return message;
-            }
-
-            @Override
-            public ICommand getChainCommand() {
-                return null;
-            }
-
-            @Override
-            public Object getData() {
-                return data;
-            }
-        };
-    }
 
     public List<String> getSpecialActions() {
         return specialActions;

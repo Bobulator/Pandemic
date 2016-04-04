@@ -1,9 +1,13 @@
 package com.cs428.pandemic.backEnd.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.cs428.pandemic.backEnd.command.CommandBFG;
+import com.cs428.pandemic.backEnd.command.roles.Scientist;
+import com.cs428.pandemic.backEnd.model.Model;
+import com.cs428.pandemic.backEnd.model.player.IPlayer;
 import com.cs428.pandemic.frontEnd.ICommandObject;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Card;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
@@ -15,6 +19,7 @@ import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_SharedKnowledge;
 public class GameManager implements IGameManager{
 
 	private Map<Integer, CommandBFG> playerRoleObjects;
+
 	@Override
 	public void initializeGame() {
 		// TODO Auto-generated method stub
@@ -53,7 +58,13 @@ public class GameManager implements IGameManager{
 
 	// Populate the playerRoleObjects map
 	@Override
-	public void assignPlayerRole() {
+	public void assignPlayerRole(int numberOfPlayers) {
+
+		for (int i = 0; i < numberOfPlayers; i++){
+
+			// TODO Figure out a way to randomly assign unique roles
+			playerRoleObjects.put(i, new Scientist(Model.getInstance().getPlayers().get(i)));
+		}
 		// TODO Auto-generated method stub
 		
 	}
@@ -159,8 +170,38 @@ public class GameManager implements IGameManager{
 
 	@Override
 	public List<UI_Player> startGame(List<String> players, String difficulty) {
-		// TODO Auto-generated method stub
-		return null;
+
+		int numberOfEpidemics = 4;
+
+		// Set numberofEpidemics based on chosen difficulty
+		switch(difficulty){
+
+			case "Normal":
+				numberOfEpidemics = 4;
+				break;
+			case "Hard":
+				numberOfEpidemics = 5;
+				break;
+			case "Insane":
+				numberOfEpidemics = 6;
+				break;
+		}
+
+		// Initialize the model
+		Model.createInstance(numberOfEpidemics, players);
+
+		// Assign player's a role
+		assignPlayerRole(players.size());
+
+		List<UI_Player> uiPlayers = new ArrayList<>();
+
+		// Convert players to UI_Players
+		for (int i = 0; i < players.size(); i++){
+
+			uiPlayers.add(new UI_Player(i, players.get(i), playerRoleObjects.get(i).getRoleName()));
+		}
+
+		return uiPlayers;
 	}
 
 	@Override

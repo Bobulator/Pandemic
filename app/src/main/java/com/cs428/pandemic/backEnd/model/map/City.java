@@ -144,15 +144,25 @@ public class City implements ICity{
 	}
 
 	
-	public boolean removeDiseaseCube(DiseaseType t){
+	public int removeDiseaseCube(DiseaseType t, boolean removeAll){
+
+		int removed_cubes = 0;
 
 		if (disease_cubes.get(t) > 0){
 
-			disease_cubes.put(t, disease_cubes.get(t) - 1);
-			return true;
+			if (removeAll){
+
+				removed_cubes = disease_cubes.put(t, 0);
+			}
+			else {
+
+				removed_cubes = 1;
+				disease_cubes.put(t, disease_cubes.get(t) - 1);
+			}
+
 		}
 
-		return false;
+		return removed_cubes;
 	}
 
 	
@@ -210,5 +220,20 @@ public class City implements ICity{
 		}
 		
 		return false;
+	}
+
+	public List<String> getPresentDiseases(){
+
+		List<String> presentDiseases = new ArrayList<String>();
+
+		for(Map.Entry<DiseaseType, Integer> entry : disease_cubes.entrySet()){
+
+			if(entry.getValue() > 0){
+
+				presentDiseases.add(entry.getKey().name());
+			}
+		}
+
+		return presentDiseases;
 	}
 }

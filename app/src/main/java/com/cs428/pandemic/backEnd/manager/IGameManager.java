@@ -58,8 +58,9 @@ public interface IGameManager {
 	
 	/**
 	 * Randomly assigns each player a role.
+     * @param numberOfPlayers the number of players in the game
 	 */
-	public void assignPlayerRole();
+	public void assignPlayerRole(int numberOfPlayers);
 	
 	/**
 	 * Shuffles the city and event cards 

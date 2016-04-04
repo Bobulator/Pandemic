@@ -18,12 +18,12 @@ public interface IGameMap
 	 */
 	boolean placeResearchStation(String cityName);
 
-	// May not need this since removed research stations 
-	// will immediately be placed on the board?
+
 	/**
-	*
-	*/
-	//Boolean removeResearchStation();
+	 * Takes a research station off the given city and places it back in the pile.
+	 * @param cityName The city name to remove a research station from
+	 */
+	public void removeResearchStation(String cityName);
 
 	/**
 	* @return the number of unplaced research stations

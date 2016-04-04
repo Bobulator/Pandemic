@@ -72,6 +72,7 @@ public class PlayerDeckBuilder
     
     PlayerDeckBuilder setEpidemics2nd(ICardFactory fact)
     {
+        /*
         Collections.shuffle(cards);
         int numPiles = numEpidemics;
         List<IPlayerCard>[] piles = new ArrayList<>[numPiles];
@@ -95,7 +96,7 @@ public class PlayerDeckBuilder
             Collections.shuffle(piles[i]);
             cards.addAll(piles[i]);
         }
-        //*/
+        */
         return this;
     }
     

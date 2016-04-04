@@ -31,13 +31,16 @@ public class GameMap implements IGameMap
 		return cities.get(city_name);
 	}
 
-	// May not need this since removed research stations 
-	// will immediately be placed on the board?
-	/*
-	public boolean removeResearchStation(){
-		research_stations_remaining++;
+
+	public void removeResearchStation(String cityName){
+
+		if (this.cities.get(cityName).hasResearchStation()) {
+
+			this.cities.get(cityName).removeResearchStation();
+			research_stations_remaining++;
+		}
 	}
-	*/
+
 
 	@Override
 	public int getRemainingResearchStationCount(){
