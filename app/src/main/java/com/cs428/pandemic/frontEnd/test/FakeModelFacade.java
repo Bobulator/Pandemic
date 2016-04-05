@@ -349,12 +349,12 @@ public class FakeModelFacade implements IModelInterface {
     }
 
     @Override
-    public List<String> getRoleActions() {
-        ArrayList<String> actions = new ArrayList<>();
-        actions.add("Special action 1");
-        actions.add("Special action 2");
-        actions.add("How long do these need to be?");
-        actions.add("And how long of an action can we handle?");
+    public Map<String, Boolean> getRoleActions() {
+        Map<String, Boolean> actions = new HashMap<>();
+        actions.put("Special action 1", true);
+        actions.put("Special action 2", false);
+        actions.put("How long do these need to be?", false);
+        actions.put("And how long of an action can we handle?", true);
         return actions;
     }
 

@@ -219,7 +219,7 @@ public interface IModelInterface {
      * Queries the model for any and all role-exclusive actions a player can perform.
      * @return A list of strings that correspond to each special action a player can perform.
      */
-    List<String> getRoleActions();
+    Map<String, Boolean> getRoleActions();
 
     // Do Methods
     // These methods request changes to the model state. Because every action is potentially
