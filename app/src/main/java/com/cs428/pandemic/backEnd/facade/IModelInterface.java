@@ -1,6 +1,7 @@
 package com.cs428.pandemic.backEnd.facade;
 
 import com.cs428.pandemic.frontEnd.ICommandObject;
+import com.cs428.pandemic.frontEnd.IUI_Updater;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Card;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Disease;
@@ -46,6 +47,12 @@ public interface IModelInterface {
     boolean canFlyDirect();
 
     /**
+     * Requests whether or not a player can use the 'shuttle flight' action.
+     * @return True if yes, otherwise False.
+     */
+    boolean canFlyShuttle();
+
+    /**
      * Requests whether or not a player can share knowledge in their current city with any player
      * as an action.
      * @return True if yes, otherwise False.
@@ -86,7 +93,7 @@ public interface IModelInterface {
      * @param difficulty The selected difficulty.
      * @return A list of UI_Players, each containing a player's ID, name, and role.
      */
-    List<UI_Player> startGame(List<String> players, String difficulty);
+    List<UI_Player> startGame(List<String> players, String difficulty, IUI_Updater uiUpdater);
 
     /**
      * Requests the model for each city's data, including its color, disease cube count, and
@@ -197,6 +204,12 @@ public interface IModelInterface {
     List<String> getDirectFlightCities();
 
     /**
+     * Queries the model for all possible shuttle flight destinations.
+     * @return A list containing the names of each city a player can fly to via 'shuttle flight'.
+     */
+    List<String> getShuttleFlightCities();
+
+    /**
      * Queries the model for all of the cards that a player can give OR receive using the 'Share
      * Knowledge' action.
      * @param playerID The player using the action.
@@ -215,7 +228,8 @@ public interface IModelInterface {
     // type; it is assumed that the model was successful in carrying out the requested action.
 
     /**
-     * Request the model to move the given player to the given city.
+     * Request the model to move the given player to the given city. This method will be used for
+     * the 'shuttle flight' option as well as normal movement.
      * @param playerID The ID of the player to be moved.
      * @param city The name of the city to move the player to.
      */

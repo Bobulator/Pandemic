@@ -73,7 +73,14 @@ public interface IDiseaseCubes {
 	 * @throws Exception
 	 */
 	public int getDiseaseCount(DiseaseType dt) throws Exception;
-	
+
+	/**
+	 * Puts the provided amount of disease cubes back in the provided disease name's canister
+	 * @param diseaseName
+	 * @param amount
+	 */
+	public void putBackDiseaseCubes(String diseaseName, int amount) throws TooManyDiseaseCubesException;
+
 	public int getRed();
 	
 	public int getBlack();

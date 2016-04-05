@@ -1,9 +1,16 @@
 package com.cs428.pandemic.backEnd.manager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.cs428.pandemic.backEnd.command.CommandBFG;
+import com.cs428.pandemic.backEnd.command.roles.Scientist;
+import com.cs428.pandemic.backEnd.model.Model;
+import com.cs428.pandemic.backEnd.model.gamestate.DiseaseType;
+import com.cs428.pandemic.backEnd.model.map.ICity;
+import com.cs428.pandemic.backEnd.model.player.IPlayer;
 import com.cs428.pandemic.frontEnd.ICommandObject;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Card;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_City;
@@ -11,10 +18,12 @@ import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Disease;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_DrawnCards;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Player;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_SharedKnowledge;
+import com.cs428.pandemic.frontEnd.enums.DiseaseColor;
 
 public class GameManager implements IGameManager{
 
 	private Map<Integer, CommandBFG> playerRoleObjects;
+
 	@Override
 	public void initializeGame() {
 		// TODO Auto-generated method stub
@@ -53,7 +62,13 @@ public class GameManager implements IGameManager{
 
 	// Populate the playerRoleObjects map
 	@Override
-	public void assignPlayerRole() {
+	public void assignPlayerRole(int numberOfPlayers) {
+
+		for (int i = 0; i < numberOfPlayers; i++){
+
+			// TODO Figure out a way to randomly assign unique roles
+			playerRoleObjects.put(i, new Scientist(Model.getInstance().getPlayers().get(i)));
+		}
 		// TODO Auto-generated method stub
 		
 	}
@@ -108,65 +123,129 @@ public class GameManager implements IGameManager{
 
 	@Override
 	public boolean canMove() {
-		// TODO Auto-generated method stub
-		return false;
+		//Get the current player's role and return canMove from that role
+		return this.getCurrentPlayerRole().canDriveFerry();
 	}
+
+
 
 	@Override
 	public boolean canFlyCharter() {
-		// TODO Auto-generated method stub
-		return false;
+		//Get the current player's role and return canFlyCharter from that role
+		return this.getCurrentPlayerRole().canFlyCharter();
 	}
 
 	@Override
 	public boolean canFlyDirect() {
-		// TODO Auto-generated method stub
-		return false;
+		//Get the current player's role and return canFlyDirect from that role
+		return this.getCurrentPlayerRole().canFlyDirect();
 	}
 
 	@Override
 	public boolean canShareKnowledge() {
-		// TODO Auto-generated method stub
-		// Always trade from the perspective of the giver; if the current player
-		// is requesting a card, call canGiveKnowledge on the player the current
-		// player is requesting the card from
-		return false;
+		//Get the current player's role and return canGive or canReceive from that role
+		return this.getCurrentPlayerRole().canGiveKnowledgeToAnyPlayer(this.playerRoleObjects) ||
+			   this.getCurrentPlayerRole().canReceiveKnowledgeFromAnyPlayer(this.playerRoleObjects);
 	}
 
 	@Override
 	public boolean canTreatDisease() {
-		// TODO Auto-generated method stub
-		return false;
+		//Get the current player's role and return canTreatDisease from that role
+		return this.getCurrentPlayerRole().canTreatDisease();
 	}
 
 	@Override
 	public boolean canCureDisease() {
-		// TODO Auto-generated method stub
-		return false;
+		//Get the current player's role and return canDiscoverCure from that role
+		return this.getCurrentPlayerRole().canDiscoverCure();
 	}
 
 	@Override
 	public boolean canBuildResearchStation() {
-		// TODO Auto-generated method stub
-		return false;
+		//Get the current player's role and return canBuildStation from that role
+		return this.getCurrentPlayerRole().canBuildStation();
 	}
 
 	@Override
 	public boolean canPass() {
-		// TODO Auto-generated method stub
-		return false;
+		//Get the current player's role and return canMove from that role
+		return this.getCurrentPlayerRole().canPass();
 	}
 
 	@Override
 	public List<UI_Player> startGame(List<String> players, String difficulty) {
-		// TODO Auto-generated method stub
-		return null;
+
+		int numberOfEpidemics = 4;
+
+		// Set numberofEpidemics based on chosen difficulty
+		switch(difficulty){
+
+			case "Normal":
+				numberOfEpidemics = 4;
+				break;
+			case "Hard":
+				numberOfEpidemics = 5;
+				break;
+			case "Insane":
+				numberOfEpidemics = 6;
+				break;
+		}
+
+		// Initialize the model
+		Model.createInstance(numberOfEpidemics, players);
+
+		// Assign player's a role
+		assignPlayerRole(players.size());
+
+		List<UI_Player> uiPlayers = new ArrayList<>();
+
+		// Convert players to UI_Players
+		for (int i = 0; i < players.size(); i++){
+
+			uiPlayers.add(new UI_Player(i, players.get(i), playerRoleObjects.get(i).getRoleName()));
+		}
+
+		return uiPlayers;
 	}
 
 	@Override
 	public Map<String, UI_City> getCityData() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, UI_City> cityData = new HashMap<String, UI_City>();
+
+		//
+		Map<String, ICity> cities = Model.getInstance().getMap().getAllICities();
+
+		for(Map.Entry<String, ICity> city: cities.entrySet()){
+			//Get the city name
+			String cityName = city.getKey();
+
+			//Get the city diseaseType and convert it to a diseaseColor
+			DiseaseColor cityColor = DiseaseColor.valueOf(city.getValue().getColor().toString());
+
+			//Get the disease count info from the city
+			Map<String, Integer> diseaseCounts = city.getValue().getPresentDiseasesCounts();
+
+			//Convert the map of disease names to integers to a map of disease colors to integers
+			Map<DiseaseColor, Integer> diseaseCubeInfo = new HashMap<DiseaseColor, Integer>();
+
+			for(Map.Entry<String, Integer> disease : diseaseCounts.entrySet()){
+				//Convert disease name to DiseaseColor
+				DiseaseColor diseaseColor = DiseaseColor.valueOf(disease.getKey().toString());
+				//Get the number of this diseaseColor
+				int diseaseCount = disease.getValue();
+
+				diseaseCubeInfo.put(diseaseColor, diseaseCount);
+			}
+
+			//Get the names of the adjacent cities
+			List<String> adjacentCities = city.getValue().getAdjacentCityNames();
+
+			//Create a new UI_City with the above information and add it to the city data map
+			UI_City uiCity = new UI_City(cityName, cityColor, diseaseCubeInfo, adjacentCities);
+			cityData.put(cityName, uiCity);
+		}
+
+		return cityData;
 	}
 
 	@Override
@@ -350,4 +429,12 @@ public class GameManager implements IGameManager{
 			return playerRoleObjects;
 	}
 
+	@Override
+	public CommandBFG getCurrentPlayerRole() {
+		//Get current player's index
+		int playerIndex = Model.getInstance().getTurnTracker().getCurrentPlayer();
+
+		//Get and return the role associated with playerIndex
+		return this.playerRoleObjects.get(playerIndex);
+	}
 }

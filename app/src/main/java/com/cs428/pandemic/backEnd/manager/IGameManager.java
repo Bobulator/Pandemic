@@ -58,8 +58,9 @@ public interface IGameManager {
 	
 	/**
 	 * Randomly assigns each player a role.
+     * @param numberOfPlayers the number of players in the game
 	 */
-	public void assignPlayerRole();
+	public void assignPlayerRole(int numberOfPlayers);
 	
 	/**
 	 * Shuffles the city and event cards 
@@ -396,4 +397,10 @@ public interface IGameManager {
      * @return A mapping of player indices to their respective CommandBFG role implementations
      */
     Map<Integer, CommandBFG> getPlayerRoleObjects();
+
+    /**
+     * Gets the role of the current player based on the current player's index
+     * @return
+     */
+    CommandBFG getCurrentPlayerRole();
 }
