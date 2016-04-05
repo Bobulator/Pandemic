@@ -236,4 +236,19 @@ public class City implements ICity{
 
 		return presentDiseases;
 	}
+
+	@Override
+	public Map<String, Integer> getPresentDiseasesCounts() {
+		Map<String, Integer> presentDiseaseCounts = new HashMap<String, Integer>();
+
+		for(Map.Entry<DiseaseType, Integer> entry : disease_cubes.entrySet()){
+
+			if(entry.getValue() > 0){
+
+				presentDiseaseCounts.put(entry.getKey().toString(), entry.getValue());
+			}
+		}
+
+		return presentDiseaseCounts;
+	}
 }

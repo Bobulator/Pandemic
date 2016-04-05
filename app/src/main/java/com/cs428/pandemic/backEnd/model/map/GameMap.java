@@ -1,6 +1,7 @@
 package com.cs428.pandemic.backEnd.model.map;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,5 +92,22 @@ public class GameMap implements IGameMap
 		}
 		
 		return allOtherLocations;
+	}
+
+	@Override
+	public List<String> getAllCityNames() {
+		List<String> cityNames = new ArrayList<String>();
+
+		for(Map.Entry<String, ICity> city : cities.entrySet()){
+			String cityName = city.getKey();
+			cityNames.add(cityName);
+		}
+
+		return cityNames;
+	}
+
+	@Override
+	public Map<String, ICity> getAllICities() {
+		return this.cities;
 	}
 }

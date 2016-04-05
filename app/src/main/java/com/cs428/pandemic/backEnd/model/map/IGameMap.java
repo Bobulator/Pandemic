@@ -1,6 +1,7 @@
 package com.cs428.pandemic.backEnd.model.map;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IGameMap
 {
@@ -47,6 +48,16 @@ public interface IGameMap
 	 * @param location The location to be excluded
 	 * @return a list of all of the locations, excluding the provided location
 	 */
-	List<String> getAllOtherLocations(String location); 
+	List<String> getAllOtherLocations(String location);
+
+	/**
+	 * @return a list of strings representing the names of all of the cities on the board
+	 */
+	List<String> getAllCityNames();
+
+	/**
+	 * @return a mapping of city names to ICity objects
+	 */
+	public Map<String, ICity> getAllICities();
 	
 }

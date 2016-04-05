@@ -1,6 +1,7 @@
 package com.cs428.pandemic.backEnd.model.map;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cs428.pandemic.backEnd.model.gamestate.DiseaseType;
 
@@ -114,4 +115,16 @@ public interface ICity{
 	 * @return A list of the names of diseases that have at least 1 cube on this city
 	 */
 	List<String> getPresentDiseases();
+
+	/**
+	 * @return mapping of disease names to the number of cubes on this location (minimum 1 cube)
+	 */
+	Map<String, Integer> getPresentDiseasesCounts();
+
+	/**
+	 * @return the disease color associated with this city
+	 */
+	DiseaseType getColor();
+
+
 }

@@ -397,4 +397,10 @@ public interface IGameManager {
      * @return A mapping of player indices to their respective CommandBFG role implementations
      */
     Map<Integer, CommandBFG> getPlayerRoleObjects();
+
+    /**
+     * Gets the role of the current player based on the current player's index
+     * @return
+     */
+    CommandBFG getCurrentPlayerRole();
 }

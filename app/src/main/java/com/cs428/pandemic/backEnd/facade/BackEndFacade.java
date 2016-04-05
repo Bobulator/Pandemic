@@ -20,7 +20,7 @@ public class BackEndFacade implements IModelInterface{
 
 	@Override
 	public boolean canMove() {
-		return false;
+		return gm.canMove();
 	}
 
 	@Override
