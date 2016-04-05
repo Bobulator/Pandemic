@@ -33,6 +33,12 @@ public class CardFactory implements ICardFactory
             {
                 return PlayerCardType.CITY;
             }
+
+            @Override
+            public boolean equalsIdentifier(String identifier) 
+            {
+                return city.equals(identifier);
+            }
         };
     }
 
@@ -45,6 +51,12 @@ public class CardFactory implements ICardFactory
             public PlayerCardType getType() 
             {
                 return PlayerCardType.EPIDEMIC;
+            }
+
+            @Override
+            public boolean equalsIdentifier(String identifier) 
+            {
+                return "Epidemic".equals(identifier);
             }
         };
     }
@@ -73,6 +85,12 @@ public class CardFactory implements ICardFactory
             {
                 return PlayerCardType.EVENT;
             }
+
+            @Override
+            public boolean equalsIdentifier(String identifier) 
+            {
+                return name.equals(identifier);
+            }
         };
     }
 
@@ -93,6 +111,12 @@ public class CardFactory implements ICardFactory
             public DiseaseType getColor()
             {
                 return color;
+            }
+
+            @Override
+            public boolean equalsIdentifier(String identifier) 
+            {
+                return cityVal.equals(identifier);
             }
         };
     }

@@ -10,5 +10,5 @@ package com.cs428.pandemic.backEnd.model.deck;
  */
 public interface ICard 
 {
-    
+    boolean equalsIdentifier(String identifier);
 }

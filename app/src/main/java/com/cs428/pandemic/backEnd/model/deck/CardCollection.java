@@ -61,12 +61,46 @@ public class CardCollection <T extends ICard>
     {
         return cardList.remove(card);
     }
-
-    public ICityCard removeCityCard(String cityName){
-
-        for(int i = 0; i < cardList.size(); i++){
+    
+    public List<String> getNamesOfCityCards()
+    {
+        return getNamesOfCityCards("");
+    }
+    
+    public List<String> getNamesOfCityCards(String identifier)
+    {
+        List<String> names = new ArrayList<>();
+        for(ICard card : cardList)
+        {
+            if(!card.equalsIdentifier(identifier)
+                && card instanceof ICityCard)
+            {
+                names.add(((ICityCard)card).getName());
+            }
+        }
+        return names;
+    }
+    
+    public boolean cardExists(String identifier)
+    {
+        for(ICard card : cardList)
+        {
+            if(card.equalsIdentifier(identifier))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public ICityCard removeCityCard(String cityName)
+    {
+        for(int i = 0; i < cardList.size(); i++)
+        {
             ICard card = cardList.get(i);
-            if(card instanceof ICityCard && ((ICityCard) card).getName().equalsIgnoreCase(cityName)) {
+            if(card instanceof ICityCard 
+                    && ((ICityCard) card).getName().equalsIgnoreCase(cityName)) 
+            {
                 cardList.remove(i);
                 return (ICityCard)card;
             }
@@ -89,15 +123,16 @@ public class CardCollection <T extends ICard>
         return cardList.size();
     }
 
-    public int getColorCount(DiseaseType type){
-
+    public int getColorCount(DiseaseType type)
+    {
         int matchCount = 0;
-        for(T card : cardList){
-            if (card instanceof ICityCard && ((ICityCard) card).getDiseaseType() == type) {
+        for(T card : cardList)
+        {
+            if (card instanceof ICityCard && ((ICityCard) card).getDiseaseType() == type)
+            {
                 matchCount++;
             }
         }
-
         return matchCount;
     }
 
