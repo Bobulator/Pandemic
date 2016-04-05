@@ -40,6 +40,7 @@ public abstract class CommandBFG {
         this.role = role;
     }
 
+    // region Can Do Methods
     // =====================
     // ==== CAN METHODS ====
     // =====================
@@ -338,6 +339,9 @@ public abstract class CommandBFG {
         return (player.getLocation().getName().equals(location));
     }
 
+    //endregion
+
+    // region Do Methods
     // ====================
     // ==== DO METHODS ====
     // ====================
@@ -372,12 +376,12 @@ public abstract class CommandBFG {
      * @param destination the name of the city to fly to
      * @param discardCard true if the player should discard, false otherwise
      */
-    protected void move(String destination, boolean discardCard) {
+    protected void move(String destination, String discardCard) {
 
-        if (discardCard) {
+        if (discardCard != null) {
 
             // Remove the card represented by cityCardName from the player's hand
-            IPlayerCard removedCard = player.removeCityCard(destination);
+            IPlayerCard removedCard = player.removeCityCard(discardCard);
 
             // Discard the removed card
             Model.getInstance().getGameDecks().addCard(removedCard, CardFamilyType.PLAYER, DeckType.DISCARD);
@@ -411,7 +415,7 @@ public abstract class CommandBFG {
                 // Get this from the user
                 String destination = "";
 
-                move(destination, true);
+                move(destination, destination);
             }
         };
     }
@@ -437,7 +441,7 @@ public abstract class CommandBFG {
                 // Get this from the user
                 String destination = "";
 
-                move(destination, true);
+                move(destination, currentLocation);
             }
         };
     }
@@ -461,7 +465,7 @@ public abstract class CommandBFG {
                 // Get this from the user
                 String destination = "";
 
-                move(destination, false);
+                move(destination, null);
             }
         };
     }
@@ -709,26 +713,40 @@ public abstract class CommandBFG {
         };
     }
 
+    // endregion
+
     /**
      * @return a list of all the special actions the player can perform
      */
-    public abstract List<String> getCanDoSpecialActions();
+    public List<String> getCanDoSpecialActions(){
+
+        ArrayList<String> availableActions = new ArrayList<>();
+        for (String action : specialActions){
+            if(canPerformSpecialAction(action))
+                availableActions.add(action);
+        }
+        return availableActions;
+    }
 
     /**
      *
      * @param specialAction A string corresponding to a special action in the user's role
      * @return true if this action can be performed, otherwise false
      */
-    public abstract boolean canPerformSpecialAction(String specialAction);
+    public boolean canPerformSpecialAction(String specialAction){
+        return false;
+    }
 
     /**
      *
      * @param specialAction A string corresponding to a special action in the user's role
      * @return The return of the ICommand execute is as follows:
      */
-    public abstract ICommand getPerformSpecialAction(String specialAction);
+    public ICommand getPerformSpecialAction(String specialAction){
+        return null;
+    }
 
-    
+
     /*
     TODO: ALSO ADD...
         - outbreaks (3 steps in separate functions?)
@@ -740,5 +758,11 @@ public abstract class CommandBFG {
     public List<String> getSpecialActions() {
         return specialActions;
     }
+
+    // ========================
+    // ==== OPTION METHODS ====
+    // ========================
+
+
 
 }

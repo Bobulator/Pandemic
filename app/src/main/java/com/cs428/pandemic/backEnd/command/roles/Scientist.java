@@ -5,11 +5,8 @@ import android.app.FragmentManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cs428.pandemic.backEnd.command.CaseyBFG;
 import com.cs428.pandemic.backEnd.command.CommandBFG;
 import com.cs428.pandemic.backEnd.command.ICommand;
-import com.cs428.pandemic.backEnd.command.ICommandResult;
-import com.cs428.pandemic.backEnd.model.IGameModel;
 import com.cs428.pandemic.backEnd.model.Model;
 import com.cs428.pandemic.backEnd.model.deck.CardCollection;
 import com.cs428.pandemic.backEnd.model.deck.CardFamilyType;
@@ -56,7 +53,7 @@ public class Scientist extends CommandBFG {
                 // Types for which the player has enough city cards to cure the disease will be enabled
 
                 // TODO Need a way to get the list of
-                List<String> cureableDiseases = new ArrayList<String>();
+                List<String> cureableDiseases = new ArrayList<>();
 
                 for (DiseaseType d : DiseaseType.values()){
 
@@ -115,21 +112,4 @@ public class Scientist extends CommandBFG {
             }
         };
     }
-
-    @Override
-    public List<String> getCanDoSpecialActions(){
-
-        return null;
-    }
-
-    public boolean canPerformSpecialAction(String specialAction){
-
-        return false;
-    }
-
-	@Override
-	public ICommand getPerformSpecialAction(String specialAction) {
-
-		return null;
-	}
 }
