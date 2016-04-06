@@ -70,9 +70,8 @@ public interface IDiseaseCubes {
 	 * Returns the amount of disease cubes of the provided disease type
 	 * @param dt
 	 * @return The number of cubes of dt
-	 * @throws Exception
 	 */
-	public int getDiseaseCount(DiseaseType dt) throws Exception;
+	public int getDiseaseCount(DiseaseType dt);
 
 	/**
 	 * Puts the provided amount of disease cubes back in the provided disease name's canister

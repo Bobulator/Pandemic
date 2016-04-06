@@ -7,7 +7,6 @@ import com.cs428.pandemic.backEnd.model.deck.ICardFactory;
 import com.cs428.pandemic.backEnd.model.deck.IGameDecksHolder;
 import com.cs428.pandemic.backEnd.model.disease.DiseaseCubes;
 import com.cs428.pandemic.backEnd.model.gamestate.DiseaseType;
-import com.cs428.pandemic.backEnd.model.map.GameMap;
 import com.cs428.pandemic.backEnd.model.map.ICity;
 import com.cs428.pandemic.backEnd.model.map.IGameMap;
 import com.cs428.pandemic.backEnd.model.player.Player;
@@ -17,7 +16,6 @@ import com.cs428.pandemic.backEnd.model.prevData.PlayerDeck;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by brandt on 3/23/16.
@@ -52,7 +50,7 @@ public class Model {
 
         for(int i = 0; i < numberOfPlayers; ++i)
         {
-            builder.addPlayers(new Player(playerNames.get(i), i, startingCity, role));
+            builder.addPlayers(new Player(playerNames.get(i), i, startingCity));
         }
 
         instance = builder.createModel();
@@ -98,6 +96,6 @@ public class Model {
     public static void main(String[] args)
     {
         IGameModel model = getInstance();
-        model.getMap();
+        model.getGameMap();
     }
 }

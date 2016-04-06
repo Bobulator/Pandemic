@@ -8,6 +8,12 @@ import java.util.Map;
 import com.cs428.pandemic.backEnd.command.CommandBFG;
 import com.cs428.pandemic.backEnd.command.roles.Scientist;
 import com.cs428.pandemic.backEnd.model.Model;
+import com.cs428.pandemic.backEnd.model.deck.CardCollection;
+import com.cs428.pandemic.backEnd.model.deck.DeckType;
+import com.cs428.pandemic.backEnd.model.deck.ICityCard;
+import com.cs428.pandemic.backEnd.model.deck.IEventCard;
+import com.cs428.pandemic.backEnd.model.deck.IInfectionCard;
+import com.cs428.pandemic.backEnd.model.deck.IPlayerCard;
 import com.cs428.pandemic.backEnd.model.gamestate.DiseaseType;
 import com.cs428.pandemic.backEnd.model.map.ICity;
 import com.cs428.pandemic.backEnd.model.player.IPlayer;
@@ -19,6 +25,7 @@ import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_DrawnCards;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_Player;
 import com.cs428.pandemic.frontEnd.dataTransferObjects.UI_SharedKnowledge;
 import com.cs428.pandemic.frontEnd.enums.DiseaseColor;
+import com.cs428.pandemic.frontEnd.enums.Role;
 
 public class GameManager implements IGameManager{
 
@@ -212,8 +219,8 @@ public class GameManager implements IGameManager{
 	public Map<String, UI_City> getCityData() {
 		Map<String, UI_City> cityData = new HashMap<String, UI_City>();
 
-		//
-		Map<String, ICity> cities = Model.getInstance().getMap().getAllICities();
+		// Get all of the cities on the board map
+		Map<String, ICity> cities = Model.getInstance().getGameMap().getAllICities();
 
 		for(Map.Entry<String, ICity> city: cities.entrySet()){
 			//Get the city name
@@ -250,62 +257,192 @@ public class GameManager implements IGameManager{
 
 	@Override
 	public List<String> getResearchStationLocations() {
-		// TODO Auto-generated method stub
-		return null;
+		return Model.getInstance().getGameMap().getResearchStationLocations();
 	}
 
 	@Override
 	public Map<Integer, String> getPawnLocations() {
-		// TODO Auto-generated method stub
-		return null;
+		Map<Integer, String> pawnLocations = new HashMap<Integer, String>();
+
+		// Get the list of players
+		List<IPlayer> players = Model.getInstance().getPlayers();
+
+		for(IPlayer player : players){
+
+			// Get player index
+			int index = player.getPlayerIndex();
+
+			// Get player location
+			String location = player.getLocation().getName();
+
+			// Put it in the map
+			pawnLocations.put(index, location);
+		}
+
+		return pawnLocations;
 	}
 
 	@Override
 	public int getRemainingResearchStations() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Model.getInstance().getGameMap().getRemainingResearchStationCount();
 	}
 
 	@Override
 	public List<UI_Disease> getRemainingDiseaseCubes() {
-		// TODO Auto-generated method stub
-		return null;
+		List<UI_Disease> remainingDiseaseCubes = new ArrayList<UI_Disease>();
+
+		for(DiseaseType type : DiseaseType.values()){
+
+			// Get disease count
+			int count = Model.getInstance().getDiseaseCubes().getDiseaseCount(type);
+
+			// Get the diseaseCured boolean
+			boolean cured = Model.getInstance().getGameState().getDiseaseData().isCured(type);
+
+			// Create a DiseaseColor with the diseaseType
+			DiseaseColor color = DiseaseColor.valueOf(type.toString());
+
+			// Create a UI_Disease with the count, cured, and color
+			UI_Disease uiDisease = new UI_Disease(color, cured, count);
+
+			// Add the uiDisease to the list
+			remainingDiseaseCubes.add(uiDisease);
+		}
+
+		return remainingDiseaseCubes;
 	}
 
 	@Override
 	public int getOutbreakCounter() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Model.getInstance().getGameState().getNumberOfOutbreaks();
 	}
 
 	@Override
 	public int getInfectionRate() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Model.getInstance().getGameState().getInfectionTracker().getInfectionsPerTurn();
 	}
 
 	@Override
 	public UI_Player getCurrentPlayer() {
-		// TODO Auto-generated method stub
-		return null;
+
+		// Get the current player's index
+		int index =  Model.getInstance().getTurnTracker().getCurrentPlayer();
+
+		// Get the current player's name
+		String name = Model.getInstance().getPlayers().get(index).getName();
+
+		// Get the current player's role
+		Role role = playerRoleObjects.get(index).getRoleName();
+
+		// Create and return a UI_Player with the index, name, and role
+		return new UI_Player(index, name, role);
 	}
 
 	@Override
 	public List<UI_Card> getPlayerHand(int playerID) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<UI_Card> playerHand = new ArrayList<UI_Card>();
+
+		// Get the hand of the player corresponding with playerID
+		List<IPlayerCard> hand = Model.getInstance().getPlayers().get(playerID).getHand().getCardList();
+
+		for(IPlayerCard card : hand){
+			DiseaseColor color = null;
+			String name = "";
+
+			// Get the name and color from the city cards, or just the name from event cards
+			if(card instanceof ICityCard) {
+
+				// Get the name of the city card
+				name = ((ICityCard) card).getName();
+
+				// Get the disease type of the card
+				DiseaseType type = ((ICityCard) card).getDiseaseType();
+
+				// Convert the disease type to a disease color
+				color = DiseaseColor.valueOf(type.toString());
+
+			} else if(card instanceof IEventCard){
+
+				// Get the name of the event card
+				name = ((IEventCard) card).getName();
+			}
+
+			// Create a UI_Card with the name and color
+			UI_Card uiCard = new UI_Card(name, color);
+
+			// Add the UI_Card to the playerHand list
+			playerHand.add(uiCard);
+		}
+
+		return playerHand;
 	}
 
 	@Override
 	public List<UI_Card> getInfectionDiscardedCards() {
-		// TODO Auto-generated method stub
-		return null;
+		List<UI_Card> infectionDiscardedCards = new ArrayList<UI_Card>();
+
+		// Get the discarded infection cards
+		List<IInfectionCard> discardedInfectionCards = Model.getInstance().getGameDecks().getInfectDeck(DeckType.DISCARD).getCardList();
+
+		for(IInfectionCard card : discardedInfectionCards){
+
+			// Get the name of the infection card
+			String name = card.getName();
+
+			// Get the disease type of the infection card
+			DiseaseType type = card.getColor();
+
+			// Convert the disease type to a disease color
+			DiseaseColor color = DiseaseColor.valueOf(type.toString());
+
+			// Create a UI_Card with the name and color
+			UI_Card uiCard = new UI_Card(name, color);
+
+			// Add the uiCard to the infectionDiscardedCards
+			infectionDiscardedCards.add(uiCard);
+		}
+
+		return infectionDiscardedCards;
 	}
 
 	@Override
 	public List<UI_Card> getPlayerDiscardedCards() {
-		// TODO Auto-generated method stub
-		return null;
+		List<UI_Card> playerDiscardedCards = new ArrayList<UI_Card>();
+
+		// Get the discarded infection cards
+		List<IPlayerCard> discardedPlayerCards = Model.getInstance().getGameDecks().getPlayerDeck(DeckType.DISCARD).getCardList();
+
+		for(IPlayerCard card : discardedPlayerCards) {
+
+			String name = "";
+			DiseaseColor color = null;
+
+			if (card instanceof ICityCard) {
+
+				// Get the name of the city card
+				name = ((ICityCard) card).getName();
+
+				// Get the disease type of the city card
+				DiseaseType type = ((ICityCard) card).getDiseaseType();
+
+				// Convert the disease type to a disease color
+				color = DiseaseColor.valueOf(type.toString());
+
+			} else if(card instanceof IEventCard){
+
+				// Get the name of the event card
+				name = ((IEventCard) card).getName();
+			}
+
+			// Create a UI_Card with the name and color
+			UI_Card uiCard = new UI_Card(name, color);
+
+			// Add the uiCard to the infectionDiscardedCards
+			playerDiscardedCards.add(uiCard);
+		}
+
+		return playerDiscardedCards;
 	}
 
 	@Override

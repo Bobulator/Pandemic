@@ -94,7 +94,7 @@ public class DiseaseCubes implements IDiseaseCubes{
 		}
 	}
 	
-	public int getDiseaseCount(DiseaseType dt) throws Exception{
+	public int getDiseaseCount(DiseaseType dt){
 		switch(dt){
 			case BLACK:
 				return black;
@@ -105,7 +105,7 @@ public class DiseaseCubes implements IDiseaseCubes{
 			case RED:
 				return red;
 			default:
-				throw new Exception("INVALID DISEASE TYPE");
+				return -1;
 		}
 	}
 

@@ -2,13 +2,11 @@ package com.cs428.pandemic.backEnd.command;
 
 import android.app.FragmentManager;
 
-import com.cs428.pandemic.backEnd.model.IGameModel;
 import com.cs428.pandemic.backEnd.model.Model;
 import com.cs428.pandemic.backEnd.model.deck.*;
 import com.cs428.pandemic.backEnd.model.disease.TooManyDiseaseCubesException;
 import com.cs428.pandemic.backEnd.model.gamestate.DiseaseType;
 import com.cs428.pandemic.backEnd.model.gamestate.IInfectionTracker;
-import com.cs428.pandemic.backEnd.model.map.ICity;
 import com.cs428.pandemic.backEnd.model.player.IPlayer;
 import com.cs428.pandemic.frontEnd.enums.Role;
 
@@ -126,7 +124,7 @@ public abstract class CommandBFG {
         }
 
         // Make sure there is at least 1 other research station on the board (besides the one at the player's current location)
-        if (Model.getInstance().getMap().getNumberOfResearchStationLocations() <= 1) {
+        if (Model.getInstance().getGameMap().getNumberOfResearchStationLocations() <= 1) {
             return false;
         }
 
@@ -352,7 +350,7 @@ public abstract class CommandBFG {
                 String currentLocation = player.getLocation().getName();
 
                 // Use this list on the frame to give the user city options
-                List<String> adjacentCities = Model.getInstance().getMap().getCity(currentLocation).getAdjacentCityNames();
+                List<String> adjacentCities = Model.getInstance().getGameMap().getCity(currentLocation).getAdjacentCityNames();
 
                 /* ****FRAME MAGIC**** */
 
@@ -360,7 +358,7 @@ public abstract class CommandBFG {
                 String cityName = "";
 
                 // Set the player's location to cityName
-                player.setLocation(Model.getInstance().getMap().getCity(cityName));
+                player.setLocation(Model.getInstance().getGameMap().getCity(cityName));
 
                 // Decrement action counter
                 Model.getInstance().getTurnTracker().decrementActionPoints(1);
@@ -387,7 +385,7 @@ public abstract class CommandBFG {
         }
 
         // Set the player's location to destination
-        player.setLocation(Model.getInstance().getMap().getCity(destination));
+        player.setLocation(Model.getInstance().getGameMap().getCity(destination));
 
         // Decrement action counter
         Model.getInstance().getTurnTracker().decrementActionPoints(1);
@@ -433,7 +431,7 @@ public abstract class CommandBFG {
 
                 // Get names of all cities in the player's hand other than the current location
                 String currentLocation = player.getLocation().getName();
-                List<String> charterCityNames = Model.getInstance().getMap().getAllOtherLocations(currentLocation);
+                List<String> charterCityNames = Model.getInstance().getGameMap().getAllOtherLocations(currentLocation);
 
                 /* ****FRAME MAGIC**** */
 
@@ -457,7 +455,7 @@ public abstract class CommandBFG {
             public void execute(FragmentManager fm) {
 
                 // Get list of research station locations to present to the user
-                List<String> researchStations = Model.getInstance().getMap().getResearchStationLocations();
+                List<String> researchStations = Model.getInstance().getGameMap().getResearchStationLocations();
 
                 /* ****FRAME MAGIC**** */
 
@@ -506,9 +504,9 @@ public abstract class CommandBFG {
                 // this method will return false
                 // If placement fails, tell the GUI to have the player choose which research station to move
                 // and then place the research station
-                if (!Model.getInstance().getMap().placeResearchStation(currentLocation)) {
+                if (!Model.getInstance().getGameMap().placeResearchStation(currentLocation)) {
 
-                    List<String> researchStationLocations = Model.getInstance().getMap().getResearchStationLocations();
+                    List<String> researchStationLocations = Model.getInstance().getGameMap().getResearchStationLocations();
 
                     /* ****FRAME MAGIC**** */
 
@@ -517,11 +515,11 @@ public abstract class CommandBFG {
                     String selectedLocation = "";
 
                     // Remove the research station from the selected location
-                    Model.getInstance().getMap().removeResearchStation(selectedLocation);
+                    Model.getInstance().getGameMap().removeResearchStation(selectedLocation);
 
 
                     // Place the research station at the player's location
-                    Model.getInstance().getMap().placeResearchStation(currentLocation);
+                    Model.getInstance().getGameMap().placeResearchStation(currentLocation);
                 }
 
                 // Remove the card from the player's hand

@@ -16,5 +16,5 @@ public interface IMapStorage
      * Contains city data and adjacency information
      * @return 
      */
-    IGameMap getMap();
+    IGameMap getGameMap();
 }

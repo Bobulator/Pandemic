@@ -134,7 +134,7 @@ public class OperationsExpert extends CaseyBFG{
             @Override
             public ICommandResult execute(IGameModel model) {
             	
-            	List<String> possibleDestinations = model.getMap().getAllOtherLocations(player.getLocation().getName());
+            	List<String> possibleDestinations = model.getGameMap().getAllOtherLocations(player.getLocation().getName());
             	// TODO Front enders, use this list to have the player choose the destination
             	
             	// TODO James, we need a way to just get city cards from the player's hand
@@ -147,7 +147,7 @@ public class OperationsExpert extends CaseyBFG{
             	// TODO Get the destination from the UI
             	String destination = "";
             	// Set the player's location to destination
-            	player.setLocation(model.getMap().getCity(destination));
+            	player.setLocation(model.getGameMap().getCity(destination));
             	
             	// TODO Get the cityName from the UI
             	String cityName = "";

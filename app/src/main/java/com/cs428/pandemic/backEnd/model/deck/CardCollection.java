@@ -136,4 +136,7 @@ public class CardCollection <T extends ICard>
         return matchCount;
     }
 
+    public List<T> getCardList(){
+        return cardList;
+    }
 }

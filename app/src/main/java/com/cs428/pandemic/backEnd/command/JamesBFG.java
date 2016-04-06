@@ -54,7 +54,7 @@ public abstract class JamesBFG {
 
                 // check if the city is an immediate neighbor
                 ICity curLocation = model.getPlayers().get(playerIndex).getLocation();
-                boolean isNeighbor = model.getMap().getCity(curLocation.getName()).isAdjacent(cityName);
+                boolean isNeighbor = model.getGameMap().getCity(curLocation.getName()).isAdjacent(cityName);
 
                 if(isNeighbor)
                     return canDoSuccess("Move to " + cityName + " is legal.");

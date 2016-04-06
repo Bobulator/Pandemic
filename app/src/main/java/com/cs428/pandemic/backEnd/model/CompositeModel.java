@@ -53,7 +53,7 @@ public class CompositeModel implements IGameModel
     }
 
     @Override
-    public IGameMap getMap()
+    public IGameMap getGameMap()
     {
         return gameMap;
     }

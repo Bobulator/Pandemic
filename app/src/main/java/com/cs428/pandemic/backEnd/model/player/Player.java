@@ -12,7 +12,7 @@ public class Player implements IPlayer{
 	private String role;
 	private CardCollection<IPlayerCard> hand;
 
-	public Player(String name, int player_index, ICity current_location, String role){
+	public Player(String name, int player_index, ICity current_location){
 
 		this.name = name;
 		this.setPlayerIndex(player_index);
