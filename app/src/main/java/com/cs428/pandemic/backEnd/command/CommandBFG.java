@@ -20,7 +20,6 @@ import java.util.Map;
 
 public abstract class CommandBFG {
 
-    private HashMap<String, String> specialProperties = new HashMap<>();
     protected List<String> specialActions;
     protected Role role;
 
@@ -715,15 +714,18 @@ public abstract class CommandBFG {
 
     // endregion
 
+    // region Special Actions
     /**
      * @return a list of all the special actions the player can perform
      */
-    public List<String> getCanDoSpecialActions(){
+    public Map<String, Boolean> getCanDoSpecialActions(){
 
-        ArrayList<String> availableActions = new ArrayList<>();
+        HashMap<String, Boolean> availableActions = new HashMap<>();
         for (String action : specialActions){
             if(canPerformSpecialAction(action))
-                availableActions.add(action);
+                availableActions.put(action, true);
+            else
+                availableActions.put(action, false);
         }
         return availableActions;
     }
@@ -733,7 +735,7 @@ public abstract class CommandBFG {
      * @param specialAction A string corresponding to a special action in the user's role
      * @return true if this action can be performed, otherwise false
      */
-    public boolean canPerformSpecialAction(String specialAction){
+    protected boolean canPerformSpecialAction(String specialAction){
         return false;
     }
 
@@ -745,24 +747,14 @@ public abstract class CommandBFG {
     public ICommand getPerformSpecialAction(String specialAction){
         return null;
     }
-
+    //endregion
 
     /*
     TODO: ALSO ADD...
         - outbreaks (3 steps in separate functions?)
         - infection
         - turn setup (that sets the number of remaining actions
+        - clean up (resets flags and things
     */
-
-
-    public List<String> getSpecialActions() {
-        return specialActions;
-    }
-
-    // ========================
-    // ==== OPTION METHODS ====
-    // ========================
-
-
 
 }
