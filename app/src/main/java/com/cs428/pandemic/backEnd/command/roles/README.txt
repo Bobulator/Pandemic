@@ -1,1 +1,0 @@
-Specific role implementations (implementations of AbstractRole) will go here.
