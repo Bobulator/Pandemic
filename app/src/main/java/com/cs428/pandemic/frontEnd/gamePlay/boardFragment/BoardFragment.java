@@ -183,7 +183,7 @@ public class BoardFragment extends Fragment implements View.OnTouchListener,
 		// Use a bitmap to scale the image resource down so as not to use too much memory.
 		// The width and height were arbitrarily chosen as placeholders until we can find
 		// a more consistent way to determine what size we should draw the image.
-		Bitmap bitmap = mBoardDrawer.createBitmap(R.drawable.game_board_nocities, 400, 400);
+		Bitmap bitmap = mBoardDrawer.createBitmap(R.drawable.game_board_nocities, 200, 200);
         System.out.println("BOARD BITMAP IS USING " + bitmap.getByteCount() + " BYTES!!!!!");
 
 		// Draw everything onto the bitmap
